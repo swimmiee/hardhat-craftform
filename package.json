@@ -1,6 +1,6 @@
 {
   "name": "hardhat-craftform",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Hardhat TypeScript plugin for continuous integration",
   "repository": "github:dannylisa/hardhat-craftform",
   "author": "danny <danny@sooho.io>",
@@ -22,7 +22,10 @@
     "watch": "tsc -w",
     "prepublishOnly": "npm run build"
   },
-  "files": ["dist/src/*", "README.md"],
+  "files": [
+    "dist/src/*",
+    "README.md"
+  ],
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
