@@ -8,9 +8,12 @@ export default async function GenerateCrafts(
 ){
 
     const artifactNames = await artifacts.getAllFullyQualifiedNames()
+    if(!artifactNames.length){
+        return;
+    }
     const project = new Project({})
     project.addSourceFilesAtPaths(`${craftsRootDir}/**/*.ts`);
-    for await (const artifactName of artifactNames) {
+    for (const artifactName of artifactNames) {
         const craftClassFile = project.createSourceFile(`${craftsRootDir}/${artifactName}.craft.ts`, `
             import { Craft, Contract } from "hardhat-craftform/core"
             

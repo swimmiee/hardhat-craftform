@@ -1,4 +1,3 @@
-import "./utils/type-extensions";
 import './extend-config';
 
 export * from '../src/craftform/class'

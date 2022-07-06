@@ -4,6 +4,7 @@ import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform/class";
 import GenerateCrafts from "./utils/generate-crafts";
 import { normalizePath } from "./utils/normalize-path";
+import "./utils/type-extensions";
 
 
 extendConfig(
