@@ -1,5 +1,5 @@
 import { craftform } from "hardhat";
-import { RelationMetadata } from "../src/metadata";
+import { RelationMetadata } from "../metadata";
 
 export function Contract<T>(
   craft: (type?: any) => new () => T
