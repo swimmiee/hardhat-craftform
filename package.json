@@ -24,7 +24,7 @@
   },
   "files": [
     "dist/src/*",
-    "dist/core.ts",
+    "dist/core.*",
     "README.md"
   ],
   "devDependencies": {
