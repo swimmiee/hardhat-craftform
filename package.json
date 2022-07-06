@@ -24,7 +24,7 @@
   },
   "files": [
     "dist/src/*",
-    "dist/decorators/*",
+    "dist/core.ts",
     "README.md"
   ],
   "devDependencies": {
