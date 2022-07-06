@@ -4,7 +4,7 @@
 import "hardhat/types/config";
 import "hardhat/types/runtime";
 
-import { ExampleHardhatRuntimeEnvironmentField } from "./ExampleHardhatRuntimeEnvironmentField";
+import { Craftform } from "./craftform/class";
 
 declare module "hardhat/types/config" {
   // This is an example of an extension to one of the Hardhat config values.
@@ -12,7 +12,7 @@ declare module "hardhat/types/config" {
   // We extend the UserConfig type, which represents the config as written
   // by the users. Things are normally optional here.
   export interface ProjectPathsUserConfig {
-    newPath?: string;
+    crafts?: string;
   }
 
   // We also extend the Config type, which represents the configuration
@@ -21,7 +21,7 @@ declare module "hardhat/types/config" {
   // Normally, you don't want things to be optional here. As you can apply
   // default values using the extendConfig function.
   export interface ProjectPathsConfig {
-    newPath: string;
+    crafts: string;
   }
 }
 
@@ -29,6 +29,6 @@ declare module "hardhat/types/runtime" {
   // This is an example of an extension to the Hardhat Runtime Environment.
   // This new field will be available in tasks' actions, scripts, and tests.
   export interface HardhatRuntimeEnvironment {
-    example: ExampleHardhatRuntimeEnvironmentField;
+    craftform: Craftform;
   }
 }
