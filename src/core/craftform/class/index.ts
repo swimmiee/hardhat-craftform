@@ -4,18 +4,18 @@ import { getConfig } from "../utils/getConfig";
 import { GetContractProps } from "./interfaces";
 
 export class Craftform {
-  public crafts: CraftMetadata[];
-  public relations: {
+  public __crafts: CraftMetadata[];
+  public __relations: {
     [contractName: string]: RelationMetadata[];
   };
 
   constructor() {
-    this.crafts = [];
-    this.relations = {};
+    this.__crafts = [];
+    this.__relations = {};
   }
 
   public async get<T>({ contractName, chain, address, alias }: GetContractProps) {
-    const craftMetadata = this.crafts.find(
+    const craftMetadata = this.__crafts.find(
       (c) => c.contractName === contractName
     );
     if (!craftMetadata) {
@@ -36,7 +36,7 @@ export class Craftform {
     craft.config = {};
     Object.assign(craft.config, configs);
 
-    this.relations[contractName].forEach((metadata) => {
+    this.__relations[contractName].forEach((metadata) => {
       const {
         craft: relatedCraft,
         target,

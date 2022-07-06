@@ -5,7 +5,7 @@ export function Contract<T>(
   craft: (type?: any) => new () => T
 ): PropertyDecorator {
   return function (target, propertyKey: string | symbol) {
-    const { relations } = craftform;
+    const { __relations: relations } = craftform;
     // const { relations } = getGlobalCraftform()
     const contractName = target.constructor.name;
     const newRelation: RelationMetadata = {

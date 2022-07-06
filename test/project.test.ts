@@ -2,7 +2,7 @@
 import { assert } from "chai";
 import path from "path";
 
-import { Craftform } from "../src/craftform/class";
+import { Craftform } from "./core/craftform/class";
 
 import { useEnvironment } from "./helpers";
 
@@ -11,6 +11,7 @@ describe("Integration tests examples", function () {
     useEnvironment("hardhat-project");
 
     it("Should add the craftform field", function () {
+      console.log(this.hre.craftform)
       assert.instanceOf(this.hre.craftform, Craftform);
     });
   });
