@@ -1,6 +1,6 @@
 import { Artifacts } from "hardhat/types";
 import { Project } from "ts-morph";
-import ts from "typescript"
+
 
 export default async function GenerateCrafts(
     craftsRootDir: string,
