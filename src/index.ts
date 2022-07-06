@@ -32,4 +32,4 @@ extendEnvironment((hre) => {
   hre.craftform = lazyObject(() => new Craftform());
 });
 
-// task("crafts", "Generate craft.ts file", GenerateCrafts)
+task("crafts", "Generate craft.ts file", GenerateCrafts)
