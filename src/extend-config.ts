@@ -1,10 +1,10 @@
-import { extendConfig, extendEnvironment } from "hardhat/config";
+import { extendConfig, extendEnvironment, task } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform/class";
 import GenerateCrafts from "./utils/generate-crafts";
 import { normalizePath } from "./utils/normalize-path";
-import "./utils/type-extensions";
+import "./type-extensions";
 
 
 extendConfig(
@@ -32,5 +32,4 @@ extendEnvironment((hre) => {
   hre.craftform = lazyObject(() => new Craftform());
 });
 
-
-GenerateCrafts()
+task("crafts", "Generate craft.ts file", GenerateCrafts)

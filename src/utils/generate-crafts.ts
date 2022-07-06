@@ -1,5 +1,4 @@
 import hre from "hardhat"
-import { Artifacts } from "hardhat/types";
 import { Project } from "ts-morph";
 
 
