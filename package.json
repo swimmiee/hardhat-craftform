@@ -18,16 +18,11 @@
     "lint:fix": "prettier --write 'src/**/*.{js,ts}' 'test/**/*.{js,ts}' && tslint --fix --config tslint.json --project tsconfig.json",
     "lint": "tslint --config tslint.json --project tsconfig.json",
     "test": "mocha --exit --recursive 'test/**/*.test.ts'",
-    "build": "tsc",
+    "build": "rm -rf dist && tsc",
     "watch": "tsc -w",
     "prepublishOnly": "npm run build"
   },
-  "files": [
-    "dist/src/",
-    "src/",
-    "LICENSE",
-    "README.md"
-  ],
+  "files": ["dist/src/*", "README.md"],
   "devDependencies": {
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",

@@ -6,6 +6,10 @@ import "hardhat/types/runtime";
 
 import { Craftform } from "./craftform/class";
 
+export * from './craftform/class'
+export * from './craftform/utils'
+export * from './decorator'
+export * from './metadata'
 declare module "hardhat/types/config" {
   // This is an example of an extension to one of the Hardhat config values.
 
