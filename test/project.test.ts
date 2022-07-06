@@ -1,9 +1,7 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from "chai";
 import path from "path";
-
-import { Craftform } from "./core/craftform/class";
-
+import { Craftform } from "../src/craftform/class";
 import { useEnvironment } from "./helpers";
 
 describe("Integration tests examples", function () {
