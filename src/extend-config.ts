@@ -17,7 +17,7 @@ extendConfig(
   }
 );
 
-extendEnvironment(async (hre) => {
+extendEnvironment((hre) => {
   const { config, hardhatArguments, tasks, run, network, artifacts } = hre;
 
   // artifacts.getArtifactPaths().then(console.log);
@@ -30,9 +30,7 @@ extendEnvironment(async (hre) => {
   // ]
 
   hre.craftform = lazyObject(() => new Craftform());
-  GenerateCrafts(
-    config.paths.crafts,
-    artifacts
-  )
-  
 });
+
+
+GenerateCrafts()

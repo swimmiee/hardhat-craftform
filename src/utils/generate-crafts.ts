@@ -1,11 +1,11 @@
+import hre from "hardhat"
 import { Artifacts } from "hardhat/types";
 import { Project } from "ts-morph";
 
 
-export default async function GenerateCrafts(
-    craftsRootDir: string,
-    artifacts: Artifacts
-){
+export default async function GenerateCrafts(){
+    const craftsRootDir = hre.config.paths.crafts;
+    const artifacts = hre.artifacts
 
     const artifactNames = await artifacts.getAllFullyQualifiedNames()
     if(!artifactNames.length){
