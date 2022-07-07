@@ -1,8 +1,9 @@
 import { FactoryOptions } from "@nomiclabs/hardhat-ethers/types";
 import { ethers } from "ethers";
 
+export type ClassType<T = any> = new () => T
 export interface GetContractPropsBase {
-  chain: string;
+  chain?: string;
   signerOrOptions?: ethers.Signer | FactoryOptions
 }
 export interface GetContractPropsWithAddress extends GetContractPropsBase {
@@ -17,3 +18,9 @@ export interface GetContractPropsWithAlias extends GetContractPropsBase {
 export type GetContractProps =
   | GetContractPropsWithAddress
   | GetContractPropsWithAlias;
+
+
+export abstract class CraftLike<C> {
+  public static contractName: string
+  config!: C
+}

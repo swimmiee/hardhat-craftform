@@ -31,7 +31,9 @@
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
     "@types/node": "^18.0.3",
+    "@types/fs-extra": "^9.0.13",
     "chai": "^4.2.0",
+    "dotenv": "^16.0.1",
     "mocha": "^7.1.2",
     "prettier": "2.0.5",
     "ts-node": "^8.1.0",
@@ -42,7 +44,6 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
-    "@types/fs-extra": "^9.0.13",
     "fs-extra": "^10.1.0",
     "hardhat": "^2.9.9",
     "hardhat-deploy": "^0.11.11",

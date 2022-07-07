@@ -34,7 +34,11 @@ extendEnvironment((hre) => {
   //   '/Users/swimmie/test/hardhat-test/artifacts/hardhat/console.sol/console.json'
   // ]
 
-  hre.craftform = lazyObject(() => new Craftform(ethers, deployments));
+  hre.craftform = lazyObject(() => new Craftform(
+    network,
+    ethers, 
+    deployments,
+  ));
 });
 
 // task("crafts", "Generate craft.ts file", GenerateCrafts)
