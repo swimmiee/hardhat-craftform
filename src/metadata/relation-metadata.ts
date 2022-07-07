@@ -1,7 +1,7 @@
 export type RelationType = "Contract";
 
 export interface RelationMetadata {
-  craft: (type?: any) => Function;
+  craft: () => (new () => any);
   target: Function;
   propertyKey: string;
   relationType: RelationType;

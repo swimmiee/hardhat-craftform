@@ -2,7 +2,7 @@ import { craftform } from "hardhat";
 import { RelationMetadata } from "../metadata";
 
 export function Contract<T>(
-  craft: (type?: any) => new () => T
+  craft: (craft?: any) => new () => T
 ): PropertyDecorator {
   return function (target, propertyKey: string | symbol) {
     const { __relations } = craftform;

@@ -1,6 +1,9 @@
+import { FactoryOptions } from "@nomiclabs/hardhat-ethers/types";
+import { ethers } from "ethers";
+
 export interface GetContractPropsBase {
-  contractName: string;
   chain: string;
+  signerOrOptions?: ethers.Signer | FactoryOptions
 }
 export interface GetContractPropsWithAddress extends GetContractPropsBase {
   address: string;

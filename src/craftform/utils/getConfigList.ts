@@ -1,6 +1,5 @@
 import fs from "fs-extra";
-
-import { BaseCraft } from "../class/BaseCraft";
+import { BaseCraft } from "./BaseCraft";
 
 import { getConfigFilename } from "./getPath";
 import { ConfigTarget } from "./types";

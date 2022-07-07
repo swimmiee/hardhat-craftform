@@ -1,10 +1,12 @@
-import { extendConfig, extendEnvironment, task } from "hardhat/config";
+import '@nomiclabs/hardhat-ethers'
+import 'hardhat-deploy'
+import { extendConfig, extendEnvironment } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform/class";
-// import GenerateCrafts from "./utils/generate-crafts";
 import { normalizePath } from "./utils/normalize-path";
 import "./type-extensions";
+// import GenerateCrafts from "./utils/generate-crafts";
 
 
 extendConfig(
@@ -18,7 +20,10 @@ extendConfig(
 );
 
 extendEnvironment((hre) => {
-  const { config, hardhatArguments, tasks, run, network, artifacts } = hre;
+  const { 
+    config, hardhatArguments, tasks, run, network, artifacts, 
+    ethers, deployments 
+  } = hre;
 
   // artifacts.getArtifactPaths().then(console.log);
   //
@@ -29,7 +34,7 @@ extendEnvironment((hre) => {
   //   '/Users/swimmie/test/hardhat-test/artifacts/hardhat/console.sol/console.json'
   // ]
 
-  hre.craftform = lazyObject(() => new Craftform());
+  hre.craftform = lazyObject(() => new Craftform(ethers, deployments));
 });
 
 // task("crafts", "Generate craft.ts file", GenerateCrafts)

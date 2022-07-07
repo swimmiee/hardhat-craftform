@@ -7,9 +7,10 @@
     "sourceMap": false,
     "outDir": "./dist",
     "strict": true,
-    "rootDirs": ["src", "./test"],
+    "rootDirs": ["src", "test"],
     "esModuleInterop": true,
-    "types": ["node"]
+    "types": ["node"],
+    "experimentalDecorators": true
   },
   "exclude": ["dist", "node_modules"],
   "include": [

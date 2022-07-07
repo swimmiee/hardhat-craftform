@@ -1,5 +1,4 @@
 import { existsSync, mkdirSync } from "fs-extra";
-
 import { ConfigTarget } from "./types";
 
 export const getConfigDir = (chain: string) => `configs/${chain}`;
