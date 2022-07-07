@@ -18,9 +18,3 @@ export interface GetContractPropsWithAlias extends GetContractPropsBase {
 export type GetContractProps =
   | GetContractPropsWithAddress
   | GetContractPropsWithAlias;
-
-
-export abstract class CraftLike<C> {
-  public static contractName: string
-  config!: C
-}

@@ -1,9 +1,7 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from "chai";
 import path from "path";
-import { CraftLike } from "../core";
-import { Craftform } from "../src/craftform/class";
-import { Test1 as Test1Config, Test1Craft } from "./crafts";
+import { Test1Craft } from "./crafts";
 import { Test1 } from "./fixture-projects/hardhat-project/typechain";
 
 import { useEnvironment } from "./helpers";
@@ -40,17 +38,24 @@ describe("Unit tests", function () {
 
       const { craftform } = this.hre;
 
-      
-      const craft = await craftform.get<Test1, Test1Config>(
-        Test1Craft,
+
+      class Test1Config  {
+        static contractName: string
+        
+        // required field
+        address!: string
+    
+        // write down your extra config...
+        // test2!: Test2Config    
+    }
+
+      const craft = await craftform.get<Test1Craft>(
+        Test1Config,
         {
           chain: "baobab",
           address: "0xa74980c07aA4680257149b97F463631f076c146a"
         }
       )
-      // craft.
-
-      console.log(craft)
     })
   });
 });

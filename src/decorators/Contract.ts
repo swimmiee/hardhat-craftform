@@ -1,17 +1,19 @@
 import { craftform } from "hardhat";
 import { ClassType } from "../craftform/class/interfaces";
 import { RelationMetadata } from "../metadata";
+import { BaseConfig } from "./Config";
+import { extractContractNameFromConfigClassName } from "./extractContractNameFromConfigClass";
 
-export function Contract<T>(
-  craft: ClassType<T>
+export function Contract(
+  relatedConfig: ClassType
 ): PropertyDecorator {
   return function (target, propertyKey: string | symbol) {
     const { __relations } = craftform;
 
-    const contractName = target.constructor.name;
+    const contractName = extractContractNameFromConfigClassName(target.constructor.name)
     const newRelation: RelationMetadata = {
-      relatedConfig: craft,
       target: target.constructor,
+      relatedConfig,
       propertyKey: propertyKey.toString(),
       relationType: "Contract",
     };

@@ -1,13 +1,16 @@
 import { CraftMetadata, RelationMetadata } from "../../metadata";
 import { getConfig } from "../utils/getConfig";
-import { ClassType, CraftLike, GetContractProps } from "./interfaces";
+import { ClassType, GetContractProps } from "./interfaces";
 import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
 import { BaseContract } from "ethers"
-import { BaseConfig, Config } from "../../decorators";
+import { extractContractNameFromConfigClassName } from "../../decorators/extractContractNameFromConfigClass";
+import { BaseConfig } from "../../decorators";
 
-
+type CraftLike = BaseContract & {
+  config: BaseConfig & any
+} 
 export class Craftform {
   private _network: Network
   // from @nomiclabs/hardhat-ethers
@@ -36,8 +39,8 @@ export class Craftform {
   }
 
 
-  public async get<T extends BaseContract, Config extends BaseConfig>(
-    _craft: ClassType<CraftLike<Config>>,
+  public async get<T extends CraftLike>(
+    _config: ClassType<BaseConfig & any>,
     { 
       chain, 
       address, 
@@ -48,9 +51,7 @@ export class Craftform {
     const craftChain = chain || this._network.name
 
     // ts complie error: static property
-    // @ts-ignore
-    const contractName = _config.contractName;
-    // const contractName = _craft.name;
+    const contractName = extractContractNameFromConfigClassName(_config.name);
 
     const craftMetadata = this.__configs.find(
       (c) => c.contractName === contractName
@@ -92,7 +93,9 @@ export class Craftform {
 
         Object.assign(craft.config, {
           [propertyKey]: getConfig({
-            contract: relatedConfig.name,
+            contract: extractContractNameFromConfigClassName(
+              relatedConfig.name
+            ),
             // TODO: Interchain 구현
             chain: craftChain,
             address: craft.config[propertyKey],
@@ -101,7 +104,7 @@ export class Craftform {
       }
     });
 
-    return craft as (Config & T);
+    return craft as T;
   }
 
   public async deploy<ArgsType extends Array<any>>(

@@ -5,6 +5,7 @@ import { Craftform } from "./craftform/class";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 
 declare module "hardhat/types/config" {
+
   export interface ProjectPathsUserConfig {
     crafts?: string;
   }
@@ -12,6 +13,7 @@ declare module "hardhat/types/config" {
   export interface ProjectPathsConfig {
     crafts: string;
   }
+
 }
 
 declare module "hardhat/types/runtime" {
