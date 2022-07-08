@@ -49,11 +49,6 @@ export class Craftform {
   ){
     // @TODO :: Interchain 구현
     const craftChain = chain || this._network.name
-
-    console.log(this.__relations)
-    console.log(this.__configs)
-
-
     const craftMetadata = this.__configs.find(
       (c) => c.contractName === contractName
     );
