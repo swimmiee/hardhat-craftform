@@ -1,10 +1,10 @@
-import { CraftDeployOptions, GetContractProps } from "./core"
+import { CraftDeployOptions, CraftType, GetContractProps } from "./core"
 
 export interface CraftformHelper {
     get(
         contractName: string,
         props: GetContractProps
-    ):Promise<void>
+    ):Promise<CraftType<any, any>>
     
     deploy: (
       contractName: string,

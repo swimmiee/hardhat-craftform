@@ -5,7 +5,7 @@ import { BaseContract } from "ethers"
 import { BaseConfig } from "../decorators";
 
 export type ClassType<T = any> = new () => T
-export type Craft<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
+export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
   config: Config
 } 
 export interface GetContractPropsBase {

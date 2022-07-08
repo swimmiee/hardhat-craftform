@@ -1,5 +1,5 @@
 export const getCraftformDefinitionCode = (contractNames:string[]) => {
-    const coreImports = `import { CraftDeployOptions, GetContractProps } from 'hardhat-craftform/dist/core'`
+    const coreImports = `import { CraftType, CraftDeployOptions, GetContractProps } from 'hardhat-craftform/dist/core'`
     const imports = contractNames.map(name => `
 import { ${name} } from '../${name}';
 import { ${name}Args, ${name}Config } from './${name}.craft';
@@ -9,7 +9,7 @@ import { ${name}Args, ${name}Config } from './${name}.craft';
         get(
             contractName: '${name}',
             props: GetContractProps
-        ): Promise<Craft<${name}, ${name}Config>>
+        ): Promise<CraftType<${name}, ${name}Config>>
     `).join('\n')
 
     const deployFunctionDeclares = contractNames.map(name => `
