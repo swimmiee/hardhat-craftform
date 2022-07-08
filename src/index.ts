@@ -42,9 +42,9 @@ task(TASK_CRAFTFORM_GENERATE_CONFIGS, "Generate Craftform configs")
   })
 
 
-task(TASK_COMPILE, "After compile::")
-  .setAction(async (args, hre, runSuper) => {
-    await runSuper(args)
-    await hre.run(TASK_CRAFTFORM_GENERATE_CONFIGS)
-  })
+// task(TASK_COMPILE, "After compile::")
+//   .setAction(async (args, hre, runSuper) => {
+//     await runSuper(args)
+//     await hre.run(TASK_CRAFTFORM_GENERATE_CONFIGS)
+//   })
 

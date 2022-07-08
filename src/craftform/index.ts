@@ -2,7 +2,7 @@ import { CraftMetadata, RelationMetadata } from "../metadata";
 import { getConfig } from "./utils/getConfig";
 import { ClassType, CraftDeployOptions, GetContractProps } from "../types/core";
 import { ethers } from "hardhat";
-import { DeploymentsExtension, DeployOptions } from "hardhat-deploy/dist/types";
+import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
 import { BaseContract } from "ethers"
 import { extractContractNameFromConfigClassName } from "../decorators/extractContractNameFromConfigClass";
@@ -49,6 +49,10 @@ export class Craftform {
   ){
     // @TODO :: Interchain 구현
     const craftChain = chain || this._network.name
+
+    console.log(this.__relations)
+    console.log(this.__configs)
+
 
     const craftMetadata = this.__configs.find(
       (c) => c.contractName === contractName

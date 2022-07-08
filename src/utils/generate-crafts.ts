@@ -116,6 +116,7 @@ interface CraftformHelper {
 
 declare module "hardhat/types/runtime" {
     interface HardhatRuntimeEnvironment {
+        // @ts-ignore
         craftform: CraftformHelper
     }
 }
