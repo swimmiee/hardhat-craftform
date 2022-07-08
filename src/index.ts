@@ -1,12 +1,15 @@
 import '@nomiclabs/hardhat-ethers'
 import 'hardhat-deploy'
-import { extendConfig, extendEnvironment } from "hardhat/config";
+import "./type-extensions";
+import { extendConfig, extendEnvironment, task } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
-import { Craftform } from "./craftform/class";
+import { Craftform } from "./craftform";
 import { normalizePath } from "./utils/normalize-path";
-import "./type-extensions";
-// import GenerateCrafts from "./utils/generate-crafts";
+import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names';
+import GenerateCrafts from './utils/generate-crafts';
+
+export const TASK_CRAFTFORM_GENERATE_CONFIGS = "craftform:generate"
 
 
 extendConfig(
@@ -25,15 +28,6 @@ extendEnvironment((hre) => {
     ethers, deployments 
   } = hre;
 
-  // artifacts.getArtifactPaths().then(console.log);
-  //
-  // => Result: 
-  // [
-  //   '/Users/swimmie/test/hardhat-test/artifacts/contracts/Test1.sol/Test1.json',
-  //   '/Users/swimmie/test/hardhat-test/artifacts/contracts/Test2.sol/Test2.json',
-  //   '/Users/swimmie/test/hardhat-test/artifacts/hardhat/console.sol/console.json'
-  // ]
-
   hre.craftform = lazyObject(() => new Craftform(
     network,
     ethers, 
@@ -41,4 +35,16 @@ extendEnvironment((hre) => {
   ));
 });
 
-// task("crafts", "Generate craft.ts file", GenerateCrafts)
+
+task(TASK_CRAFTFORM_GENERATE_CONFIGS, "Generate Craftform configs")
+  .setAction(async (args, hre, runSuper) => {
+    return GenerateCrafts(hre)
+  })
+
+
+task(TASK_COMPILE, "After compile::")
+  .setAction(async (args, hre, runSuper) => {
+    await runSuper(args)
+    await hre.run(TASK_CRAFTFORM_GENERATE_CONFIGS)
+  })
+

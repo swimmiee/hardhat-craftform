@@ -1,4 +1,4 @@
-import { ClassType } from "../craftform/class/interfaces";
+import { ClassType } from "../types/core";
 
 export type RelationType = "Contract";
 

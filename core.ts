@@ -1,5 +1,5 @@
-export * from './src/craftform/class'
-export * from './src/craftform/class/interfaces'
+export * from './src/types/core'
+export * from './src/types/CraftformHelper'
 export * from './src/craftform/utils'
 export * from './src/decorators'
 export * from './src/metadata'

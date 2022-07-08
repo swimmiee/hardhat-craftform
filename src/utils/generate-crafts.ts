@@ -1,8 +1,8 @@
-import hre from "hardhat"
+import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Project } from "ts-morph";
 
 
-export default async function GenerateCrafts(){
+export default async function GenerateCrafts(hre: HardhatRuntimeEnvironment){
     const craftsRootDir = hre.config.paths.crafts;
     const artifacts = hre.artifacts
 
@@ -26,36 +26,97 @@ export default async function GenerateCrafts(){
         const contractName = _splited[_splited.length - 1]
         contractNames.push(contractName)
 
-        const craftClassFile = project.createSourceFile(
-            `${craftsRootDir}/${artifactName}.craft.ts`,
-            getCraftFileContent(contractName)
+        const configClassFile = project.createSourceFile(
+            `${craftsRootDir}/${contractName}.craft.ts`,
+            getConfigFileContent(contractName),
+            {overwrite: true}
         );
     }
+
+    // declare file
+    project.createSourceFile(
+        `${craftsRootDir}/craftform.d.ts`,
+        getDeclareFileContent(contractNames),
+        {overwrite: true}
+    )
 
     // for clean import
     project.createSourceFile(
         `${craftsRootDir}/index.ts`,
         contractNames.map(name => {
-            return `export * from './${name}'`
-        }).join('\n')
+            return `export * from './${name}.craft'`
+        }).join('\n'),
+        {overwrite: true}
     );
     
     await project.save()
 }
 
 /**
- * @Craft() Mock
+ * @Config() Mock
  */
 
-const getCraftFileContent = (contractName:string) => `
-import { Craft, Contract } from "hardhat-craftform/dist/core"
+const getConfigFileContent = (contractName:string) => 
+`import { Contract, BaseConfig, Config } from "hardhat-craftform/dist/core"
+import { ${contractName} } from "../typechain"
 
-@Craft()
-export class ${contractName} {
-    // address of contract
+
+@Config()
+export class ${contractName}Config implements BaseConfig {
+
+    // required field
     address!: string
 
-    /**
-     * Try to use @Contract() decorator!
-     * /
-}`
+    // write down your extra config...
+}
+
+// @TODO
+type ${contractName}Args = []
+type ${contractName}Craft = ${contractName} & {
+    config: ${contractName}Config
+}
+export type { ${contractName}Args, ${contractName}Craft }`
+
+
+const getDeclareFileContent = (contractNames:string[]) => {
+    const coreImports = `import { CraftDeployOptions, GetContractProps } from 'hardhat-craftform/dist/core'`
+    const imports = contractNames.map(name => {
+        return `import { ${name}Args } from './${name}.craft'`
+    }).join('\n')
+
+    const getFunctionDeclares = contractNames.map(name => {
+        return (`
+    get(
+        contractName: '${name}',
+        props: GetContractProps
+    ): Promise<void>`
+        )
+    }).join('\n')
+
+    const deployFunctionDeclares = contractNames.map(name => {
+        return (`
+    deploy(
+        contractName: '${name}',
+        options: CraftDeployOptions<${name}Args>
+    ): Promise<void>`
+        )
+    }).join('\n')
+
+    return(
+`${coreImports}
+${imports}
+
+
+interface CraftformHelper {
+    ${getFunctionDeclares}
+
+    ${deployFunctionDeclares}
+}
+
+
+declare module "hardhat/types/runtime" {
+    interface HardhatRuntimeEnvironment {
+        craftform: CraftformHelper
+    }
+}
+`)};

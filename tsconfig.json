@@ -10,7 +10,8 @@
     "rootDirs": ["src"],
     "esModuleInterop": true,
     "types": ["node"],
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false
   },
   "exclude": ["dist", "node_modules"],
   "include": [

@@ -1,8 +1,9 @@
 import "hardhat/types/config";
 import "hardhat/types/runtime";
 import type { ethers } from "ethers";
-import { Craftform } from "./craftform/class";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
+import { HardhatEthersHelpers } from "@nomiclabs/hardhat-ethers/types";
+import { CraftformHelper } from "./types/CraftformHelper";
 
 declare module "hardhat/types/config" {
 
@@ -22,6 +23,6 @@ declare module "hardhat/types/runtime" {
     ethers: typeof ethers & HardhatEthersHelpers
     // from hardhat-deploy
     deployments: DeploymentsExtension
-    craftform: Craftform;
+    craftform: any
   }
 }

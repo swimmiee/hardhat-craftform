@@ -8,7 +8,6 @@ export abstract class BaseConfig {
 export function Config(): ClassDecorator {
     return function (target) {
         const contractName = extractContractNameFromConfigClassName(target.name)
-        console.log(contractName)
         craftform.__configs.push({
             contractName,
             target,

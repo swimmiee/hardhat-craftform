@@ -1,10 +1,12 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from "chai";
 import path from "path";
-import { Test1Craft } from "./crafts";
-import { Test1 } from "./fixture-projects/hardhat-project/typechain";
+import { address, uint } from "../core";
+// import { Test1Config, Test1Craft } from "./fixture-projects/hardhat-project/crafts";
+// import { Test1 } from "./fixture-projects/hardhat-project/typechain";
 
 import { useEnvironment } from "./helpers";
+import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names"
 
 // describe("Integration test", function () {
 //   describe("Hardhat Runtime Environment extension", function () {
@@ -29,33 +31,39 @@ import { useEnvironment } from "./helpers";
 //   });
 // });
 
+
 describe("Unit tests", function () {
   describe("Craftform", function () {
     useEnvironment("hardhat-project");
     
     it("Should add crafts & relations to hre", async function(){
-      await import("./crafts")
+      // await import("./fixture-projects/hardhat-project/crafts")
 
-      const { craftform } = this.hre;
+      const { craftform, getNamedAccounts, tasks, run } = this.hre;
+      const { deployer } = await getNamedAccounts();
 
-
-      class Test1Config  {
-        static contractName: string
+    //   class Test1Config  {
+    //     static contractName: string
         
-        // required field
-        address!: string
+    //     // required field
+    //     address!: string
     
-        // write down your extra config...
-        // test2!: Test2Config    
-    }
+    //     // write down your extra config...
+    //     // test2!: Test2Config    
+    // }
 
-      const craft = await craftform.get<Test1Craft>(
-        Test1Config,
-        {
-          chain: "baobab",
-          address: "0xa74980c07aA4680257149b97F463631f076c146a"
-        }
-      )
+      // await craftform.deploy<[uint, address, string]>("Test1", {
+      //   args: [143537, deployer, "Hello!!!"],
+      //   from: deployer
+      // })
+
+      // const craft = await craftform.get("Test1", {
+      //     chain: "baobab",
+      //     address: "0xa74980c07aA4680257149b97F463631f076c146a"
+      // })
+
+      await run(TASK_COMPILE)
+      
     })
   });
 });
