@@ -62,9 +62,11 @@ describe("Unit tests", function () {
       //     address: "0xa74980c07aA4680257149b97F463631f076c146a"
       // })
 
+
       // console.log(craft)
 
-      // await run(TASK_COMPILE)
+      await run("craftform:generate")
+      // await run("compile")
       
     })
   });

@@ -7,7 +7,8 @@ import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform";
 import { normalizePath } from "./utils/normalize-path";
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names';
-import GenerateCrafts from './utils/generate-crafts';
+import { CraftformHelper } from '../core';
+import craftTypeFactory from './craftTypeFactory';
 
 export const TASK_CRAFTFORM_GENERATE_CONFIGS = "craftform:generate"
 
@@ -32,13 +33,13 @@ extendEnvironment((hre) => {
     network,
     ethers, 
     deployments,
-  ));
+  )) as CraftformHelper;
 });
 
 
 task(TASK_CRAFTFORM_GENERATE_CONFIGS, "Generate Craftform configs")
   .setAction(async (args, hre, runSuper) => {
-    return GenerateCrafts(hre)
+    return craftTypeFactory(hre)
   })
 
 

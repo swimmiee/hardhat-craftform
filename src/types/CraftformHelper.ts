@@ -1,10 +1,10 @@
 import { CraftDeployOptions, GetContractProps } from "./core"
 
 export interface CraftformHelper {
-    get: (
+    get(
         contractName: string,
         props: GetContractProps
-    ) => Promise<void>
+    ):Promise<void>
     
     deploy: (
       contractName: string,

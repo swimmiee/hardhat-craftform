@@ -23,6 +23,6 @@ declare module "hardhat/types/runtime" {
     ethers: typeof ethers & HardhatEthersHelpers
     // from hardhat-deploy
     deployments: DeploymentsExtension
-    craftform: any
+    craftform: CraftformHelper
   }
 }

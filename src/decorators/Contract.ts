@@ -8,6 +8,7 @@ export function Contract(
   relatedConfig: ClassType
 ): PropertyDecorator {
   return function (target, propertyKey: string | symbol) {
+    // @ts-ignore
     const { __relations } = craftform;
 
     const contractName = extractContractNameFromConfigClassName(target.constructor.name)
