@@ -39,7 +39,9 @@ extendEnvironment((hre) => {
 
 task(TASK_CRAFTFORM_GENERATE_CONFIGS, "Generate Craftform configs")
   .setAction(async (args, hre, runSuper) => {
-    return craftTypeFactory(hre)
+    await craftTypeFactory(hre)
+    console.log("Craft files created:: ./crafts")
+    return;
   })
 
 

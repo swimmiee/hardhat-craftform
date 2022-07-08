@@ -1,9 +1,7 @@
 export const getCraftformDefinitionCode = (contractNames:string[]) => {
     const coreImports = `import { CraftType, CraftDeployOptions, GetContractProps } from 'hardhat-craftform/dist/core'`
-    const imports = contractNames.map(name => `
-import { ${name} } from '../${name}';
-import { ${name}Args, ${name}Config } from './${name}.craft';
-`.trim()).join('\n')
+    const typechainImports = `import { ${contractNames.join(', ')} } from '../typechain';`
+    const imports = contractNames.map(name => `import { ${name}Args, ${name}Config } from './${name}.craft';`).join('\n')
 
     const getFunctionDeclares = contractNames.map(name => `
         get(
@@ -21,6 +19,7 @@ import { ${name}Args, ${name}Config } from './${name}.craft';
 
     return(
 `${coreImports}
+${typechainImports}
 ${imports}
 
 declare module "hardhat/types/runtime" {
