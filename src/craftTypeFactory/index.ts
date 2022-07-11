@@ -28,7 +28,7 @@ export default async function craftTypeFactory(
         getCraftformDefinitionCode(contractNames),
         {overwrite: true}
     )
-    console.log("set craftform.d.ts")
+    console.log(`set ${craftsRootDir}/craftform.d.ts`)
 
     if(!resetConfigs)
         return;

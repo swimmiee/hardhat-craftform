@@ -6,11 +6,11 @@ import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform";
 import { normalizePath } from "./utils/normalize-path";
-import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names';
 import { CraftformHelper } from '../core';
 import craftTypeFactory from './craftTypeFactory';
+import { isCraftInitiated } from './craftTypeFactory/isCraftInitiated';
 
-export const TASK_CRAFTFORM_GENERATE_CONFIGS = "craftform:generate"
+export const TASK_CRAFTFORM = "craftform"
 
 
 extendConfig(
@@ -37,10 +37,19 @@ extendEnvironment((hre) => {
 });
 
 
-task(TASK_CRAFTFORM_GENERATE_CONFIGS, "Generate Craftform configs")
-  .addOptionalParam("reset", "resets all config files", false, types.boolean)
-  .setAction(async ({reset}, hre, runSuper) => {
-    await craftTypeFactory(hre, Boolean(reset))
+task(TASK_CRAFTFORM, "Generate Craftform type definitions")
+  .setAction(async (args, hre, runSuper) => {
+    const reset = !isCraftInitiated()
+    console.log('hmm...', reset)
+    await craftTypeFactory(hre, reset)
+    return;
+  })
+
+task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
+  .addParam("reset", "resets all config files", false, types.boolean)
+  .setAction(async (args, hre, runSuper) => {
+    console.log('always true')
+    await craftTypeFactory(hre, true)
     return;
   })
 
