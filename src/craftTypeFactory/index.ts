@@ -59,7 +59,7 @@ export default async function craftTypeFactory(
     // for clean import
     project.createSourceFile(
         `${craftsRootDir}/index.ts`,
-        `export * from 'craftform.d'\n` +
+        `export * from './craftform.d'\n` +
         contractNames.map(name => {
             return `export * from './${name}.config'`
         }).join('\n'),

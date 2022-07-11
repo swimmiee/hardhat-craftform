@@ -4,19 +4,17 @@ export const getCraftformDefinitionCode = (contractNames:string[]) => {
     const typechainImports = `import { ${contractNames.join(', ')} } from '../typechain';`
     const imports = contractNames.map(name => `import { ${name}Args, ${name}Config } from './${name}.craft';`).join('\n')
 
-    const getFunctionDeclares = contractNames.map(name => `
-        get(
+    const getFunctionDeclares = contractNames.map(name => `        get(
             contractName: '${name}',
             props: GetContractProps
         ): Promise<CraftType<${name}, ${name}Config>>
-    `.trim()).join('\n')
+    `.trimEnd()).join('\n')
 
-    const deployFunctionDeclares = contractNames.map(name => `
-        deploy(
+    const deployFunctionDeclares = contractNames.map(name => `        deploy(
             contractName: '${name}',
             options: CraftDeployOptions<${name}Args>
         ): Promise<void>
-    `.trim()).join('\n')
+    `.trimEnd()).join('\n')
 
     return(
 `${coreImports}
