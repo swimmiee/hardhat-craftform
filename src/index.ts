@@ -37,19 +37,11 @@ extendEnvironment((hre) => {
 });
 
 
-task(TASK_CRAFTFORM, "Generate Craftform type definitions")
-  .setAction(async (args, hre, runSuper) => {
-    const reset = !isCraftInitiated()
-    console.log('hmm...', reset)
-    await craftTypeFactory(hre, reset)
-    return;
-  })
-
 task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
-  .addParam("reset", "resets all config files", false, types.boolean)
-  .setAction(async (args, hre, runSuper) => {
-    console.log('always true')
-    await craftTypeFactory(hre, true)
+  .addOptionalPositionalParam("reset", "resets all config files", false, types.boolean)
+  .setAction(async ({reset}, hre, runSuper) => {
+    const shouldReset = Boolean(reset) || !isCraftInitiated()
+    await craftTypeFactory(hre, shouldReset)
     return;
   })
 
