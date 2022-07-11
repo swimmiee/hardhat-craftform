@@ -65,10 +65,10 @@ describe("Unit tests", function () {
 
       // console.log(craft)
 
-      await run("craftform", {
-        reset: true
-      })
-      // await run("compile")
+      // await run("craftform", {
+      //   reset: true
+      // })
+      await run("compile")
       
     })
   });
