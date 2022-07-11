@@ -1,6 +1,6 @@
 {
   "name": "hardhat-craftform",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Hardhat TypeScript plugin for continuous integration",
   "repository": "github:dannylisa/hardhat-craftform",
   "author": "danny <danny@sooho.io>",
