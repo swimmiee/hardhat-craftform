@@ -1,4 +1,5 @@
 export const getCraftformDefinitionCode = (contractNames:string[]) => {
+    console.log(contractNames)
     const coreImports = `import { CraftType, CraftDeployOptions, GetContractProps } from 'hardhat-craftform/dist/core'`
     const typechainImports = `import { ${contractNames.join(', ')} } from '../typechain';`
     const imports = contractNames.map(name => `import { ${name}Args, ${name}Config } from './${name}.craft';`).join('\n')

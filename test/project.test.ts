@@ -65,7 +65,9 @@ describe("Unit tests", function () {
 
       // console.log(craft)
 
-      await run("craftform:generate")
+      await run("craftform", {
+        reset: true
+      })
       // await run("compile")
       
     })

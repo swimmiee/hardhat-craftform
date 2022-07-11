@@ -15,10 +15,22 @@ export default async function craftTypeFactory(
     if(!artifactNames.length){
         return;
     }
+
+    const contractNames:string[] = []
+    for (const artifactName of artifactNames) {
+        const [folder] = artifactName.split('/')
+        if(folder === 'hardhat')   // only for contract
+            continue;
+
+        const _splited = artifactName.split(':')
+        const contractName = _splited[_splited.length - 1]
+        contractNames.push(contractName)
+    }
+
+    /// Start project setup
+
     const project = new Project({})
 
-    // To create index.ts for clean import
-    const contractNames:string[] = [];
     project.addSourceFilesAtPaths(`${craftsRootDir}/**/*.ts`);
 
 
@@ -34,21 +46,13 @@ export default async function craftTypeFactory(
         return;
 
     // config.ts 파일들을 모두 초기화함!!
-    for (const artifactName of artifactNames) {
-        const [folder] = artifactName.split('/')
-        if(folder === 'hardhat')   // only for contract
-            continue;
-
-        const _splited = artifactName.split(':')
-        const contractName = _splited[_splited.length - 1]
-        contractNames.push(contractName)
-
+    contractNames.forEach(contractName => {
         const configClassFile = project.createSourceFile(
             `${craftsRootDir}/${contractName}.config.ts`,
             getConfigFiles(contractName),
             {overwrite: true}
         );
-    }
+    })
     console.log(`Config files created at: ./${craftsRootDir}`)
 
 
