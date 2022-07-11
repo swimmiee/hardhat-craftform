@@ -1,7 +1,7 @@
 import '@nomiclabs/hardhat-ethers'
 import 'hardhat-deploy'
 import "./type-extensions";
-import { extendConfig, extendEnvironment, task } from "hardhat/config";
+import { extendConfig, extendEnvironment, task, types } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform";
@@ -38,9 +38,9 @@ extendEnvironment((hre) => {
 
 
 task(TASK_CRAFTFORM_GENERATE_CONFIGS, "Generate Craftform configs")
-  .setAction(async (args, hre, runSuper) => {
-    await craftTypeFactory(hre)
-    console.log("Craft files created:: ./crafts")
+  .addOptionalParam("reset", "resets all config files", false, types.boolean)
+  .setAction(async ({reset}, hre, runSuper) => {
+    await craftTypeFactory(hre, Boolean(reset))
     return;
   })
 

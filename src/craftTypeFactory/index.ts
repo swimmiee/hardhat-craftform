@@ -3,7 +3,10 @@ import { Project } from "ts-morph";
 import { getConfigFiles } from "./config-files";
 import { getCraftformDefinitionCode } from "./craftform-definition";
 
-export default async function craftTypeFactory(hre: HardhatRuntimeEnvironment){
+export default async function craftTypeFactory(
+    hre: HardhatRuntimeEnvironment,
+    resetConfigs: boolean
+){
     const craftsRootDir = hre.config.paths.crafts;
     const artifacts = hre.artifacts
 
@@ -16,8 +19,21 @@ export default async function craftTypeFactory(hre: HardhatRuntimeEnvironment){
 
     // To create index.ts for clean import
     const contractNames:string[] = [];
-
     project.addSourceFilesAtPaths(`${craftsRootDir}/**/*.ts`);
+
+
+    // craftform type definition file (idempotent)
+    project.createSourceFile(
+        `${craftsRootDir}/craftform.d.ts`,
+        getCraftformDefinitionCode(contractNames),
+        {overwrite: true}
+    )
+    console.log("set craftform.d.ts")
+
+    if(!resetConfigs)
+        return;
+
+    // config.ts 파일들을 모두 초기화함!!
     for (const artifactName of artifactNames) {
         const [folder] = artifactName.split('/')
         if(folder === 'hardhat')   // only for contract
@@ -28,27 +44,23 @@ export default async function craftTypeFactory(hre: HardhatRuntimeEnvironment){
         contractNames.push(contractName)
 
         const configClassFile = project.createSourceFile(
-            `${craftsRootDir}/${contractName}.craft.ts`,
+            `${craftsRootDir}/${contractName}.config.ts`,
             getConfigFiles(contractName),
             {overwrite: true}
         );
     }
+    console.log(`Config files created at: ./${craftsRootDir}`)
 
-    // declare file
-    project.createSourceFile(
-        `${craftsRootDir}/craftform.d.ts`,
-        getCraftformDefinitionCode(contractNames),
-        {overwrite: true}
-    )
 
     // for clean import
     project.createSourceFile(
         `${craftsRootDir}/index.ts`,
+        `export * from 'craftform.d'\n` +
         contractNames.map(name => {
-            return `export * from './${name}.craft'`
+            return `export * from './${name}.config'`
         }).join('\n'),
         {overwrite: true}
     );
-    
+
     await project.save()
 }

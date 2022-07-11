@@ -8,14 +8,14 @@ export const getCraftformDefinitionCode = (contractNames:string[]) => {
             contractName: '${name}',
             props: GetContractProps
         ): Promise<CraftType<${name}, ${name}Config>>
-    `).join('\n')
+    `.trim()).join('\n')
 
     const deployFunctionDeclares = contractNames.map(name => `
         deploy(
             contractName: '${name}',
             options: CraftDeployOptions<${name}Args>
         ): Promise<void>
-    `).join('\n')
+    `.trim()).join('\n')
 
     return(
 `${coreImports}
