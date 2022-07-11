@@ -38,7 +38,7 @@ extendEnvironment((hre) => {
 
 
 task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
-  .addOptionalPositionalParam("reset", "resets all config files", false, types.boolean)
+  .addOptionalParam("reset", "resets all config files", false, types.boolean)
   .setAction(async ({reset}, hre, runSuper) => {
     const shouldReset = Boolean(reset) || !isCraftInitiated()
     await craftTypeFactory(hre, shouldReset)
