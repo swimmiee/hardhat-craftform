@@ -1,4 +1,4 @@
-import { ClassType } from "../types/core";
+import { ClassType } from "../types";
 
 export type RelationType = "Contract";
 

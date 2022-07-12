@@ -1,4 +1,23 @@
-export const getCraftformDefinitionCode = (contractNames:string[]) => {
+import { SetProjectFileProps } from "./set-project.interface";
+
+export const setCraftformDefinition = async ({
+    project,
+    craftsRootDir,
+    contractNames
+}:SetProjectFileProps) => {
+       // craftform type definition file (idempotent)
+       project.createSourceFile(
+        `${craftsRootDir}/craftform.d.ts`,
+        getCraftformDefinitionContent(contractNames),
+        {overwrite: true}
+    )
+    await project.save()
+
+    console.log(`set ${craftsRootDir}/craftform.d.ts`)
+}
+
+
+export const getCraftformDefinitionContent = (contractNames:string[]) => {
     const coreImports = `import { CraftType, CraftDeployOptions, GetContractProps } from 'hardhat-craftform/dist/core'`
     const typechainImports = `import { ${contractNames.join(', ')} } from '../typechain';`
     const imports = contractNames.map(name => `import { ${name}Args, ${name}Config } from './${name}.config';`).join('\n')
@@ -15,6 +34,11 @@ export const getCraftformDefinitionCode = (contractNames:string[]) => {
         ): Promise<void>
     `.trimEnd()).join('\n')
 
+    const craftTypes = contractNames.map(name => `
+export type ${name}Craft = ${name} & {
+    config: ${name}Config
+}`).join('\n')
+
     return(
 `${coreImports}
 ${typechainImports}
@@ -27,4 +51,7 @@ ${getFunctionDeclares}
 ${deployFunctionDeclares}
     }
 }
+
+${craftTypes}
 `)};
+

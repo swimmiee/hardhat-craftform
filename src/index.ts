@@ -7,8 +7,8 @@ import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform";
 import { normalizePath } from "./utils/normalize-path";
 import { CraftformHelper } from '../core';
-import craftTypeFactory from './craftTypeFactory';
-import { isCraftInitiated } from './craftTypeFactory/isCraftInitiated';
+import craftTypeFactory from './craftFactory';
+import { isCraftInitiated } from './craftFactory/isCraftInitiated';
 
 export const TASK_CRAFTFORM = "craftform"
 
@@ -44,11 +44,3 @@ task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
     await craftTypeFactory(hre, shouldReset)
     return;
   })
-
-
-// task(TASK_COMPILE, "After compile::")
-//   .setAction(async (args, hre, runSuper) => {
-//     await runSuper(args)
-//     await hre.run(TASK_CRAFTFORM_GENERATE_CONFIGS)
-//   })
-

@@ -1,7 +1,6 @@
 import fs from "fs-extra";
-import { BaseCraft } from "./BaseCraft";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget } from "./types";
+import { ConfigTarget, BaseCraft } from "../../types";
 
 interface GetConfigProps extends ConfigTarget {
   address: string;

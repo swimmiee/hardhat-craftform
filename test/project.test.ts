@@ -1,7 +1,6 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from "chai";
 import path from "path";
-import { address, uint } from "../core";
 // import { Test1Config, Test1Craft } from "./fixture-projects/hardhat-project/crafts";
 // import { Test1 } from "./fixture-projects/hardhat-project/typechain";
 
@@ -65,10 +64,10 @@ describe("Unit tests", function () {
 
       // console.log(craft)
 
-      // await run("craftform", {
-      //   reset: true
-      // })
-      await run("compile")
+      await run("craftform", {
+        reset: true
+      })
+      // await run("compile")
       
     })
   });

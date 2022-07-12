@@ -1,4 +1,4 @@
-import { CraftDeployOptions, CraftType, GetContractProps } from "./core"
+import { CraftDeployOptions, CraftType, GetContractProps } from "."
 
 export interface CraftformHelper {
     get(

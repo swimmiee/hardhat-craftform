@@ -1,5 +1,5 @@
 import { craftform } from "hardhat";
-import { ClassType } from "../types/core";
+import { ClassType } from "../types";
 import { RelationMetadata } from "../metadata";
 import { BaseConfig } from "./Config";
 import { extractContractNameFromConfigClassName } from "./extractContractNameFromConfigClass";

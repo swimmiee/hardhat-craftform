@@ -9,6 +9,9 @@ dotenv.config({
 const config: HardhatUserConfig = {
   solidity: "0.8.0",
   defaultNetwork: "hardhat",
+  craftform: {
+    initializer: "__$_init"
+  },
   namedAccounts:{
     deployer: {
       default: 0

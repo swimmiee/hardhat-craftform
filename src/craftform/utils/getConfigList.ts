@@ -1,8 +1,6 @@
 import fs from "fs-extra";
-import { BaseCraft } from "./BaseCraft";
-
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget } from "./types";
+import { ConfigTarget, BaseCraft } from "../../types";
 
 export function getConfigList<Config extends BaseCraft>(target: ConfigTarget) {
   const filename = getConfigFilename(target);

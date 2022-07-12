@@ -1,10 +1,7 @@
 import fs from "fs-extra";
-
-import { BaseCraft } from "./BaseCraft";
-
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget } from "./types";
+import { ConfigTarget, BaseCraft } from "../../types";
 
 export function updateConfigOne<Config extends BaseCraft>(
   { chain, contract, ...target }: ConfigTarget & Partial<Config>,

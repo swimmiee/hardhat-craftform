@@ -1,6 +1,6 @@
 import { CraftMetadata, RelationMetadata } from "../metadata";
 import { getConfig } from "./utils/getConfig";
-import { ClassType, CraftDeployOptions, GetContractProps } from "../types/core";
+import { ClassType, CraftDeployOptions, GetContractProps } from "../types";
 import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
