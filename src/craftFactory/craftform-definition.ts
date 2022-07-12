@@ -34,15 +34,15 @@ export const getCraftformDefinitionContent = (contractNames:string[]) => {
         ): Promise<void>
     `.trimEnd()).join('\n')
 
-    const craftTypes = contractNames.map(name => `
-export type ${name}Craft = ${name} & {
-    config: ${name}Config
-}`).join('\n')
+    const craftTypes = contractNames.map(
+        name => `export type ${name}Craft = CraftType<${name}, ${name}Config>`
+    ).join('\n')
 
-    return(
-`${coreImports}
+    return(`${coreImports}
 ${typechainImports}
 ${imports}
+
+${craftTypes}
 
 declare module "hardhat/types/runtime" {
     interface CraftformHelper {
@@ -50,8 +50,5 @@ ${getFunctionDeclares}
 
 ${deployFunctionDeclares}
     }
-}
-
-${craftTypes}
-`)};
+}`)};
 
