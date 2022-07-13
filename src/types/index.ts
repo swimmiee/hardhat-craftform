@@ -53,6 +53,7 @@ export interface UpdateConfigTarget extends ConfigTarget{
 }
 
 export type Versioning = "upgrade" | "maintain"
+export type ConfigUpdateable<Config> = CraftDeployConfig<Config>
 export interface UpdateConfigOption {
   chain?: string
   versioning: Versioning

@@ -1,19 +1,21 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ExcludedBaseConfig, UpdateConfigTarget, Versioning } from "../../types";
+import { ConfigUpdateable, UpdateConfigTarget, Versioning } from "../../types";
 import { BaseConfig } from "../BaseConfig";
+
 
 
 export function _updateConfig<Config extends BaseConfig>(
   { chain, contract, ...target }: UpdateConfigTarget,
-  data: Partial<ExcludedBaseConfig<Config>>,
+  data: Partial<ConfigUpdateable<Config>>,
   versioning: Versioning
 ) {
   const filename = getConfigFilename({ chain, contract });
-  const configs = getConfigList<Config>({ chain, contract });
-
-  const searchFunc = (c:Config):boolean =>{
+  type RawConfig = ConfigUpdateable<Config> & BaseConfig
+  
+  const configs = getConfigList<RawConfig>({ chain, contract });
+  const searchFunc = (c:RawConfig):boolean =>{
     return Object
       .entries(target)
       .every(([key, value]) => {
@@ -45,8 +47,7 @@ export function _updateConfig<Config extends BaseConfig>(
       ...upgraded,
       version: +version + 1
     }
-    console.log(clone)
-    configs.push(clone as Config)
+    configs.push(clone as RawConfig)
   }
   
 
