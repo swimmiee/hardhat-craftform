@@ -38,15 +38,14 @@ export function _updateConfig<Config extends BaseConfig>(
   // Manange Versioning
   if(versioning === 'maintain'){
     Object.assign(configs[targetIndex], data);
-  } else {
-    const clone = {}
-    Object.assign(
-      clone, 
-      configs[targetIndex], 
-      data, 
-      {version: +configs[targetIndex] + 1}
-    )
-    configs.push(clone)
+  } else {  // 'upgrade'
+    const {version, ...rest} = configs[targetIndex]
+    const upgraded = Object.assign(rest, data)
+    const clone = {
+      ...upgraded,
+      version: +version + 1
+    }
+    configs.push(clone as Config)
   }
   
 
