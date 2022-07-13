@@ -83,28 +83,31 @@ export class Craftform {
 
 
     // load relations
-    this.__relations[contract].forEach((metadata) => {
-      const {
-        relatedConfig,
-        propertyKey,
-        relationType,
-      } = metadata;
-      if (relationType === "Contract") {
-
-        Object.assign(craft.config, {
-          [propertyKey]: new relatedConfig(
-              _getConfig({
-                contract: extractContractNameFromConfigName(
-                  relatedConfig.name
-                ),
-                // TODO: Interchain 구현
-                chain: craftChain,
-                address: craft.config[propertyKey],
-              })
-            ),
-        });
-      }
-    });
+    const relations = this.__relations[contract]
+    if(relations && Array.isArray(relations)){
+      relations.forEach((metadata) => {
+        const {
+          relatedConfig,
+          propertyKey,
+          relationType,
+        } = metadata;
+        if (relationType === "Contract") {
+  
+          Object.assign(craft.config, {
+            [propertyKey]: new relatedConfig(
+                _getConfig({
+                  contract: extractContractNameFromConfigName(
+                    relatedConfig.name
+                  ),
+                  // TODO: Interchain 구현
+                  chain: craftChain,
+                  address: craft.config[propertyKey],
+                })
+              ),
+          });
+        }
+      });
+    }
 
     return craft;
   }

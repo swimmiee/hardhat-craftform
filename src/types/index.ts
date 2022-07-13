@@ -46,6 +46,15 @@ export interface GetConfigProps extends ConfigTarget {
   version?: ConfigVersion
 }
 
+export interface UpdateConfigTarget extends ConfigTarget{
+  alias?: string
+  address?: string
+  version?: number
+}
+export interface UpdateConfigOption {
+  chain: string
+  versioning: "upgrade" | "maintain"
+}
 
 export type address = string;
 

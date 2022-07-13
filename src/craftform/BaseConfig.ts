@@ -1,11 +1,7 @@
 import { network } from "hardhat"
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig"
-import { _updateConfig } from "./utils"
+import { UpdateConfigOption, _updateConfig } from "./utils"
 
-interface UpdateConfigOption {
-    chain: string
-    versioning: "upgrade" | "maintain"
-}
 export class BaseConfig {
     address: string
     alias: string
@@ -16,9 +12,8 @@ export class BaseConfig {
         Object.assign(this, props)
     }
 
-    public update(
-        // @TODO
-        updates: any,
+    public update<Config extends BaseConfig>(
+        updates: Partial<Config>,
         option: UpdateConfigOption
     ){
         const chain = option.chain || network.name

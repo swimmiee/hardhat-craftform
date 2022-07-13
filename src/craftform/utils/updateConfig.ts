@@ -1,11 +1,12 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget } from "../../types";
+import { UpdateConfigTarget } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
+
 export function _updateConfig<Config extends BaseConfig>(
-  { chain, contract, ...target }: ConfigTarget & Partial<Config>,
+  { chain, contract, ...target }: UpdateConfigTarget,
   data: Partial<Config>
 ) {
   const filename = getConfigFilename({ chain, contract });
