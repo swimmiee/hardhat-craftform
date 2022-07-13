@@ -16,22 +16,14 @@ export abstract class BaseConfig {
 export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
   config: Config
 } 
-export interface GetContractPropsBase {
+
+export type ConfigVersion = number | 'latest'
+export type GetContractProps = {
   chain?: string;
   signerOrOptions?: ethers.Signer | FactoryOptions
-}
-export interface GetContractPropsWithAddress extends GetContractPropsBase {
-  address: string;
-  alias?: undefined;
-}
-export interface GetContractPropsWithAlias extends GetContractPropsBase {
   alias: string;
-  address?: undefined;
+  version?: ConfigVersion
 }
-
-export type GetContractProps =
-  | GetContractPropsWithAddress
-  | GetContractPropsWithAlias;
 
 export type CraftDeployOptions<T extends Array<any>> = |
   Omit<DeployOptions, 'args' | 'contract'> & {

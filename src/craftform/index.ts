@@ -43,11 +43,7 @@ export class Craftform {
 
   public async get<T extends CraftLike>(
     contract: string,
-    { 
-      chain, 
-      address, 
-      alias
-    }: GetContractProps
+    { chain, alias, version }: GetContractProps
   ){
     // @TODO :: Interchain 구현
     const craftChain = chain || this._network.name
@@ -58,21 +54,21 @@ export class Craftform {
       throw Error(`Please check crafts' names :: ${contract}`);
     
 
-    // TODO::: address or alias!!!!!!
-    const configs = _getConfig({
+    const config = _getConfig({
       chain: craftChain,
       contract: contract,
-      address: address!,
+      alias,
+      version
     });
 
     // set Config
     const craft = new (craftMetadata.target as ClassType<T>)();
     craft.config = {};
-    Object.assign(craft.config, configs);
+    Object.assign(craft.config, config);
 
     // load & inject Contract Factory
     try {
-      const fac = await this._ethers.getContractAt("Test1", address!)
+      const fac = await this._ethers.getContractAt("Test1", config.address)
       Object.assign(craft, fac);
     } catch (error) {
       console.log(error)
@@ -138,13 +134,6 @@ export class Craftform {
     // deployed logger
     console.log(deployment)
 
-    // const _config = {}
-    // Object.entries(customConfig).forEach(([key, value]) => {
-    //   this.__relations
-    //   if(key in this.__relations){
-    //     _config[key] = (value as BaseConfig).address
-    //   }
-    // })
 
     const config = {
       alias,

@@ -1,18 +1,40 @@
 import fs from "fs-extra";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget, BaseConfig } from "../../types";
+import { ConfigTarget, BaseConfig, ConfigVersion } from "../../types";
 
 interface GetConfigProps extends ConfigTarget {
-  address: string;
+  alias?: string;
+  address?: string;
+  version?: ConfigVersion
 }
 
 export function _getConfig<Config extends BaseConfig>(target: GetConfigProps) {
+  if(!target.address && !target.alias)
+    throw Error("_getConfig:: Either address or alias must be specified.")
   const filename = getConfigFilename(target);
 
   // Here:: can throw error when file not exists
   const configs = JSON.parse(
     fs.readFileSync(filename, { encoding: "utf-8", flag: "r" })
   ) as Config[];
-  return configs.find((c) => c.address === target.address);
-  
+
+  // default version: latest
+  const version:ConfigVersion = target.version || 'latest'
+
+  // address specified case
+  // alias specified case
+  const targetConfigs = target.alias ?
+    configs.filter((c) => c.alias === target.alias)
+    :
+    configs.filter((c) => c.address === target.address);
+
+  if(version === 'latest'){
+    return targetConfigs.sort((a, b) => +b.version - +a.version)[0]
+  }
+  else {
+    const t = targetConfigs.find(c => +c.version === target.version)
+    if(!t)
+      throw Error(`${target.alias || target.address} (${target.contract}) Config Version ${target.version} in ${target.chain} not found.`)
+    return t
+  }
 }
