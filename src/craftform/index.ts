@@ -107,7 +107,7 @@ export class Craftform {
     return craft;
   }
 
-  
+
   private addConfig<C extends BaseConfig>(contract: string, config: C){
     _addConfig({
       chain: this._network.name,
@@ -134,33 +134,33 @@ export class Craftform {
       alias
     })
 
-
     if(existing){
       const cont = await confirmPrompt(
         `Contract ${contract} with alias "${alias}" already exists.\n` 
         + `Version: ${existing.version}\n`
         + `Address: ${existing.address}\n`
         + `Deployed At: ${new Date(existing.deployedAt * 1000)}\n\n`
-        + 'Continue to deploy? (Press Ctrl + C to quit...)'
+        + 'Continue to deploy new one? (Press Ctrl + C to quit...)'
       , true)
 
       if(!cont){
         console.log('User stopped deploying...')
         exit(1)
       }
+
     }
 
     const newVersion = existing ? +existing.version + 1 : 0
 
-
     const { deploy } = this._deployments;
     const deployment = await deploy(
       alias, 
-      { contract, ...options }
+      { contract, ...options, skipIfAlreadyDeployed: true }
     );
+    deployment
 
     console.log(
-      chalk.green(`*** ${alias}::Contract ${contract} deployed! ***\naddress: ${deployment.address}\nversion: ${newVersion}`)
+      chalk.green(`*** Contract [${contract}]::${alias} deployed! ***\naddress: ${deployment.address}\nversion: ${newVersion}`)
     )
 
     const config = {
