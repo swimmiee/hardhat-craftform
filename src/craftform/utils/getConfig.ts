@@ -32,9 +32,6 @@ export function _getConfig<Config extends BaseConfig>(target: GetConfigProps) {
     return targetConfigs.sort((a, b) => +b.version - +a.version)[0]
   }
   else {
-    const t = targetConfigs.find(c => +c.version === target.version)
-    if(!t)
-      throw Error(`${target.alias || target.address} (${target.contract}) Config Version ${target.version} in ${target.chain} not found.`)
-    return t
+    return targetConfigs.find(c => +c.version === target.version)
   }
 }

@@ -46,6 +46,8 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "chalk": "^5.0.1",
+    "enquirer": "^2.3.6",
     "fs-extra": "^10.1.0",
     "hardhat": "^2.9.9",
     "hardhat-deploy": "^0.11.11",

@@ -6,6 +6,9 @@ import { Network } from "hardhat/types";
 import { BaseContract } from "ethers"
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
 import { _addConfig, _getConfig } from "./utils";
+import { confirmPrompt } from "./utils/confirmPrompt";
+import { exit } from "process";
+import chalk from 'chalk'
 
 
 type CraftLike = BaseContract & {
@@ -60,6 +63,9 @@ export class Craftform {
       alias,
       version
     });
+
+    if(!config)
+      throw Error(`${alias} (${contract}) Config ${version || 'latest'} Version not found.`)
 
     // set Config
     const craft = new (craftMetadata.target as ClassType<T>)();
@@ -123,23 +129,51 @@ export class Craftform {
     // @TODO
     // alias 같은 것 있는지 체크.
     // 버전 업할 것인지?
-    // 덮어쓰기 할 것인지?
+    // 그만할 것인지?
+
+    /**
+     * check duplicated alias exists
+     */
+    const existing = _getConfig({
+      contract, 
+      chain: this._network.name,
+      alias
+    })
+
+
+    if(existing){
+      const cont = await confirmPrompt(
+        `Contract ${contract} with alias "${alias}" already exists.\n` 
+        + `Version: ${existing.version}\n`
+        + `Address: ${existing.address}\n`
+        + `Deployed At: ${new Date(existing.deployedAt * 1000)}\n\n`
+        + 'Continue to deploy? (Press Ctrl + C to quit...)'
+      )
+
+      if(!cont){
+        console.log('User stopped deploying...')
+        exit(1)
+      }
+    }
+
+    const newVersion = existing ? +existing.version + 1 : 0
+
+
     const { deploy } = this._deployments;
     const deployment = await deploy(
       alias, 
       { contract, ...options }
     );
 
-    // @TODO
-    // deployed logger
-    console.log(deployment)
+    console.log(
+      chalk.green(`${alias}::Contract ${contract} deployed!\n\naddress: ${deployment.address}\nversion: ${newVersion}`)
+    )
 
 
     const config = {
       alias,
       address: deployment.address,
-      // @TODO
-      version: -1,
+      version: newVersion,
       deployedAt: Math.floor(new Date().getTime() / 1000),
       ...customConfig
     } as unknown as Config
