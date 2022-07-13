@@ -4,7 +4,7 @@ import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
 import { BaseContract } from "ethers"
-import { extractContractNameFromConfigClassName } from "../decorators/extractContractNameFromConfigClass";
+import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
 import { _addConfig, _getConfig } from "./utils";
 
 
@@ -87,7 +87,7 @@ export class Craftform {
 
         Object.assign(craft.config, {
           [propertyKey]: _getConfig({
-            contract: extractContractNameFromConfigClassName(
+            contract: extractContractNameFromConfigName(
               relatedConfig.name
             ),
             // TODO: Interchain 구현

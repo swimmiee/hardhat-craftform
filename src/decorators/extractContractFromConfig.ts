@@ -1,4 +1,4 @@
-export const extractContractNameFromConfigClassName = (className: string) => {
+export const extractContractNameFromConfigName = (className: string) => {
     const postfix = "Config"
     const indexOf = className.lastIndexOf(postfix);
     if(indexOf !== className.length - postfix.length){

@@ -1,7 +1,7 @@
 import { craftform } from "hardhat";
 import { ClassType } from "../types";
 import { RelationMetadata } from "../metadata";
-import { extractContractNameFromConfigClassName } from "./extractContractNameFromConfigClass";
+import { extractContractNameFromConfigName } from "./extractContractFromConfig";
 
 export function Contract(
   relatedConfig: ClassType
@@ -10,7 +10,7 @@ export function Contract(
     // @ts-ignore
     const { __relations } = craftform;
 
-    const contractName = extractContractNameFromConfigClassName(target.constructor.name)
+    const contractName = extractContractNameFromConfigName(target.constructor.name)
     const newRelation: RelationMetadata = {
       target: target.constructor,
       relatedConfig,
