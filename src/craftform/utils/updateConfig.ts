@@ -40,11 +40,16 @@ export function _updateConfig<Config extends BaseConfig>(
     Object.assign(configs[targetIndex], data);
   } else {  // 'upgrade'
     const {version, ...rest} = configs[targetIndex]
+    console.log(configs[targetIndex])
+    console.log(version)
+    console.log(rest)
     const upgraded = Object.assign(rest, data)
+    console.log(upgraded)
     const clone = {
       ...upgraded,
       version: +version + 1
     }
+    console.log(clone)
     configs.push(clone as Config)
   }
   
