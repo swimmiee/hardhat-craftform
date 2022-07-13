@@ -107,8 +107,7 @@ export class Craftform {
     return craft;
   }
 
-  // @TODO
-  // config typescript 필요한가?
+  
   private addConfig<C extends BaseConfig>(contract: string, config: C){
     _addConfig({
       chain: this._network.name,
@@ -126,13 +125,8 @@ export class Craftform {
     }:CraftDeployProps<Config, any[]>
   ){
 
-    // @TODO
-    // alias 같은 것 있는지 체크.
-    // 버전 업할 것인지?
-    // 그만할 것인지?
-
     /**
-     * check duplicated alias exists
+     * check if duplicated alias exists
      */
     const existing = _getConfig({
       contract, 
@@ -148,7 +142,7 @@ export class Craftform {
         + `Address: ${existing.address}\n`
         + `Deployed At: ${new Date(existing.deployedAt * 1000)}\n\n`
         + 'Continue to deploy? (Press Ctrl + C to quit...)'
-      )
+      , true)
 
       if(!cont){
         console.log('User stopped deploying...')
@@ -166,9 +160,8 @@ export class Craftform {
     );
 
     console.log(
-      chalk.green(`${alias}::Contract ${contract} deployed!\n\naddress: ${deployment.address}\nversion: ${newVersion}`)
+      chalk.green(`*** ${alias}::Contract ${contract} deployed! ***\naddress: ${deployment.address}\nversion: ${newVersion}`)
     )
-
 
     const config = {
       alias,

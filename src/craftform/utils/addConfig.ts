@@ -15,8 +15,13 @@ export function _addConfig<Config extends BaseConfig>({
   const filename = getConfigFilename({ chain, contract });
   const configs = getConfigList<Config>({ chain, contract });
 
-  if (configs.findIndex((c) => c.address === newConfig.address) === -1) {
+  if (configs.findIndex(
+    (c) => c.alias === newConfig.alias && c.version === newConfig.version
+  ) === -1) {
     configs.push(newConfig);
+  }
+  else {
+    throw Error(`Duplicated config (alias: ${newConfig.alias}, version: ${newConfig.version}) already exists.`)
   }
 
   fs.writeFileSync(filename, JSON.stringify(configs, null, 2), {
