@@ -155,7 +155,7 @@ export class Craftform {
     const { deploy } = this._deployments;
     const deployment = await deploy(
       alias, 
-      { contract, ...options, skipIfAlreadyDeployed: true }
+      { contract, ...options, skipIfAlreadyDeployed: false }
     );
     deployment
 
