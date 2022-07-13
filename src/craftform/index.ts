@@ -120,7 +120,7 @@ export class Craftform {
     {
       alias,
       options,
-      config: _config
+      config: customConfig
     }:CraftDeployProps<Config, any[]>
   ){
 
@@ -138,14 +138,22 @@ export class Craftform {
     // deployed logger
     console.log(deployment)
 
+    // const _config = {}
+    // Object.entries(customConfig).forEach(([key, value]) => {
+    //   this.__relations
+    //   if(key in this.__relations){
+    //     _config[key] = (value as BaseConfig).address
+    //   }
+    // })
+
     const config = {
       alias,
       address: deployment.address,
       // @TODO
       version: -1,
-      deployedAt: new Date().getTime() / 1000,
-      ..._config
-    } as Config
+      deployedAt: Math.floor(new Date().getTime() / 1000),
+      ...customConfig
+    } as unknown as Config
     
 
     this.addConfig<Config>(

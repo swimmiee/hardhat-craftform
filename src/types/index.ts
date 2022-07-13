@@ -38,10 +38,17 @@ export type CraftDeployOptions<T extends Array<any>> = |
     args: T
   }
 
+export type ExcludedBaseConfig<Config> = Omit<Config, keyof BaseConfig>
+export type CraftDeployConfig<Config> = {
+  [key in keyof ExcludedBaseConfig<Config>]: 
+    ExcludedBaseConfig<Config>[key] extends BaseConfig ? address 
+      : ExcludedBaseConfig<Config>[key]
+}
 export type CraftDeployProps<C extends BaseConfig, A extends Array<any>> = {
   alias: string
   options: CraftDeployOptions<A>,
-  config: Omit<C, keyof BaseConfig>
+  // config: Omit<C, keyof BaseConfig>
+  config: CraftDeployConfig<C>
 }
 
 export interface ConfigTarget {
