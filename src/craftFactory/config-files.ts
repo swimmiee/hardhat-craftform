@@ -50,7 +50,7 @@ export const setConfigFiles = async ({
 
 const getConfigFileContents = (contractName:string, argsTypes: string[]) => 
  `import { Contract, Config, address, BaseConfig } from "hardhat-craftform/dist/core"
-import { BigNumber } from "ethers";
+import { BigNumberish } from "ethers";
 
  
 // args type for constructor or initializer

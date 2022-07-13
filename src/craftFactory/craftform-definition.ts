@@ -32,7 +32,7 @@ export const getCraftformDefinitionContent = (contractNames:string[]) => {
     const deployFunctionDeclares = contractNames.map(name => 
 `        deploy(
             contract: '${name}',
-            props:CraftDeployProps<${name}, ${name}Args>
+            props:CraftDeployProps<${name}Config, ${name}Args>
         ): Promise<void>
     `.trimEnd()).join('\n')
 

@@ -45,6 +45,8 @@ export default async function craftTypeFactory(
     // craftform type definition file (idempotent)
     await setCraftformDefinition(coreProps)
 
-    // config.ts 파일들을 모두 초기화함!!
-    await setConfigFiles(coreProps, hre.userConfig.craftform?.initializer)
+    if(resetConfigs){
+        // config.ts 파일들을 모두 초기화함!!
+        await setConfigFiles(coreProps, hre.userConfig.craftform?.initializer)
+    }
 }

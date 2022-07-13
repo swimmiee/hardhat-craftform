@@ -70,7 +70,7 @@ export class Craftform {
     craft.config = {};
     Object.assign(craft.config, configs);
 
-    // load Contract Factory
+    // load & inject Contract Factory
     try {
       const fac = await this._ethers.getContractAt("Test1", address!)
       Object.assign(craft, fac);
@@ -107,12 +107,12 @@ export class Craftform {
 
   // @TODO
   // config typescript 필요한가?
-  private async addConfig<C extends BaseConfig>(contract: string, config: C){
-    // _addConfig({
-    //   chain: this._network.name,
-    //   contract,
-    //   newConfig: config
-    // })
+  private addConfig<C extends BaseConfig>(contract: string, config: C){
+    _addConfig({
+      chain: this._network.name,
+      contract,
+      newConfig: config
+    })
   }
 
   public async deploy<Config extends BaseConfig>(
@@ -131,10 +131,7 @@ export class Craftform {
     const { deploy } = this._deployments;
     const deployment = await deploy(
       alias, 
-      {
-        contract,
-        ...options
-      }
+      { contract, ...options }
     );
 
     // @TODO
@@ -150,7 +147,7 @@ export class Craftform {
       ..._config
     } as Config
     
-    // (await)
+
     this.addConfig<Config>(
       contract, 
       config

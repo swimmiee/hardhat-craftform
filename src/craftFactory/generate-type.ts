@@ -10,7 +10,7 @@ export function generateType(evmType: EvmOutputType):string{
      switch (evmType.type) {
         case 'integer':
         case 'uinteger':
-            return evmType.bits <= 48 ? 'number' : 'BigNumber'
+            return evmType.bits <= 48 ? 'number' : 'BigNumberish'
         case 'address':
             return 'address'
         case 'void':
