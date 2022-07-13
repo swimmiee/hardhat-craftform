@@ -1,13 +1,14 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { UpdateConfigTarget } from "../../types";
+import { UpdateConfigTarget, Versioning } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
 
 export function _updateConfig<Config extends BaseConfig>(
   { chain, contract, ...target }: UpdateConfigTarget,
-  data: Partial<Config>
+  data: Partial<Config>,
+  versioning: Versioning
 ) {
   const filename = getConfigFilename({ chain, contract });
   const configs = getConfigList<Config>({ chain, contract });
@@ -33,7 +34,20 @@ export function _updateConfig<Config extends BaseConfig>(
 
   const targetIndex = configs.findIndex(searchFunc);
   // assert targetIndex > -1
-  Object.assign(configs[targetIndex], data);
+
+  // Manange Versioning
+  if(versioning === 'maintain'){
+    Object.assign(configs[targetIndex], data);
+  } else {
+    const clone = {}
+    Object.assign(
+      clone, 
+      configs[targetIndex], 
+      data, 
+      {version: +configs[targetIndex] + 1}
+    )
+  }
+  
 
   fs.writeFileSync(filename, JSON.stringify(configs, null, 2), {
     encoding: "utf-8",

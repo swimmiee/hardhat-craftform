@@ -51,9 +51,11 @@ export interface UpdateConfigTarget extends ConfigTarget{
   address?: string
   version?: number
 }
+
+export type Versioning = "upgrade" | "maintain"
 export interface UpdateConfigOption {
   chain?: string
-  versioning: "upgrade" | "maintain"
+  versioning: Versioning
 }
 
 export type address = string;

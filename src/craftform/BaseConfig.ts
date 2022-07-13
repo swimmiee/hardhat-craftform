@@ -18,22 +18,16 @@ export class BaseConfig {
     ){
         const chain = option.chain || network.name
 
-        if(option.versioning === "maintain"){
-            console.log('contract name', extractContractNameFromConfigName(
-                this.constructor.name
-            ))
-            _updateConfig({
-                chain,
-                contract: extractContractNameFromConfigName(
+        _updateConfig({
+            chain,
+            contract: extractContractNameFromConfigName(
                     this.constructor.name
                 ),
                 alias: this.alias,
                 version: this.version
-            }, updates)
-        }
-        else {
-            console.log("not implemented")
-        }
-
+            }, 
+            updates,
+            option.versioning
+        )
     }
 }
