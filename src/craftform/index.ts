@@ -144,7 +144,7 @@ export class Craftform {
       , true)
 
       if(!cont){
-        console.log('User stopped deploying...')
+        console.log('User stopped deploy.')
         exit(1)
       }
 
@@ -155,7 +155,7 @@ export class Craftform {
     const { deploy } = this._deployments;
     const deployment = await deploy(
       alias, 
-      { contract, ...options, skipIfAlreadyDeployed: false }
+      { contract, ...options }
     );
     deployment
 
