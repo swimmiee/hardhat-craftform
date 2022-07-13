@@ -71,8 +71,7 @@ export class Craftform {
 
     // set Config
     const craft = new (craftMetadata.target as ClassType<T>)();
-    craft.config = {};
-    Object.assign(craft.config, config);
+    craft.config = config;
 
     // load & inject Contract Factory
     try {
