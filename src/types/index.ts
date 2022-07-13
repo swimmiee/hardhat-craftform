@@ -52,7 +52,7 @@ export interface UpdateConfigTarget extends ConfigTarget{
   version?: number
 }
 export interface UpdateConfigOption {
-  chain: string
+  chain?: string
   versioning: "upgrade" | "maintain"
 }
 

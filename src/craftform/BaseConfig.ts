@@ -13,7 +13,7 @@ export class BaseConfig {
     }
 
     public update<Config extends BaseConfig>(
-        updates: Partial<Config>,
+        updates: Partial<Omit<Config, keyof BaseConfig>>,
         option: UpdateConfigOption
     ){
         const chain = option.chain || network.name

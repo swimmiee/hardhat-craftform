@@ -12,27 +12,33 @@ export function _updateConfig<Config extends BaseConfig>(
   const filename = getConfigFilename({ chain, contract });
   const configs = getConfigList<Config>({ chain, contract });
 
-  if (configs.findIndex((c) => c.address === target.address) === -1) {
-    throw Error("updateConfig::Config not found.");
+  const searchFunc = (c:Config):boolean =>{
+    return Object
+      .entries(target)
+      .every(([key, value]) => {
+        if(value === undefined)
+          return true;
+        return c[key as keyof typeof target] === value
+      })
   }
 
-  const targetIndex = configs.findIndex((c) => {
-    return Object.entries(target).every(([key, value]) => {
-      if (key === "__relations") { return true; }
-      return c[key as keyof Config] === value;
-    });
+  const targets = configs.filter(searchFunc)
+
+  if(targets.length > 1){
+    throw Error("_updateConfig:: More than one update target.");
+  }
+  else if(targets.length === 0){
+    throw Error("_updateConfig::Config not found.");
+  }
+
+  const targetIndex = configs.findIndex(searchFunc);
+  // assert targetIndex > -1
+  Object.assign(configs[targetIndex], data);
+
+  fs.writeFileSync(filename, JSON.stringify(configs, null, 2), {
+    encoding: "utf-8",
+    flag: "w",
   });
 
-  if (targetIndex > -1) {
-    Object.assign(configs[targetIndex], data);
-
-    fs.writeFileSync(filename, JSON.stringify(configs, null, 2), {
-      encoding: "utf-8",
-      flag: "w",
-    });
-
-    return configs[targetIndex];
-  } else {
-    throw Error("Update target not exists.");
-  }
+  return configs[targetIndex];
 }
