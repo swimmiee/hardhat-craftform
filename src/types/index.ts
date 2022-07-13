@@ -4,13 +4,16 @@ import { DeployOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
 
 
-export type ClassType<T = any> = new () => T
+export type ClassType<T = any> = new (props?:any) => T
 
 export abstract class BaseConfig {
   address: string
   alias: string
   version: number
   deployedAt: number
+  print(){
+    console.log("A~hahahahahahaha")
+  }
 }
 
 export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
@@ -20,7 +23,6 @@ export type CraftType<Contract extends BaseContract, Config extends BaseConfig> 
 export type ConfigVersion = number | 'latest'
 export type GetContractProps = {
   chain?: string;
-  signerOrOptions?: ethers.Signer | FactoryOptions
   alias: string;
   version?: ConfigVersion
 }
@@ -48,6 +50,13 @@ export interface ConfigTarget {
   chain: string;
   contract: string;
 }
+
+export interface GetConfigProps extends ConfigTarget {
+  alias?: string;
+  address?: string;
+  version?: ConfigVersion
+}
+
 
 export type address = string;
 

@@ -1,12 +1,6 @@
 import fs from "fs-extra";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget, BaseConfig, ConfigVersion } from "../../types";
-
-interface GetConfigProps extends ConfigTarget {
-  alias?: string;
-  address?: string;
-  version?: ConfigVersion
-}
+import { BaseConfig, ConfigVersion, GetConfigProps } from "../../types";
 
 export function _getConfig<Config extends BaseConfig>(target: GetConfigProps) {
   if(!target.address && !target.alias)

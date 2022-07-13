@@ -92,14 +92,16 @@ export class Craftform {
       if (relationType === "Contract") {
 
         Object.assign(craft.config, {
-          [propertyKey]: _getConfig({
-            contract: extractContractNameFromConfigName(
-              relatedConfig.name
+          [propertyKey]: new relatedConfig(
+              _getConfig({
+                contract: extractContractNameFromConfigName(
+                  relatedConfig.name
+                ),
+                // TODO: Interchain 구현
+                chain: craftChain,
+                address: craft.config[propertyKey],
+              })
             ),
-            // TODO: Interchain 구현
-            chain: craftChain,
-            address: craft.config[propertyKey],
-          }),
         });
       }
     });
@@ -147,7 +149,6 @@ export class Craftform {
         console.log('User stopped deploy.')
         exit(1)
       }
-
     }
 
     const newVersion = existing ? +existing.version + 1 : 0
@@ -157,7 +158,6 @@ export class Craftform {
       alias, 
       { contract, ...options }
     );
-    deployment
 
     console.log(
       chalk.green(`*** Contract [${contract}]::${alias} deployed! ***\naddress: ${deployment.address}\nversion: ${newVersion}`)
