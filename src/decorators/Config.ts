@@ -4,7 +4,7 @@ import { extractContractNameFromConfigClassName } from "./extractContractNameFro
 
 export function Config(): ClassDecorator {
     return function (target) {
-        const contractName = target.name
+        const contractName = extractContractNameFromConfigClassName(target.name)
         // @ts-ignore
         craftform.__configs.push({
             contractName,

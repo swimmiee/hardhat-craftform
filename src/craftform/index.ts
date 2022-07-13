@@ -7,6 +7,7 @@ import { BaseContract } from "ethers"
 import { extractContractNameFromConfigClassName } from "../decorators/extractContractNameFromConfigClass";
 import { _addConfig, _getConfig } from "./utils";
 
+
 type CraftLike = BaseContract & {
   config: BaseConfig & any
 } 
@@ -114,7 +115,7 @@ export class Craftform {
     // })
   }
 
-  public async deploy<Config>({
+  public async deploy<Config extends BaseConfig>({
     contract,
     alias,
     options,
@@ -138,16 +139,19 @@ export class Craftform {
     // deployed logger
     console.log(deployment)
 
-    const config:(Config & BaseConfig) = {
+    const config = {
       alias,
       address: deployment.address,
       // @TODO
       version: -1,
       deployedAt: new Date().getTime() / 1000,
-      ..._config,
-    }
+      ..._config
+    } as Config
     
     // (await)
-    this.addConfig<Config & BaseConfig>(contract, config)
+    this.addConfig<Config>(
+      contract, 
+      config
+    )
   }
 }

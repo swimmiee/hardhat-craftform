@@ -49,7 +49,7 @@ export const setConfigFiles = async ({
  */
 
 const getConfigFileContents = (contractName:string, argsTypes: string[]) => 
- `import { Contract, Config, address } from "hardhat-craftform/dist/core"
+ `import { Contract, Config, address, BaseConfig } from "hardhat-craftform/dist/core"
 import { BigNumber } from "ethers";
 
  
@@ -58,8 +58,8 @@ export type ${contractName}Args = [${argsTypes.join(', ')}]
 
 // Contract Config class
 @Config()
-export class ${contractName} {
+export class ${contractName}Config extends BaseConfig {
 
-    // write down your other custom configs...
+    // write down your custom configs...
 }
 `

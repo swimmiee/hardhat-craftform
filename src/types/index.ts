@@ -3,6 +3,7 @@ import { ethers } from "ethers";
 import { DeployOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
 
+
 export type ClassType<T = any> = new () => T
 
 export abstract class BaseConfig {
@@ -33,15 +34,15 @@ export type GetContractProps =
   | GetContractPropsWithAlias;
 
 export type CraftDeployOptions<T extends Array<any>> = |
-  Omit<Omit<DeployOptions, "args">, "contract"> & {
+  Omit<DeployOptions, 'args' | 'contract'> & {
     args: T
   }
 
-export type CraftDeployProps<C extends {}, A extends Array<any>> = {
+export type CraftDeployProps<C extends BaseConfig, A extends Array<any>> = {
   contract: string
   alias: string
   options: CraftDeployOptions<A>,
-  config: C
+  config: Omit<C, keyof BaseConfig>
 }
 
 export interface ConfigTarget {
