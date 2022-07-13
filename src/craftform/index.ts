@@ -115,12 +115,14 @@ export class Craftform {
     // })
   }
 
-  public async deploy<Config extends BaseConfig>({
-    contract,
-    alias,
-    options,
-    config: _config
-  }:CraftDeployProps<Config, any[]>){
+  public async deploy<Config extends BaseConfig>(
+    contract: string,
+    {
+      alias,
+      options,
+      config: _config
+    }:CraftDeployProps<Config, any[]>
+  ){
 
     // @TODO
     // alias 같은 것 있는지 체크.

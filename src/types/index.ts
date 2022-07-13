@@ -39,7 +39,6 @@ export type CraftDeployOptions<T extends Array<any>> = |
   }
 
 export type CraftDeployProps<C extends BaseConfig, A extends Array<any>> = {
-  contract: string
   alias: string
   options: CraftDeployOptions<A>,
   config: Omit<C, keyof BaseConfig>

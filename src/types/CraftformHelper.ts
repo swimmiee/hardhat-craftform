@@ -8,5 +8,8 @@ export interface CraftformHelper {
         props: GetContractProps
     ):Promise<CraftType<any, any>>
     
-    deploy: (props:CraftDeployProps<any, any[]>) => Promise<void>
+    deploy: (
+        contract: string,
+        props:CraftDeployProps<any, any[]>
+    ) => Promise<void>
 }
