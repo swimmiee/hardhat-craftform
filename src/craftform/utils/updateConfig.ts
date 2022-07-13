@@ -1,7 +1,8 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget, BaseConfig } from "../../types";
+import { ConfigTarget } from "../../types";
+import { BaseConfig } from "../BaseConfig";
 
 export function updateConfigOne<Config extends BaseConfig>(
   { chain, contract, ...target }: ConfigTarget & Partial<Config>,

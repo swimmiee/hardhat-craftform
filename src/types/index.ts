@@ -1,20 +1,9 @@
-import { FactoryOptions } from "@nomiclabs/hardhat-ethers/types";
-import { ethers } from "ethers";
 import { DeployOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
-
+import { BaseConfig } from "../craftform/BaseConfig";
 
 export type ClassType<T = any> = new (props?:any) => T
 
-export abstract class BaseConfig {
-  address: string
-  alias: string
-  version: number
-  deployedAt: number
-  print(){
-    console.log("A~hahahahahahaha")
-  }
-}
 
 export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
   config: Config

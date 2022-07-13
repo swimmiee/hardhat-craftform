@@ -1,5 +1,5 @@
 import { CraftMetadata, RelationMetadata } from "../metadata";
-import { BaseConfig, ClassType, CraftDeployProps, GetContractProps } from "../types";
+import { ClassType, CraftDeployProps, GetContractProps } from "../types";
 import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
@@ -8,6 +8,7 @@ import { extractContractNameFromConfigName } from "../decorators/extractContract
 import { _addConfig, _getConfig } from "./utils";
 import { confirmPrompt } from "./utils/confirmPrompt";
 import { exit } from "process";
+import { BaseConfig } from "./BaseConfig";
 
 const chalk = require('chalk');
 

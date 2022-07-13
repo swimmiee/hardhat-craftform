@@ -1,7 +1,8 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget, BaseConfig } from "../../types";
+import { ConfigTarget } from "../../types";
+import { BaseConfig } from "../BaseConfig";
 
 interface AddConfigProps<Config extends BaseConfig> extends ConfigTarget {
   newConfig: Config;
