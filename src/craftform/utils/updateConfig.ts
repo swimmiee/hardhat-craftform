@@ -46,6 +46,7 @@ export function _updateConfig<Config extends BaseConfig>(
       data, 
       {version: +configs[targetIndex] + 1}
     )
+    configs.push(clone)
   }
   
 
