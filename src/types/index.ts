@@ -21,7 +21,7 @@ export type CraftDeployOptions<T extends Array<any>> = |
     args: T
   }
 
-export type ExcludedBaseConfig<Config> = Omit<Config, keyof BaseConfig>
+export type ExcludedBaseConfig<Config> = Omit<Config, "address" | "alias" | "version" | "deployedAt">
 export type CraftDeployConfig<Config> = {
   [key in keyof ExcludedBaseConfig<Config>]: 
     ExcludedBaseConfig<Config>[key] extends BaseConfig ? address 

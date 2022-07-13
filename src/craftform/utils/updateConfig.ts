@@ -1,13 +1,13 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { UpdateConfigTarget, Versioning } from "../../types";
+import { ExcludedBaseConfig, UpdateConfigTarget, Versioning } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
 
 export function _updateConfig<Config extends BaseConfig>(
   { chain, contract, ...target }: UpdateConfigTarget,
-  data: Partial<Config>,
+  data: Partial<ExcludedBaseConfig<Config>>,
   versioning: Versioning
 ) {
   const filename = getConfigFilename({ chain, contract });
@@ -40,11 +40,7 @@ export function _updateConfig<Config extends BaseConfig>(
     Object.assign(configs[targetIndex], data);
   } else {  // 'upgrade'
     const {version, ...rest} = configs[targetIndex]
-    console.log(configs[targetIndex])
-    console.log(version)
-    console.log(rest)
     const upgraded = Object.assign(rest, data)
-    console.log(upgraded)
     const clone = {
       ...upgraded,
       version: +version + 1
