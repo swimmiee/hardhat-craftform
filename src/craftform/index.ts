@@ -86,7 +86,6 @@ export class Craftform {
     this.__relations[contract].forEach((metadata) => {
       const {
         relatedConfig,
-        target,
         propertyKey,
         relationType,
       } = metadata;

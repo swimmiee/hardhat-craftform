@@ -4,7 +4,7 @@ import { getConfigFilename } from "./getPath";
 import { ConfigTarget } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
-export function updateConfigOne<Config extends BaseConfig>(
+export function _updateConfig<Config extends BaseConfig>(
   { chain, contract, ...target }: ConfigTarget & Partial<Config>,
   data: Partial<Config>
 ) {
