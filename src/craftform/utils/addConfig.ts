@@ -1,13 +1,13 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget, BaseCraft } from "../../types";
+import { ConfigTarget, BaseConfig } from "../../types";
 
-interface AddConfigProps<Config extends BaseCraft> extends ConfigTarget {
+interface AddConfigProps<Config extends BaseConfig> extends ConfigTarget {
   newConfig: Config;
 }
 
-export function addConfig<Config extends BaseCraft>({
+export function _addConfig<Config extends BaseConfig>({
   chain,
   contract,
   newConfig,

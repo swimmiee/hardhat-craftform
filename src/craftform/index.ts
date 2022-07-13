@@ -1,12 +1,11 @@
 import { CraftMetadata, RelationMetadata } from "../metadata";
-import { getConfig } from "./utils/getConfig";
-import { ClassType, CraftDeployOptions, GetContractProps } from "../types";
+import { BaseConfig, ClassType, CraftDeployProps, GetContractProps } from "../types";
 import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
 import { BaseContract } from "ethers"
 import { extractContractNameFromConfigClassName } from "../decorators/extractContractNameFromConfigClass";
-import { BaseConfig } from "../decorators";
+import { _addConfig, _getConfig } from "./utils";
 
 type CraftLike = BaseContract & {
   config: BaseConfig & any
@@ -18,12 +17,14 @@ export class Craftform {
   // from hardhat-deploy
   private _deployments: DeploymentsExtension;
 
-
-
+  /*********************************************
+  *  ( __variables ) :: grabbed by decorators  *
+  **********************************************/
   public __configs: CraftMetadata[];
   public __relations: {
     [contractName: string]: RelationMetadata[];
   };
+
 
   constructor(
     _network: Network,
@@ -40,7 +41,7 @@ export class Craftform {
 
 
   public async get<T extends CraftLike>(
-    contractName: string,
+    contract: string,
     { 
       chain, 
       address, 
@@ -50,16 +51,16 @@ export class Craftform {
     // @TODO :: Interchain 구현
     const craftChain = chain || this._network.name
     const craftMetadata = this.__configs.find(
-      (c) => c.contractName === contractName
+      (c) => c.contractName === contract
     );
     if (!craftMetadata)
-      throw Error(`Please check crafts' names :: ${contractName}`);
+      throw Error(`Please check crafts' names :: ${contract}`);
     
 
     // TODO::: address or alias!!!!!!
-    const configs = getConfig({
+    const configs = _getConfig({
       chain: craftChain,
-      contract: contractName,
+      contract: contract,
       address: address!,
     });
 
@@ -78,7 +79,7 @@ export class Craftform {
 
 
     // load relations
-    this.__relations[contractName].forEach((metadata) => {
+    this.__relations[contract].forEach((metadata) => {
       const {
         relatedConfig,
         target,
@@ -88,7 +89,7 @@ export class Craftform {
       if (relationType === "Contract") {
 
         Object.assign(craft.config, {
-          [propertyKey]: getConfig({
+          [propertyKey]: _getConfig({
             contract: extractContractNameFromConfigClassName(
               relatedConfig.name
             ),
@@ -103,22 +104,50 @@ export class Craftform {
     return craft;
   }
 
-  private async addConfig(){
-    
+  // @TODO
+  // config typescript 필요한가?
+  private async addConfig<C extends BaseConfig>(contract: string, config: C){
+    // _addConfig({
+    //   chain: this._network.name,
+    //   contract,
+    //   newConfig: config
+    // })
   }
 
-  public async deploy(
-    contractName: string,
-    options: CraftDeployOptions<Array<any>>
-  ){
-    // 해당 체인 중에서 alias가 같은 놈들의
-    // 최근 버전을 구하고
-    // 버전업 + config도 새로 버전업 한다.
-    const { deploy } = this._deployments;
-    const deployment = await deploy(contractName, options);
+  public async deploy<Config>({
+    contract,
+    alias,
+    options,
+    config: _config
+  }:CraftDeployProps<Config, any[]>){
 
+    // @TODO
+    // alias 같은 것 있는지 체크.
+    // 버전 업할 것인지?
+    // 덮어쓰기 할 것인지?
+    const { deploy } = this._deployments;
+    const deployment = await deploy(
+      alias, 
+      {
+        contract,
+        ...options
+      }
+    );
+
+    // @TODO
+    // deployed logger
     console.log(deployment)
+
+    const config:(Config & BaseConfig) = {
+      alias,
+      address: deployment.address,
+      // @TODO
+      version: -1,
+      deployedAt: new Date().getTime() / 1000,
+      ..._config,
+    }
     
-    // update version
+    // (await)
+    this.addConfig<Config & BaseConfig>(contract, config)
   }
 }

@@ -2,12 +2,14 @@ import { FactoryOptions } from "@nomiclabs/hardhat-ethers/types";
 import { ethers } from "ethers";
 import { DeployOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
-import { BaseConfig } from "../decorators";
 
 export type ClassType<T = any> = new () => T
 
-export interface BaseCraft {
+export abstract class BaseConfig {
   address: string
+  alias: string
+  version: number
+  deployedAt: number
 }
 
 export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
@@ -30,7 +32,17 @@ export type GetContractProps =
   | GetContractPropsWithAddress
   | GetContractPropsWithAlias;
 
-export type CraftDeployOptions<T extends Array<any>> = Omit<DeployOptions, "args"> & {args: T}
+export type CraftDeployOptions<T extends Array<any>> = |
+  Omit<Omit<DeployOptions, "args">, "contract"> & {
+    args: T
+  }
+
+export type CraftDeployProps<C extends {}, A extends Array<any>> = {
+  contract: string
+  alias: string
+  options: CraftDeployOptions<A>,
+  config: C
+}
 
 export interface ConfigTarget {
   // network name

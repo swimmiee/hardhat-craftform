@@ -18,24 +18,24 @@ export const setCraftformDefinition = async ({
 
 
 export const getCraftformDefinitionContent = (contractNames:string[]) => {
-    const coreImports = `import { CraftType, CraftDeployOptions, GetContractProps } from 'hardhat-craftform/dist/core'`
+    const coreImports = `import { CraftType, CraftDeployOptions, GetContractProps, BaseConfig } from 'hardhat-craftform/dist/core'`
     const typechainImports = `import { ${contractNames.join(', ')} } from '../typechain';`
-    const imports = contractNames.map(name => `import { ${name}Args, ${name}Config } from './${name}.config';`).join('\n')
+    const imports = contractNames.map(name => `import { ${name}, ${name}Args } from './${name}.config';`).join('\n')
 
-    const getFunctionDeclares = contractNames.map(name => `        get(
+    const getFunctionDeclares = contractNames.map(name => 
+`        get(
             contractName: '${name}',
             props: GetContractProps
         ): Promise<CraftType<${name}, ${name}Config>>
     `.trimEnd()).join('\n')
 
-    const deployFunctionDeclares = contractNames.map(name => `        deploy(
-            contractName: '${name}',
-            options: CraftDeployOptions<${name}Args>
-        ): Promise<void>
+    const deployFunctionDeclares = contractNames.map(name => 
+`        deploy(props:CraftDeployProps<${name}, ${name}Args>): Promise<void>
     `.trimEnd()).join('\n')
 
-    const craftTypes = contractNames.map(
-        name => `export type ${name}Craft = CraftType<${name}, ${name}Config>`
+    const craftTypes = contractNames.map(name => 
+        `export type ${name}Config = ${name} & BaseConfig \n`+
+        `export type ${name}Craft = CraftType<${name}, ${name}Config>`
     ).join('\n')
 
     return(`${coreImports}

@@ -1,12 +1,12 @@
 import fs from "fs-extra";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget, BaseCraft } from "../../types";
+import { ConfigTarget, BaseConfig } from "../../types";
 
 interface GetConfigProps extends ConfigTarget {
   address: string;
 }
 
-export function getConfig<Config extends BaseCraft>(target: GetConfigProps) {
+export function _getConfig<Config extends BaseConfig>(target: GetConfigProps) {
   const filename = getConfigFilename(target);
 
   // Here:: can throw error when file not exists

@@ -5,7 +5,6 @@ import { SetProjectFileProps } from "./set-project.interface";
 import { setCraftformDefinition } from "./craftform-definition";
 
 
-
 export default async function craftTypeFactory(
     hre: HardhatRuntimeEnvironment,
     resetConfigs: boolean

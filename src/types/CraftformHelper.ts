@@ -1,13 +1,12 @@
-import { CraftDeployOptions, CraftType, GetContractProps } from "."
+import { CraftDeployProps, CraftType, GetContractProps } from "./index"
 
+// temporary interface.
+// It will be overwritten by craftform.d.ts
 export interface CraftformHelper {
     get(
         contractName: string,
         props: GetContractProps
     ):Promise<CraftType<any, any>>
     
-    deploy: (
-      contractName: string,
-      options: CraftDeployOptions<Array<any>>
-    ) => Promise<void>
+    deploy: (props:CraftDeployProps<any, any[]>) => Promise<void>
 }
