@@ -8,8 +8,8 @@ import { extractContractNameFromConfigName } from "../decorators/extractContract
 import { _addConfig, _getConfig } from "./utils";
 import { confirmPrompt } from "./utils/confirmPrompt";
 import { exit } from "process";
-import chalk from 'chalk'
 
+const chalk = require('chalk');
 
 type CraftLike = BaseContract & {
   config: BaseConfig & any
