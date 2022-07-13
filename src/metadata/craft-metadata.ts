@@ -1,4 +1,6 @@
+import { ClassType } from "../types";
+
 export interface CraftMetadata {
   contractName: string;
-  target: Function;
+  target: ClassType<any> | Function;
 }
