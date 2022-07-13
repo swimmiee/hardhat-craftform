@@ -57,13 +57,12 @@ export class Craftform {
     if (!craftMetadata)
       throw Error(`Please check crafts' names :: ${contract}`);
     
-
-    const config = _getConfig({
+    const config = craftMetadata.target(_getConfig({
       chain: craftChain,
       contract: contract,
       alias,
       version
-    });
+    }));
 
     if(!config)
       throw Error(`${alias} (${contract}) Config ${version || 'latest'} Version not found.`)
