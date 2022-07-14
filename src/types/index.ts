@@ -6,7 +6,7 @@ export type ClassType<T = any> = new (props?:any) => T
 
 
 export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
-  config: Config
+  $: Config
 } 
 
 export type ConfigVersion = number | 'latest'

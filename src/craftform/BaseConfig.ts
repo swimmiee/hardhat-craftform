@@ -13,8 +13,8 @@ export class BaseConfig {
         Object.assign(this, props)
     }
 
-    public update<Config extends BaseConfig>(
-        updates: Partial<ConfigUpdateable<Config>>,
+    public update(
+        updates: Partial<ConfigUpdateable<this>>,
         option: UpdateConfigOption
     ){
         const chain = option.chain || network.name

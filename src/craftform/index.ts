@@ -13,7 +13,7 @@ import { BaseConfig } from "./BaseConfig";
 const chalk = require('chalk');
 
 type CraftLike = BaseContract & {
-  config: BaseConfig & any
+  $: BaseConfig & any
 } 
 export class Craftform {
   private _network: Network
@@ -71,7 +71,7 @@ export class Craftform {
 
     // set Config
     const craft = new (craftMetadata.target as ClassType<T>)();
-    craft.config = config;
+    craft.$ = config;
 
     // load & inject Contract Factory
     try {
@@ -93,7 +93,7 @@ export class Craftform {
         } = metadata;
         if (relationType === "Contract") {
   
-          Object.assign(craft.config, {
+          Object.assign(craft.$, {
             [propertyKey]: new relatedConfig(
                 _getConfig({
                   contract: extractContractNameFromConfigName(
@@ -101,7 +101,7 @@ export class Craftform {
                   ),
                   // TODO: Interchain 구현
                   chain: craftChain,
-                  address: craft.config[propertyKey],
+                  address: craft.$[propertyKey],
                 })
               ),
           });
