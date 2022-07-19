@@ -10,6 +10,7 @@
     "rootDirs": ["src"],
     "esModuleInterop": true,
     "types": ["node"],
+    "types": ["node"],
     "experimentalDecorators": true,
     "strictPropertyInitialization": false
   },

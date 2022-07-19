@@ -1,9 +1,9 @@
-import { config } from "hardhat"
 import chalk from "chalk";
 import interceptor from "console-log-interceptor";
 import { Step } from "./Step";
 import { JobOptions } from "./JobOptions";
 import { dateFormatter, timeFormatter } from "../../utils/datetime-formatter";
+import path from "path";
 
 
 export class Job<T> {
@@ -23,7 +23,7 @@ export class Job<T> {
 
     async execute(params:T, options?:JobOptions){
         // save log default: true
-        const saveLog = options ? options.saveLog : true
+        const saveLog = options?.saveLog === false ? false : true
         if(saveLog){
             interceptor.intercept(options)
         }
@@ -53,10 +53,22 @@ export class Job<T> {
         // LOG Handling
         interceptor.stopIntercept()
 
-        const date = dateFormatter(new Date())
-        const logFilename = `${timeFormatter(new Date())}.log`
+
+        let configPath;
+        try {
+            const { config } = await import("hardhat")
+            configPath = config.paths.logs
+        } catch (error) {
+            configPath = 'logs'
+        }
+        // configPath = 'logs'
+
+        const dirname = options?.log?.dirname || dateFormatter(new Date()); 
+        const filename = options?.log?.filename + '.log' || `${timeFormatter(new Date())}.log`
+        const logPath = path.join(configPath, dirname, filename)
+
         interceptor.save({
-            path: `${config.paths.logs}/${date}/${logFilename}`,
+            path: logPath,
             append: true
         })
         interceptor.clear()

@@ -1,6 +1,6 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from "chai";
-import path from "path";
+import hre from "hardhat";
 import { step, job } from "../src/job";
 
 // import { Test1Config, Test1Craft } from "./fixture-projects/hardhat-project/crafts";
@@ -8,6 +8,7 @@ import { step, job } from "../src/job";
 
 import { useEnvironment } from "./helpers";
 import { TASK_COMPILE } from "hardhat/builtin-tasks/task-names"
+import interceptor from "console-log-interceptor";
 
 // describe("Integration test", function () {
 //   describe("Hardhat Runtime Environment extension", function () {
@@ -76,12 +77,12 @@ describe("Unit tests", function () {
     })
   });
 
-  describe("Task module test", function(){
+  describe("Task module test", async function(){
     interface TestProps {
       x: number
     }
     
-    const TaskTestTask = job("Task Test Task", [
+    const JobTestJob = job("Task Test Task", [
       step("Ready", function(params:TestProps){
           return params.x === 10;
       }, "설마..."),
@@ -99,7 +100,15 @@ describe("Unit tests", function () {
       }, "설마...")
     ])
 
-    TaskTestTask({x: 10})
-
+    await JobTestJob(
+      {x: 10}, 
+      {
+        log: {
+          dirname: "haha",
+          filename: "job"
+        }, 
+        saveLog: true
+      }
+    )
   })
 });
