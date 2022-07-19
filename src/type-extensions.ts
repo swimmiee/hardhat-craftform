@@ -16,10 +16,12 @@ declare module "hardhat/types/config" {
   }
   export interface ProjectPathsUserConfig {
     crafts?: string;
+    logs?: string
   }
 
   export interface ProjectPathsConfig {
     crafts: string;
+    logs: string
   }
 
 }

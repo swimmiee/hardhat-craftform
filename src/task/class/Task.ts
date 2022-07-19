@@ -1,6 +1,9 @@
+import { config } from "hardhat"
 import chalk from "chalk";
+import interceptor from "console-log-interceptor";
 import { Step } from "./Step";
 import { TaskOptions } from "./TaskOptions";
+import { dateFormatter, timeFormatter } from "../../utils/datetime-formatter";
 
 
 export class Task<T> {
@@ -19,7 +22,11 @@ export class Task<T> {
     }
 
     async execute(params:T, options?:TaskOptions){
-        // @TODO log에 남기기
+        // save log default: true
+        const saveLog = options ? options.saveLog : true
+        if(saveLog)
+            interceptor.intercept(options)
+
         let index = 1;
         for await (const step of this.steps) {
             console.log(`[STEP #${index}]`)
@@ -39,5 +46,18 @@ export class Task<T> {
             console.log()
             index++;
         }
+
+        if(!saveLog)
+            return;
+        // LOG Handling
+        interceptor.stopIntercept()
+
+        const date = dateFormatter(new Date())
+        const logFilename = `${timeFormatter(new Date())}.log`
+        interceptor.save({
+            path: `${config.paths.logs}/${date}/${logFilename}`,
+            append: true
+        })
+        interceptor.clear()
     }
 }

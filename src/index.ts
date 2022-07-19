@@ -15,10 +15,18 @@ export const TASK_CRAFTFORM = "craftform"
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
+    // add path "/crafts"
     config.paths.crafts = normalizePath(
       config,
       userConfig.paths?.crafts,
       "crafts"
+    );
+
+    // add path "/logs"
+    config.paths.logs = normalizePath(
+      config,
+      userConfig.paths?.logs,
+      "logs"
     );
   }
 );
