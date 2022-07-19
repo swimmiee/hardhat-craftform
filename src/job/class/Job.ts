@@ -24,8 +24,9 @@ export class Job<T> {
     async execute(params:T, options?:JobOptions){
         // save log default: true
         const saveLog = options ? options.saveLog : true
-        if(saveLog)
+        if(saveLog){
             interceptor.intercept(options)
+        }
 
         let index = 1;
         for await (const step of this.steps) {
