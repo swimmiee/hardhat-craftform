@@ -157,13 +157,15 @@ export class Craftform {
     const newVersion = existing ? +existing.version + 1 : 0
 
     const { deploy } = this._deployments;
+
+    console.log(`Start deploy contract [${contract}]::${alias}`)
     const deployment = await deploy(
       alias, 
       { contract, ...options }
     );
 
     console.log(
-      chalk.green(`*** Contract [${contract}]::${alias} deployed! ***\naddress: ${deployment.address}\nversion: ${newVersion}`)
+      chalk.green(`** Contract [${contract}]::${alias} deployed! **\naddress: ${deployment.address}\nversion: ${newVersion}`)
     )
 
     const config = {

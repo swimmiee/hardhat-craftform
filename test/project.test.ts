@@ -1,6 +1,8 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from "chai";
 import path from "path";
+import { step, task } from "../src/task";
+
 // import { Test1Config, Test1Craft } from "./fixture-projects/hardhat-project/crafts";
 // import { Test1 } from "./fixture-projects/hardhat-project/typechain";
 
@@ -64,11 +66,40 @@ describe("Unit tests", function () {
 
       // console.log(craft)
 
-      await run("craftform", {
-        reset: true
-      })
+      // await run("craftform", {
+      //   reset: true
+      // })
       // await run("compile")
+
+      
       
     })
   });
+
+  describe("Task module test", function(){
+    interface TestProps {
+      x: number
+    }
+    
+    const TaskTestTask = task("Task Test Task", [
+      step("Ready", function(params:TestProps){
+          return params.x === 10;
+      }, "설마..."),
+    
+      step("Predeploy", function(params:TestProps){
+          return params.x+5 === 15;
+      }, "설마..."),
+    
+      step("Deploy", function(params:TestProps){
+          return params.x+10 === 20;
+      }, "설마..."),
+    
+      step("PostDeploy", function(params:TestProps){
+          return params.x+10 === 30;
+      }, "설마...")
+    ])
+
+    TaskTestTask({x: 10})
+
+  })
 });

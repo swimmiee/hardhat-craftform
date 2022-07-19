@@ -8,6 +8,7 @@ declare module "mocha" {
   }
 }
 
+
 export function useEnvironment(fixtureProjectName: string) {
   beforeEach("Loading hardhat environment", function () {
     process.chdir(path.join(__dirname, "fixture-projects", fixtureProjectName));
@@ -18,4 +19,5 @@ export function useEnvironment(fixtureProjectName: string) {
   afterEach("Resetting hardhat", function () {
     resetHardhatContext();
   });
+
 }
