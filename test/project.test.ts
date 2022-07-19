@@ -1,7 +1,7 @@
 // tslint:disable-next-line no-implicit-dependencies
 import { assert } from "chai";
 import path from "path";
-import { step, task } from "../src/task";
+import { step, job } from "../src/job";
 
 // import { Test1Config, Test1Craft } from "./fixture-projects/hardhat-project/crafts";
 // import { Test1 } from "./fixture-projects/hardhat-project/typechain";
@@ -81,7 +81,7 @@ describe("Unit tests", function () {
       x: number
     }
     
-    const TaskTestTask = task("Task Test Task", [
+    const TaskTestTask = job("Task Test Task", [
       step("Ready", function(params:TestProps){
           return params.x === 10;
       }, "설마..."),

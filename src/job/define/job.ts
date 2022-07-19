@@ -1,15 +1,15 @@
-import { Step, Task, TaskOptions } from "../class";
+import { Step, Job, JobOptions } from "../class";
 
-export function task<T>(
+export function job<T>(
     title: string, 
     steps: Step<T>[]
 ):(args: T) => Promise<void>{
-    const task = new Task<T>(title);
+    const task = new Job<T>(title);
     task.addSteps(steps)
 
     async function executor(
         params: T,
-        options?: TaskOptions
+        options?: JobOptions
     ){
         await task.execute(params, options);
     }

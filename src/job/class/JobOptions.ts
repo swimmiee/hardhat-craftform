@@ -1,10 +1,10 @@
 import { InterceptorOption } from "console-log-interceptor"
 
-export interface TaskOptions extends InterceptorOption {
+export interface JobOptions extends InterceptorOption {
     stepByStep?: boolean
     saveLog?: boolean
 }
 
-export const defaultOption: TaskOptions = {
+export const defaultOption: JobOptions = {
     // stepByStep: 
 }

@@ -2,11 +2,11 @@ import { config } from "hardhat"
 import chalk from "chalk";
 import interceptor from "console-log-interceptor";
 import { Step } from "./Step";
-import { TaskOptions } from "./TaskOptions";
+import { JobOptions } from "./JobOptions";
 import { dateFormatter, timeFormatter } from "../../utils/datetime-formatter";
 
 
-export class Task<T> {
+export class Job<T> {
     title: string
     steps: Step<T>[]
 
@@ -21,7 +21,7 @@ export class Task<T> {
         this.steps = this.steps.concat(steps);
     }
 
-    async execute(params:T, options?:TaskOptions){
+    async execute(params:T, options?:JobOptions){
         // save log default: true
         const saveLog = options ? options.saveLog : true
         if(saveLog)
