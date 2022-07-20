@@ -8,9 +8,8 @@
     "outDir": "./dist",
     "strict": true,
     "rootDirs": ["src"],
+    "types": ["node"],
     "esModuleInterop": true,
-    "types": ["node"],
-    "types": ["node"],
     "experimentalDecorators": true,
     "strictPropertyInitialization": false
   },

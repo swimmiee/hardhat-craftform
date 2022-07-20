@@ -100,12 +100,11 @@ describe("Unit tests", function () {
       }, "설마...")
     ])
 
-    await JobTestJob(
-      {x: 10}, 
+    await JobTestJob({x: 10}, 
       {
         log: {
           dirname: "haha",
-          filename: "job"
+          filename: "job",
         }, 
         saveLog: true
       }

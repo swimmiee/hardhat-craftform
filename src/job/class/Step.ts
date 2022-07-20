@@ -7,8 +7,6 @@ export class Step<T> {
     message: string
 
     async execute(args:T){
-        // @TODO 시간 지연
-
         try {
             const result = Promise.resolve(this.action(args))
             return result

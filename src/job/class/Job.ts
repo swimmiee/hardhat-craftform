@@ -1,10 +1,11 @@
 import chalk from "chalk";
 import interceptor from "console-log-interceptor";
 import { Step } from "./Step";
-import { JobOptions } from "./JobOptions";
+import { defaultOption, JobOptions } from "./JobOptions";
 import { dateFormatter, timeFormatter } from "../../utils/datetime-formatter";
 import path from "path";
-
+import { confirmPrompt } from "../../utils/confirmPrompt";
+import { sleep } from "../../utils/sleep";
 
 export class Job<T> {
     title: string
@@ -25,11 +26,18 @@ export class Job<T> {
         // save log default: true
         const saveLog = options?.saveLog === false ? false : true
         if(saveLog){
-            interceptor.intercept(options)
+            interceptor.intercept({datetime: options?.log?.datetime})
         }
+
+        // default wait seconds = 5
+        const waitSeconds = options?.wait === null ? 0 : (
+            options?.wait || defaultOption.wait as number
+        )
 
         let index = 1;
         for await (const step of this.steps) {
+            await sleep(waitSeconds)
+
             console.log(`[STEP #${index}]`)
             console.log(chalk.blueBright(`*** ${step.title} ***`))
 
@@ -40,31 +48,48 @@ export class Job<T> {
             }
             else {
                 console.log(chalk.red(`❌ Failed`))
-                // @TODO
-                // continue? 묻기
+                if(!options?.continueOnFailed){
+                    console.log('EXIT')
+                    break;
+                }
+            }
+            console.log()
+
+            // ask for continue
+            if(options?.stepByStep){
+                const ok = await confirmPrompt(
+                    `Step [ ${step.title} ] is done. continue?`,
+                    true
+                )
+                if(!ok)
+                    break;
             }
 
-            console.log()
             index++;
         }
 
         if(!saveLog)
             return;
         // LOG Handling
+
+        
         interceptor.stopIntercept()
 
-
         let configPath;
-        try {
-            const { config } = await import("hardhat")
-            configPath = config.paths.logs
-        } catch (error) {
-            configPath = 'logs'
-        }
-        // configPath = 'logs'
+        // @TODO setup log path
+        // try {
+        //     const { config } = await import("hardhat")
+        //     configPath = config.paths.logs
+        // } catch (error) {
+        //     configPath = 'logs'
+        // }
+        configPath = 'logs'
 
         const dirname = options?.log?.dirname || dateFormatter(new Date()); 
-        const filename = options?.log?.filename + '.log' || `${timeFormatter(new Date())}.log`
+        const filename = options?.log?.filename ? 
+            `${options.log.filename}.log` 
+            : 
+            `${timeFormatter(new Date())}.log`
         const logPath = path.join(configPath, dirname, filename)
 
         interceptor.save({

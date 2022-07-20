@@ -6,7 +6,7 @@ import { Network } from "hardhat/types";
 import { BaseContract } from "ethers"
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
 import { _addConfig, _getConfig } from "./utils";
-import { confirmPrompt } from "./utils/confirmPrompt";
+import { confirmPrompt } from "../utils/confirmPrompt";
 import { exit } from "process";
 import { BaseConfig } from "./BaseConfig";
 

@@ -1,7 +1,7 @@
 {
   "name": "hardhat-craftform",
   "version": "0.6.0-5",
-  "description": "Hardhat TypeScript plugin for continuous integration",
+  "description": "Hardhat plugin for continuous integration in TypeScript",
   "repository": "github:dannylisa/hardhat-craftform",
   "author": "danny <danny@sooho.io>",
   "license": "MIT",
@@ -47,7 +47,7 @@
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
     "chalk": "^4.1.2",
-    "console-log-interceptor": "^1.0.13",
+    "console-log-interceptor": "^1.1.10",
     "enquirer": "^2.3.6",
     "fs-extra": "^10.1.0",
     "hardhat": "^2.9.9",
