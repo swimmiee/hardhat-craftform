@@ -1,4 +1,4 @@
-import { Contract, Config, address, BaseConfig } from "../../../../"
+import { Contract, Config, address, BaseConfig } from "../../../../core"
 import { BigNumberish } from "ethers";
 
  

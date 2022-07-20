@@ -16,9 +16,10 @@ export function _updateConfig<Config extends BaseConfig>(
   
   const configs = getConfigList<RawConfig>({ chain, contract });
   const searchFunc = (c:RawConfig):boolean =>{
-    return Object
-      .entries(target)
-      .every(([key, value]) => {
+    const entries = Object.entries(target)
+    if(entries.length !== 0)
+      return false;
+    return entries.every(([key, value]) => {
         if(value === undefined)
           return true;
         return c[key as keyof typeof target] === value

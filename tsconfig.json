@@ -20,6 +20,6 @@
   "include": [
     "test/**/*.ts",
     "src",
-    "src/core.ts"
+    "core.ts"
   ]
 }
