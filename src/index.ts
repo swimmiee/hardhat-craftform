@@ -4,7 +4,7 @@ import "./type-extensions";
 import { extendConfig, extendEnvironment, task, types } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
-import { Craftform } from "./core/craftform";
+import { Craftform } from "./core/craftform/Craftform";
 import craftTypeFactory from './core/craftFactory';
 import { isCraftInitiated } from './core/craftFactory/isCraftInitiated';
 import { normalizePath } from "./utils/normalize-path";

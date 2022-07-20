@@ -5,8 +5,8 @@
   "repository": "github:dannylisa/hardhat-craftform",
   "author": "danny <danny@sooho.io>",
   "license": "MIT",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/core.ts",
   "keywords": [
     "ethereum",
     "smart-contracts",

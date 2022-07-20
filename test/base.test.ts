@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import path from "path";
-import { Craftform } from "../src/core";
+import { Craftform } from "../";
 import { useEnvironment } from "./helpers";
 
 describe("Integration test", function () {

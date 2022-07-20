@@ -1,4 +1,4 @@
-import { CraftType, CraftDeployProps, GetContractProps } from "../../../../src/core"
+import { CraftType, CraftDeployProps, GetContractProps } from "../../../../"
 import { Test1, Test2 } from '../typechain';
 import { Test1Args, Test1Config } from './Test1.config';
 import { Test2Args, Test2Config } from './Test2.config';
