@@ -6,7 +6,7 @@ export type ClassType<T = any> = new (props?:any) => T
 
 
 export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
-  $: Config
+  $config: Config
 } 
 
 export type ConfigVersion = number | 'latest'
@@ -18,7 +18,7 @@ export type GetContractProps = {
 
 export type CraftDeployOptions<T extends Array<any>> = |
   Omit<DeployOptions, 'args' | 'contract'> & {
-    args: T
+    args?: T
   }
 
 export type ExcludedBaseConfig<Config> = Omit<Config, "address" | "alias" | "version" | "deployedAt">
@@ -31,7 +31,7 @@ export type CraftDeployProps<C extends BaseConfig, A extends Array<any>> = {
   alias: string
   options: CraftDeployOptions<A>,
   // config: Omit<C, keyof BaseConfig>
-  config: CraftDeployConfig<C>
+  config?: CraftDeployConfig<C>
 }
 
 export interface ConfigTarget {

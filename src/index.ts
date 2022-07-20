@@ -4,12 +4,13 @@ import "./type-extensions";
 import { extendConfig, extendEnvironment, task, types } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
-import { Craftform } from "./craftform";
+import { Craftform } from "./core/craftform";
+import craftTypeFactory from './core/craftFactory';
+import { isCraftInitiated } from './core/craftFactory/isCraftInitiated';
 import { normalizePath } from "./utils/normalize-path";
-import craftTypeFactory from './craftFactory';
-import { isCraftInitiated } from './craftFactory/isCraftInitiated';
-import { CraftformHelper } from './types/CraftformHelper';
-const TASK_CRAFTFORM = "craftform"
+import { CraftformHelper } from './CraftformHelper';
+
+export const TASK_CRAFTFORM = "craftform"
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
@@ -50,10 +51,3 @@ task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
     await craftTypeFactory(hre, shouldReset)
     return;
   })
-
-
-export * from "./core"
-export {
-  TASK_CRAFTFORM,
-  CraftformHelper
-}

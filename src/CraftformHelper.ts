@@ -1,4 +1,4 @@
-import { CraftDeployProps, CraftType, GetContractProps } from "./index"
+import { CraftDeployProps, CraftType, GetContractProps } from "./core/types/index"
 
 // temp interface.
 // It will be overwritten by craftform.d.ts

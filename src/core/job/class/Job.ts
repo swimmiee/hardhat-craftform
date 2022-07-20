@@ -2,10 +2,10 @@ import chalk from "chalk";
 import interceptor from "console-log-interceptor";
 import { Step } from "./Step";
 import { defaultOption, JobOptions } from "./JobOptions";
-import { dateFormatter, timeFormatter } from "../../utils/datetime-formatter";
+import { dateFormatter, timeFormatter } from "../../../utils/datetime-formatter";
 import path from "path";
-import { confirmPrompt } from "../../utils/confirmPrompt";
-import { sleep } from "../../utils/sleep";
+import { confirmPrompt } from "../../../utils/confirmPrompt";
+import { sleep } from "../../../utils/sleep";
 
 export class Job<T> {
     title: string

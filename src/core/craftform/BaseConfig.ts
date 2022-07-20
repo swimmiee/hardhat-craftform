@@ -1,7 +1,7 @@
 import { network } from "hardhat"
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig"
 import { ConfigUpdateable, UpdateConfigOption } from "../types"
-import { _updateConfig } from "./utils"
+import { _updateConfig } from "./config"
 
 export class BaseConfig {
     address: string

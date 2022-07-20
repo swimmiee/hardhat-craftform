@@ -4,15 +4,20 @@ import { ConfigVersion, GetConfigProps } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
 
-export function _getConfig<Config extends BaseConfig>(target: GetConfigProps) {
+export function _getConfig<Config extends BaseConfig>(target: GetConfigProps):Config | null {
   if(!target.address && !target.alias)
     throw Error("_getConfig:: Either address or alias must be specified.")
   const filename = getConfigFilename(target);
 
   // Here:: can throw error when file not exists
-  const configs = JSON.parse(
-    fs.readFileSync(filename, { encoding: "utf-8", flag: "r" })
-  ) as Config[];
+  let configs;
+  try {
+    configs = JSON.parse(
+      fs.readFileSync(filename, { encoding: "utf-8", flag: "r" })
+    ) as Config[];
+  } catch (error) {
+    return null;
+  }
 
   // default version: latest
   const version:ConfigVersion = target.version || 'latest'
@@ -28,6 +33,6 @@ export function _getConfig<Config extends BaseConfig>(target: GetConfigProps) {
     return targetConfigs.sort((a, b) => +b.version - +a.version)[0]
   }
   else {
-    return targetConfigs.find(c => +c.version === target.version)
+    return targetConfigs.find(c => +c.version === target.version) || null
   }
 }

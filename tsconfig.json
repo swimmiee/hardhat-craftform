@@ -11,11 +11,12 @@
     "types": ["node"],
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "preserveSymlinks": true
   },
   "exclude": ["dist", "node_modules"],
   "include": [
-    "./test",
+    "test/**/*.ts",
     "src", 
     "src/core.ts"
   ]
