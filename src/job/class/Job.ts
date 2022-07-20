@@ -49,11 +49,10 @@ export class Job<T> {
             else {
                 console.log(chalk.red(`❌ Failed`))
                 if(!options?.continueOnFailed){
-                    console.log('EXIT')
+                    console.log(chalk.red('exit'))
                     break;
                 }
             }
-            console.log()
 
             // ask for continue
             if(options?.stepByStep){
@@ -61,6 +60,7 @@ export class Job<T> {
                     `Step [ ${step.title} ] is done. continue?`,
                     true
                 )
+                console.log()
                 if(!ok)
                     break;
             }

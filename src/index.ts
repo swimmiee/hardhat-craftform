@@ -6,11 +6,10 @@ import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./craftform";
 import { normalizePath } from "./utils/normalize-path";
-import { CraftformHelper } from '../core';
 import craftTypeFactory from './craftFactory';
 import { isCraftInitiated } from './craftFactory/isCraftInitiated';
-
-export const TASK_CRAFTFORM = "craftform"
+import { CraftformHelper, TASK_CRAFTFORM } from './core';
+export * from "./core"
 
 
 extendConfig(
