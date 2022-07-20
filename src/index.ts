@@ -8,7 +8,8 @@ import { Craftform } from "./craftform";
 import { normalizePath } from "./utils/normalize-path";
 import craftTypeFactory from './craftFactory';
 import { isCraftInitiated } from './craftFactory/isCraftInitiated';
-import { CraftformHelper, TASK_CRAFTFORM } from './core';
+import { CraftformHelper } from './types/CraftformHelper';
+const TASK_CRAFTFORM = "craftform"
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
@@ -52,3 +53,7 @@ task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
 
 
 export * from "./core"
+export {
+  TASK_CRAFTFORM,
+  CraftformHelper
+}

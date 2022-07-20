@@ -1,6 +1,6 @@
 import { CraftDeployProps, CraftType, GetContractProps } from "./index"
 
-// temporary interface.
+// temp interface.
 // It will be overwritten by craftform.d.ts
 export interface CraftformHelper {
     get(

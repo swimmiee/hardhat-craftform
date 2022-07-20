@@ -35,14 +35,14 @@ import interceptor from "console-log-interceptor";
 
 
 describe("Unit tests", function () {
-  describe("Craftform", function () {
-    useEnvironment("hardhat-project");
+  // describe("Craftform", function () {
+    // useEnvironment("hardhat-project");
     
-    it("Should add crafts & relations to hre", async function(){
-      // await import("./fixture-projects/hardhat-project/crafts")
+    // it("Should add crafts & relations to hre", async function(){
+    //   // await import("./fixture-projects/hardhat-project/crafts")
 
-      const { craftform, getNamedAccounts, tasks, run } = this.hre;
-      const { deployer } = await getNamedAccounts();
+    //   const { craftform, getNamedAccounts, tasks, run } = this.hre;
+    //   const { deployer } = await getNamedAccounts();
 
     //   class Test1Config  {
     //     static contractName: string
@@ -74,10 +74,10 @@ describe("Unit tests", function () {
 
       
       
-    })
-  });
+    // })
+  // });
 
-  describe("Task module test", async function(){
+  it("Task module test", async function(){
     interface TestProps {
       x: number
     }
@@ -106,7 +106,8 @@ describe("Unit tests", function () {
           dirname: "haha",
           filename: "job",
         }, 
-        saveLog: true
+        saveLog: true,
+        wait: 0.2
       }
     )
   })
