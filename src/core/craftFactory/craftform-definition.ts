@@ -9,12 +9,7 @@ export const setCraftformDefinition = async ({
     craftsRootDir
 }:SetProjectFileProps) => {
     // craftform type definition file (idempotent)
-    const artifactsList =  (await artifacts.getAllFullyQualifiedNames())
-        .map(artifactNames => {
-            return artifacts.readArtifactSync(artifactNames)
-        })
-    const contractNames = artifactsList.map(a => a.contractName)
-
+    const contractNames = artifacts.map(a => a.contractName)
 
     // create definition file
     const definitionFile = project.createSourceFile(
@@ -38,7 +33,7 @@ export const setCraftformDefinition = async ({
             moduleSpecifier: '../typechain'
         },
         // configs import
-        ...artifactsList.map(a => {
+        ...artifacts.map(a => {
             const {contractName, dirName} = getArtifactInfo(a)
             return {
                 namedImports: [`${contractName}Args`, `${contractName}Config`],

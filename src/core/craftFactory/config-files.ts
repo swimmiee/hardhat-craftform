@@ -14,8 +14,6 @@ export const setConfigFiles = async ({
     if(!initializerFormat)
         console.log('\x1b[43m','WARN:: craftform.initializer in hardhat.config.ts is not set. \x1b[0m');
 
-    const artifactNames = await artifacts.getAllFullyQualifiedNames();
-
     // for clean import
     const indexFile = project.createSourceFile(
         `${craftsRootDir}/index.ts`,
@@ -28,8 +26,7 @@ export const setConfigFiles = async ({
     })
 
     await Promise.all(
-        artifactNames.map(async (artifactName) => {
-            const artifact = await artifacts.readArtifact(artifactName)
+        artifacts.map(async artifact => {
             const { dirName, contractName } = getArtifactInfo(artifact)
 
             const argsTypes = await getContstructorArgsType(

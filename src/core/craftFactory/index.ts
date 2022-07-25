@@ -1,5 +1,5 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { Project } from "ts-morph";
+import { IndentationText, NewLineKind, Project, QuoteKind } from "ts-morph";
 import { setConfigFiles } from "./config-files";
 import { SetProjectFileProps } from "./set-project.interface";
 import { setCraftformDefinition } from "./craftform-definition";
@@ -10,7 +10,13 @@ export default async function craftTypeFactory(
     resetConfigs: boolean
 ){
     const craftsRootDir = hre.config.paths.crafts;
-    const artifacts = hre.artifacts
+    const hreArtifacts = hre.artifacts
+
+    const artifactNames = await hreArtifacts.getAllFullyQualifiedNames()
+
+    const artifacts = artifactNames
+        .map(name => hreArtifacts.readArtifactSync(name))
+        .filter( a => a.abi.length > 0)
 
     /**
      *  SetProjectFileProps setting
@@ -18,27 +24,18 @@ export default async function craftTypeFactory(
     const coreProps:SetProjectFileProps = {
         artifacts,
         craftsRootDir,
-        project: new Project({})
+        project: new Project({
+            manipulationSettings: {
+                indentationText: IndentationText.FourSpaces,
+                newLineKind: NewLineKind.LineFeed,
+                quoteKind: QuoteKind.Single,
+                usePrefixAndSuffixTextForRename: false,
+                useTrailingCommas: false,
+            },
+        })
     }
     coreProps.project.addSourceFilesAtPaths(`${craftsRootDir}/**/*.ts`);
 
-    const artifactNames = await artifacts.getAllFullyQualifiedNames()
-    // ex of artifactName:: contracts/Test2.sol:Test2
-    if(!artifactNames.length){
-        return;
-    }
-
-    // // set Props
-    // for (const artifactName of artifactNames) {
-    //     const [folder] = artifactName.split('/')
-    //     if(folder === 'hardhat')   // only for contract
-    //         continue;
-
-    //     const _splited = artifactName.split(':')
-    //     const contractName = _splited[_splited.length - 1]
-    //     coreProps.contractNames.push(contractName)
-    //     coreProps.contractToArtifactMap[contractName] = artifactName
-    // }
 
     // craftform type definition file (idempotent)
     await setCraftformDefinition(coreProps)

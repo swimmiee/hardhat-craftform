@@ -1,6 +1,5 @@
-import { Artifact, Artifacts } from "hardhat/types";
+import { Artifact } from "hardhat/types";
 import path from "path";
-
 
 interface ArtifactInfo {
     dirName: string
