@@ -2,14 +2,20 @@ import { SetProjectFileProps } from "./set-project.interface";
 
 export const setCraftformDefinition = async ({
     project,
-    craftsRootDir,
-    contractNames
+    artifacts,
+    craftsRootDir
 }:SetProjectFileProps) => {
        // craftform type definition file (idempotent)
-       project.createSourceFile(
-        `${craftsRootDir}/craftform.d.ts`,
-        getCraftformDefinitionContent(contractNames),
-        {overwrite: true}
+
+        const artifactsList = await artifacts.getAllFullyQualifiedNames()
+        const contractNames = artifactsList.map(artifactNames => {
+            return artifacts.readArtifactSync(artifactNames).contractName
+        })
+
+        project.createSourceFile(
+            `${craftsRootDir}/craftform.d.ts`,
+            getCraftformDefinitionContent(contractNames),
+            {overwrite: true}
     )
     await project.save()
 

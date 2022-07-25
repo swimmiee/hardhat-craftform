@@ -18,9 +18,7 @@ export default async function craftTypeFactory(
     const coreProps:SetProjectFileProps = {
         artifacts,
         craftsRootDir,
-        project: new Project({}),
-        contractNames: [],
-        contractToArtifactMap: {}
+        project: new Project({})
     }
     coreProps.project.addSourceFilesAtPaths(`${craftsRootDir}/**/*.ts`);
 
@@ -30,17 +28,17 @@ export default async function craftTypeFactory(
         return;
     }
 
-    // set Props
-    for (const artifactName of artifactNames) {
-        const [folder] = artifactName.split('/')
-        if(folder === 'hardhat')   // only for contract
-            continue;
+    // // set Props
+    // for (const artifactName of artifactNames) {
+    //     const [folder] = artifactName.split('/')
+    //     if(folder === 'hardhat')   // only for contract
+    //         continue;
 
-        const _splited = artifactName.split(':')
-        const contractName = _splited[_splited.length - 1]
-        coreProps.contractNames.push(contractName)
-        coreProps.contractToArtifactMap[contractName] = artifactName
-    }
+    //     const _splited = artifactName.split(':')
+    //     const contractName = _splited[_splited.length - 1]
+    //     coreProps.contractNames.push(contractName)
+    //     coreProps.contractToArtifactMap[contractName] = artifactName
+    // }
 
     // craftform type definition file (idempotent)
     await setCraftformDefinition(coreProps)

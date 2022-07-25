@@ -1,3 +1,4 @@
+import { Project } from "ts-morph";
 import { useEnvironment } from "./helpers";
 
 describe("Unit tests", function () {
@@ -5,10 +6,10 @@ describe("Unit tests", function () {
     useEnvironment("hardhat-project");
     
     it("should use crafts properly", async function(){
-      await this.hre.run("deploy", {
-        network: 'hardhat',
-        tags: "test-crafts"
-      })
+      // await this.hre.run("deploy", {
+      //   network: 'hardhat',
+      //   tags: "test-crafts"
+      // })
     })
   });
 
@@ -45,5 +46,17 @@ describe("Unit tests", function () {
     //     wait: 0.2
     //   }
     // )
+  })
+
+  it("ts-morph test", async function(){
+    const project = new Project({})
+
+    const indexFile = project.createSourceFile(`testfolder/index.ts`, "", {overwrite: true})
+
+    indexFile.addExportDeclaration({
+      // namespaceExport: "*",
+      moduleSpecifier: "./file",
+    })
+    project.saveSync()
   })
 });

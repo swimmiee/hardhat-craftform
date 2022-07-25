@@ -1,11 +1,12 @@
+import { artifacts } from "hardhat"
 import { Artifact } from "hardhat/types"
 import { AbiParameter, parseEvmType, RawAbiDefinition } from "typechain"
 import { CraftformInitializerFormat } from "../types"
 import { generateTypes } from "./generate-type"
+import { getArtifactInfo } from "./getArtifactInfo"
 
 
 export const getContstructorArgsType = async (
-    contractName: string,
     artifact:Artifact, 
     initializerFormat?: string | CraftformInitializerFormat
 ) => {
@@ -24,6 +25,7 @@ export const getContstructorArgsType = async (
             return []   // initializer format을 설정하지 않은 경우
         }
         else {
+            const { contractName } = getArtifactInfo(artifact)
             const targetFormat = typeof initializerFormat === "string" ? 
                 initializerFormat : 
                 initializerFormat[contractName] || initializerFormat.default

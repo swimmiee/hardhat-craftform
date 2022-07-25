@@ -5,7 +5,8 @@ import { ConfigUpdateable, UpdateConfigTarget, Versioning } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
 
-
+// @TODO
+// JOB 내에서, Step 끝날 떄마다 config save & load
 export function _updateConfig<Config extends BaseConfig>(
   { chain, contract, ...target }: UpdateConfigTarget,
   data: Partial<ConfigUpdateable<Config>>,

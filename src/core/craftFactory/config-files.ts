@@ -1,45 +1,59 @@
+import path from "path";
 import { CraftformInitializerFormat } from "../types"
 import { getContstructorArgsType } from "./get-args-type"
+import { getArtifactInfo } from "./getArtifactInfo";
 import { SetProjectFileProps } from "./set-project.interface"
 
 export const setConfigFiles = async ({
     project,
     artifacts,
     craftsRootDir,
-    contractNames,
-    contractToArtifactMap
+    // contractNames,
+    // contractToArtifactMap
 }:SetProjectFileProps, initializerFormat?: string | CraftformInitializerFormat) => {
     if(!initializerFormat)
         console.log('\x1b[43m','WARN:: craftform.initializer in hardhat.config.ts is not set. \x1b[0m');
 
+    const artifactNames = await artifacts.getAllFullyQualifiedNames();
+
+    // for clean import
+    const indexFile = project.createSourceFile(
+        `${craftsRootDir}/index.ts`,
+        "",
+        { overwrite: true }
+    )
+
+    indexFile.addExportDeclaration({
+        moduleSpecifier: './craftform.d'
+    })
+
     await Promise.all(
-        contractNames.map(async contract => {
-            const artifact = await artifacts.readArtifact(contractToArtifactMap[contract])
+        artifactNames.map(async (artifactName) => {
+            const artifact = await artifacts.readArtifact(artifactName)
+            const { dirName, contractName } = getArtifactInfo(artifact)
+
             const argsTypes = await getContstructorArgsType(
-                contract,
                 artifact,
                 initializerFormat
             )
     
             const configClassFile = project.createSourceFile(
-                `${craftsRootDir}/${contract}.config.ts`,
-                getConfigFileContents(contract, argsTypes),
+                path.join(
+                    craftsRootDir,
+                    dirName,
+                    contractName+".config.ts"
+                ),
+                getConfigFileContents(contractName, argsTypes),
                 {overwrite: true}
             );
+            
+            // for clear import config file
+            indexFile.addExportDeclaration({
+                moduleSpecifier: "./" + path.join(dirName, contractName+".config")
+            })
         })
     )
     console.log(`Config files created at: ${craftsRootDir}`)
-
-
-    // for clean import
-    project.createSourceFile(
-        `${craftsRootDir}/index.ts`,
-        `export * from './craftform.d'\n` +
-        contractNames.map(name => {
-            return `export * from './${name}.config'`
-        }).join('\n'),
-        {overwrite: true}
-    );
 
     await project.save()
 }
