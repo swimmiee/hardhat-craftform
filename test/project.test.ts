@@ -1,4 +1,4 @@
-import { Project } from "ts-morph";
+import { ModuleDeclarationKind, Project, VariableDeclarationKind } from "ts-morph";
 import { useEnvironment } from "./helpers";
 
 describe("Unit tests", function () {
@@ -51,12 +51,44 @@ describe("Unit tests", function () {
   it("ts-morph test", async function(){
     const project = new Project({})
 
-    const indexFile = project.createSourceFile(`testfolder/index.ts`, "", {overwrite: true})
+    const definitionFile = project.createSourceFile(`testfolder/index.ts`, "", {overwrite: true})
+    // indexFile.addVariableStatement(
+    //   {
+    //     declarationKind: VariableDeclarationKind.
+    //   }
+    // )
 
-    indexFile.addExportDeclaration({
-      // namespaceExport: "*",
-      moduleSpecifier: "./file",
+    // definitionFile.addExportDeclaration(
+    //   {
+    //     isTypeOnly: true,
+    //     is
+        
+    //   }
+    // )
+    definitionFile.addTypeAlias({
+      isExported: true,
+      name: "asd",
+      type: "asdasdada"
     })
+
+
+    // const runtimeModule = definitionFile.addModule({
+    //   declarationKind: ModuleDeclarationKind.Module,
+    //   hasDeclareKeyword: true,
+    //   name: "\"hardhat/types/runtime\""
+    // })
+
+    // runtimeModule.addFunction({
+    //   name: "asda",
+    //   parameters: [
+    //     {name: "asd", type: "number"}
+    //   ],
+    //   returnType: {
+
+    //   }
+    // })
+
+
     project.saveSync()
   })
 });
