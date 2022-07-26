@@ -58,8 +58,12 @@ export const setCraftformDefinition = async ({
         name: "\"hardhat/types/runtime\""
     })
 
+    const overwrittenCraftformHelper = runtimeModule.addInterface({
+        name: "CraftformHelper"
+    })
+
     // add craftform methods
-    runtimeModule.addFunctions(
+    overwrittenCraftformHelper.addMethods(
         contractNames.flatMap(name => {
             return [
                 {
