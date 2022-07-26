@@ -46,7 +46,7 @@ export const setConfigFiles = async ({
             );
             configClassFile.addImportDeclarations([
                 {
-                    namedImports: ["Contract", "Config", "address", "BaseConfig", "DeployArgs"],
+                    namedImports: ["Contract", "Config", "address", "BaseConfig", "DeployArgs", "ProxyProps"],
                     moduleSpecifier: "hardhat-craftform/dist/core"
                 },
                 {
