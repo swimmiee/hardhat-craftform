@@ -36,7 +36,7 @@ export const setCraftformDefinition = async ({
         ...artifacts.map(a => {
             const {contractName, dirName} = getArtifactInfo(a)
             return {
-                namedImports: [`${contractName}Args`, `${contractName}Config`],
+                namedImports: [`${contractName}DeployArgs`, `${contractName}Config`],
                 moduleSpecifier: './' + path.join(dirName, contractName+".config")
             }
         })
@@ -78,7 +78,7 @@ export const setCraftformDefinition = async ({
                     name: "deploy",
                     parameters: [
                         {name: "contract", type: `"${name}"`},
-                        {name: "props", type: `CraftDeployProps<${name}Config, ${name}Args>`}
+                        {name: "props", type: `CraftDeployProps<${name}Config, ${name}DeployArgs>`}
                     ],
                     returnType: `Promise<${name}Config>`
                 },

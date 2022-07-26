@@ -16,10 +16,23 @@ export type GetContractProps = {
   version?: ConfigVersion
 }
 
-export type CraftDeployOptions<T extends Array<any>> = |
-  Omit<DeployOptions, 'args' | 'contract'> & {
-    args?: T
+type OptionalArray = Array<any> | undefined
+export type ProxyProps<name extends string, ProxyArgs extends OptionalArray> = |
+  ProxyArgs extends undefined ? undefined : {
+    execute: name
+    proxyArgs: ProxyArgs
   }
+
+export type DeployArgs<
+  ArgsType extends Array<any>, 
+  ProxyProps
+> = {
+  args: ArgsType,
+  proxy: ProxyProps
+}
+
+export type CraftDeployOptions<DeployArgs> = |
+  Omit<DeployOptions, 'args' | 'contract' | 'proxy'> & DeployArgs
 
 export type ExcludedBaseConfig<Config> = Omit<Config, "address" | "alias" | "version" | "deployedAt">
 export type CraftDeployConfig<Config> = {
@@ -27,9 +40,10 @@ export type CraftDeployConfig<Config> = {
     ExcludedBaseConfig<Config>[key] extends BaseConfig ? address 
       : ExcludedBaseConfig<Config>[key]
 }
-export type CraftDeployProps<C extends BaseConfig, A extends Array<any>> = {
+
+export type CraftDeployProps<C extends BaseConfig, DeployArgs> = {
   alias: string
-  options: CraftDeployOptions<A>,
+  options: CraftDeployOptions<DeployArgs>,
   // config: Omit<C, keyof BaseConfig>
   config?: CraftDeployConfig<C>
 }

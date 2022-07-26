@@ -3,6 +3,7 @@ import { CraftformInitializerFormat } from "../types"
 import { getDeployArgsType } from "./getDeployArgsType"
 import { getArtifactInfo } from "./getArtifactInfo";
 import { SetProjectFileProps } from "./setProject.interface"
+import { OptionalKind, TypeAliasDeclarationStructure } from "ts-morph";
 
 export const setConfigFiles = async ({
     project,
@@ -45,7 +46,7 @@ export const setConfigFiles = async ({
             );
             configClassFile.addImportDeclarations([
                 {
-                    namedImports: ["Contract", "Config", "address", "BaseConfig"],
+                    namedImports: ["Contract", "Config", "address", "BaseConfig", "DeployArgs"],
                     moduleSpecifier: "hardhat-craftform/dist/core"
                 },
                 {
@@ -56,21 +57,44 @@ export const setConfigFiles = async ({
 
             // deploy args type
             configClassFile.addStatements("// argsType for constructor or initializer")
-            configClassFile.addTypeAlias({
+            const typeAliases:OptionalKind<TypeAliasDeclarationStructure>[] = []
+            typeAliases.push({
                 name: `${contractName}Args`,
-                type: `[${deployArgsTypes.args.join(', ')}]`,
-                isExported: true
+                type: `[${deployArgsTypes.args.join(', ')}]`
             })
+            // proxy 있는 경우
             if(deployArgsTypes.proxy){
-                configClassFile.addTypeAlias({
+                typeAliases.push({
                     name: `${contractName}ProxyProps`,
-                    type: `{
-                        execute: ${deployArgsTypes.proxy.execute};
-                        proxyArgs: [${deployArgsTypes.proxy.proxyArgs.join(', ')}];
-                    }`
+                    type: `ProxyProps`,
+                    typeParameters: [
+                        deployArgsTypes.proxy.execute,
+                        deployArgsTypes.proxy.proxyArgs.join(', ')
+                    ]
+                })
+                typeAliases.push({
+                    name: `${contractName}DeployArgs`,
+                    type: `DeployArgs`,
+                    typeParameters: [
+                        `${contractName}Args`,
+                        `${contractName}ProxyProps`
+                    ],
+                    isExported: true
                 })
             }
-
+            // proxy 없는 경우
+            else {
+                typeAliases.push({
+                    name: `${contractName}DeployArgs`,
+                    type: `DeployArgs`,
+                    typeParameters: [
+                        `${contractName}Args`
+                    ],
+                    isExported: true
+                })
+            }
+            configClassFile.addTypeAliases(typeAliases)
+            
             // config class
             configClassFile.addStatements("// Contract Config class")
             const configClass = configClassFile.addClass({
