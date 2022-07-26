@@ -80,7 +80,7 @@ export const setCraftformDefinition = async ({
                         {name: "contract", type: `"${name}"`},
                         {name: "props", type: `CraftDeployProps<${name}Config, ${name}Args>`}
                     ],
-                    returnType: `Promise<void>`
+                    returnType: `Promise<${name}Config>`
                 },
             ]
         })

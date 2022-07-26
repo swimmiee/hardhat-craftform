@@ -9,6 +9,7 @@ import { _addConfig, _getConfig } from "./config";
 import { confirmPrompt } from "../../utils/confirmPrompt";
 import { exit } from "process";
 import { BaseConfig } from "./BaseConfig";
+import { Config } from "../decorators";
 
 const chalk = require('chalk');
 
@@ -129,7 +130,7 @@ export class Craftform {
       options,
       config: customConfig
     }:CraftDeployProps<Config, any[]>
-  ){
+  ): Promise<Config>{
 
     /**
      * check if duplicated alias exists
@@ -182,5 +183,11 @@ export class Craftform {
       contract, 
       config
     )
+
+    const configTarget = this.__configs.find(c => c.contractName == contract);
+    if(!configTarget){
+      throw Error("Craftform::deploy, Fatal Error: config not found");
+    }
+    return new (configTarget.target as ClassType<Config>)(config);
   }
 }
