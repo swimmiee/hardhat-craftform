@@ -29,7 +29,7 @@ export const setCraftformDefinition = async ({
         },
         // typechain import
         {
-            namedImports: contractNames,
+            namespaceImport: "Typechain",
             moduleSpecifier: '../typechain'
         },
         // configs import
@@ -47,7 +47,7 @@ export const setCraftformDefinition = async ({
     definitionFile.addTypeAliases(
         contractNames.map(name => ({
             name: `${name}Craft`,
-            type: `CraftType<${name}, ${name}Config>`
+            type: `CraftType<Typechain.${name}, ${name}Config>`
         }))
     );
 
@@ -72,7 +72,7 @@ export const setCraftformDefinition = async ({
                         {name: "contract", type: `"${name}"`},
                         {name: "props", type: "GetContractProps"}
                     ],
-                    returnType: `Promise<CraftType<${name}, ${name}Config>>`
+                    returnType: `Promise<${name}Craft>`
                 },
                 {
                     name: "deploy",
