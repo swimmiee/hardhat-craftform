@@ -5,11 +5,17 @@ describe("Unit tests", function () {
   describe("Craftform", function () {
     useEnvironment("hardhat-project");
     
-    it("should use crafts properly", async function(){
-      // await this.hre.run("deploy", {
-      //   network: 'hardhat',
-      //   tags: "test-crafts"
-      // })
+    it("should deploy properly", async function(){
+      const {ethers, craftform} = this.hre;
+      const [owner] = await ethers.getSigners();
+
+      await craftform.deploy("Test1", {
+        alias: "MyTest1",
+        options: {
+          from: owner.address,
+          args: [123, "0x5FbDB2315678afecb367f032d93F642f64180aa3", "Hello"]
+        }
+      })
     })
   });
 
@@ -50,45 +56,7 @@ describe("Unit tests", function () {
 
   it("ts-morph test", async function(){
     const project = new Project({})
-
     const definitionFile = project.createSourceFile(`testfolder/index.ts`, "", {overwrite: true})
-    // indexFile.addVariableStatement(
-    //   {
-    //     declarationKind: VariableDeclarationKind.
-    //   }
-    // )
-
-    // definitionFile.addExportDeclaration(
-    //   {
-    //     isTypeOnly: true,
-    //     is
-        
-    //   }
-    // )
-    definitionFile.addTypeAlias({
-      isExported: true,
-      name: "asd",
-      type: "asdasdada"
-    })
-
-
-    // const runtimeModule = definitionFile.addModule({
-    //   declarationKind: ModuleDeclarationKind.Module,
-    //   hasDeclareKeyword: true,
-    //   name: "\"hardhat/types/runtime\""
-    // })
-
-    // runtimeModule.addFunction({
-    //   name: "asda",
-    //   parameters: [
-    //     {name: "asd", type: "number"}
-    //   ],
-    //   returnType: {
-
-    //   }
-    // })
-
-
     project.saveSync()
   })
 });

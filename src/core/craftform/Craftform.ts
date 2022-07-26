@@ -184,7 +184,7 @@ export class Craftform {
       config
     )
 
-    const configTarget = this.__configs.find(c => c.contractName == contract);
+    const configTarget = this.__configs.find(c => c.contractName === contract);
     if(!configTarget){
       throw Error("Craftform::deploy, Fatal Error: config not found");
     }

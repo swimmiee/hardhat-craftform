@@ -13,7 +13,7 @@ export const setCraftformDefinition = async ({
 
     // create definition file
     const definitionFile = project.createSourceFile(
-        `${craftsRootDir}/craftform.d.ts`,
+        `${craftsRootDir}/craftform.module.ts`,
         "",
         {overwrite: true}
     )
@@ -88,5 +88,5 @@ export const setCraftformDefinition = async ({
     
     await project.save()
 
-    console.log(`set ${craftsRootDir}/craftform.d.ts`)
+    console.log(`set ${craftsRootDir}/craftform.module.ts`)
 }
