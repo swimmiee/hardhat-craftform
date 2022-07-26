@@ -1,8 +1,8 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { IndentationText, NewLineKind, Project, QuoteKind } from "ts-morph";
-import { setConfigFiles } from "./config-files";
-import { SetProjectFileProps } from "./set-project.interface";
-import { setCraftformDefinition } from "./craftform-definition";
+import { setConfigFiles } from "./configFiles";
+import { SetProjectFileProps } from "./setProject.interface";
+import { setCraftformDefinition } from "./craftformDefinition";
 
 
 export default async function craftTypeFactory(

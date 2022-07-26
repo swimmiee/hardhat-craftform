@@ -7,7 +7,7 @@ import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import { Craftform } from "./core/craftform/Craftform";
 import craftTypeFactory from './core/craftFactory';
 import { isCraftInitiated } from './core/craftFactory/isCraftInitiated';
-import { normalizePath } from "./utils/normalize-path";
+import { normalizePath } from "./utils/normalizePath";
 import { CraftformHelper } from './CraftformHelper';
 
 export const TASK_CRAFTFORM = "craftform"

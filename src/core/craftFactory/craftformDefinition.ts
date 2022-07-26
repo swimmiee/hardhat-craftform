@@ -1,7 +1,7 @@
 import path from "path";
 import { ModuleDeclarationKind } from "ts-morph";
 import { getArtifactInfo } from "./getArtifactInfo";
-import { SetProjectFileProps } from "./set-project.interface";
+import { SetProjectFileProps } from "./setProject.interface";
 
 export const setCraftformDefinition = async ({
     project,
