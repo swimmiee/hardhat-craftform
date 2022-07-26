@@ -6,14 +6,13 @@ import { CraftformInitializerFormat } from "../types"
 import { generateTypes } from "./generateTypes"
 import { getArtifactInfo } from "./getArtifactInfo"
 
-export interface DeployArgsType {
+interface DeployArgsTypeStrings {
     args: string[]
     proxy?: {
         execute: string
         proxyArgs: string[]
     }
 }
-
 
 /**
  * 
@@ -26,7 +25,7 @@ export interface DeployArgsType {
 export const getDeployArgsType = (
     artifact:Artifact, 
     initializerFormat?: string | CraftformInitializerFormat
-):DeployArgsType => {
+):DeployArgsTypeStrings => {
     // 1. find constructor
     const constr:RawAbiDefinition | undefined = artifact.abi.find(
         abiItem => abiItem.type === "constructor"
