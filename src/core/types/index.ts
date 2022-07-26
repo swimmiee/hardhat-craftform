@@ -17,7 +17,10 @@ export type GetContractProps = {
 }
 
 type OptionalArray = Array<any> | undefined
-export type ProxyProps<name extends string, ProxyArgs extends OptionalArray = undefined> = |
+export type ProxyProps<
+  name extends string, 
+  ProxyArgs extends OptionalArray = undefined
+> = |
   ProxyArgs extends undefined ? undefined : {
     execute: name
     proxyArgs: ProxyArgs
@@ -25,7 +28,7 @@ export type ProxyProps<name extends string, ProxyArgs extends OptionalArray = un
 
 export type DeployArgs<
   ArgsType extends Array<any>, 
-  ProxyProps
+  ProxyProps = undefined
 > = {
   args: ArgsType,
   proxy: ProxyProps
