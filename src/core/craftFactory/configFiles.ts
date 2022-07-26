@@ -92,7 +92,8 @@ export const setConfigFiles = async ({
                 decorators: [{
                     name: "Config",
                     arguments: []
-                }]
+                }],
+                isExported: true
             })
 
             // for clear import config file
