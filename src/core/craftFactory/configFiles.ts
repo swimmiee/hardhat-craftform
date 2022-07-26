@@ -46,7 +46,7 @@ export const setConfigFiles = async ({
             );
             configClassFile.addImportDeclarations([
                 {
-                    namedImports: ["Contract", "Config", "address", "BaseConfig", "DeployArgs", "ProxyProps"],
+                    namedImports: ["Contract", "Config", "address", "BaseConfig", "DeployArgs", "ProxyProps", "CraftDeployProps"],
                     moduleSpecifier: "hardhat-craftform/dist/core"
                 },
                 {
@@ -60,13 +60,15 @@ export const setConfigFiles = async ({
             const typeAliases:OptionalKind<TypeAliasDeclarationStructure>[] = []
             typeAliases.push({
                 name: `${contractName}Args`,
-                type: `[${deployArgsTypes.args.join(', ')}]`
+                type: `[${deployArgsTypes.args.join(', ')}]`,
+                isExported: true
             })
             // proxy 있는 경우
             if(deployArgsTypes.proxy){
                 typeAliases.push({
                     name: `${contractName}ProxyProps`,
                     type: `ProxyProps<"${deployArgsTypes.proxy.execute}", [${deployArgsTypes.proxy.proxyArgs.join(', ')}]>`,
+                    isExported: true
                 })
                 typeAliases.push({
                     name: `${contractName}DeployArgs`,
@@ -82,6 +84,11 @@ export const setConfigFiles = async ({
                     isExported: true
                 })
             }
+            typeAliases.push({
+                name: `${contractName}DeployProps`,
+                type: `CraftDeployProps<${contractName}Config, ${contractName}DeployArgs>`,
+                isExported: true
+            })
             configClassFile.addTypeAliases(typeAliases)
             
             // config class
