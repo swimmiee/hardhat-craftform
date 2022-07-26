@@ -9,13 +9,13 @@ describe("Unit tests", function () {
       const {ethers, craftform} = this.hre;
       const [owner] = await ethers.getSigners();
 
-      await craftform.deploy("Test1", {
-        alias: "MyTest1",
-        options: {
-          from: owner.address,
-          args: [123, "0x5FbDB2315678afecb367f032d93F642f64180aa3", "Hello"]
-        }
-      })
+      // await craftform.deploy("Test1", {
+      //   alias: "MyTest1",
+      //   options: {
+      //     from: owner.address,
+      //     args: [123, "0x5FbDB2315678afecb367f032d93F642f64180aa3", "Hello"]
+      //   }
+      // })
     })
   });
 

@@ -66,19 +66,11 @@ export const setConfigFiles = async ({
             if(deployArgsTypes.proxy){
                 typeAliases.push({
                     name: `${contractName}ProxyProps`,
-                    type: `ProxyProps`,
-                    typeParameters: [
-                        deployArgsTypes.proxy.execute,
-                        deployArgsTypes.proxy.proxyArgs.join(', ')
-                    ]
+                    type: `ProxyProps<${deployArgsTypes.proxy.execute}, ${deployArgsTypes.proxy.proxyArgs.join(', ')}>`,
                 })
                 typeAliases.push({
                     name: `${contractName}DeployArgs`,
-                    type: `DeployArgs`,
-                    typeParameters: [
-                        `${contractName}Args`,
-                        `${contractName}ProxyProps`
-                    ],
+                    type: `DeployArgs<${contractName}Args, ${contractName}ProxyProps>`,
                     isExported: true
                 })
             }
@@ -86,10 +78,7 @@ export const setConfigFiles = async ({
             else {
                 typeAliases.push({
                     name: `${contractName}DeployArgs`,
-                    type: `DeployArgs`,
-                    typeParameters: [
-                        `${contractName}Args`
-                    ],
+                    type: `DeployArgs<${contractName}Args>`,
                     isExported: true
                 })
             }
