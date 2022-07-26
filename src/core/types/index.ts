@@ -29,10 +29,15 @@ export type ProxyProps<
 export type DeployArgs<
   ArgsType extends Array<any>, 
   ProxyProps = undefined
-> = {
-  args: ArgsType,
-  proxy: ProxyProps
-}
+> = ProxyProps extends undefined ? 
+  {
+    args: ArgsType
+  } 
+  :
+  {
+    args: ArgsType,
+    proxy: ProxyProps
+  }
 
 export type CraftDeployOptions<DeployArgs> = |
   Omit<DeployOptions, 'args' | 'contract' | 'proxy'> & DeployArgs
