@@ -69,7 +69,7 @@ export const setCraftformDefinition = async ({
                 {
                     name: "get",
                     parameters: [
-                        {name: "contractName", type: name},
+                        {name: "contract", type: `"${name}"`},
                         {name: "props", type: "GetContractProps"}
                     ],
                     returnType: `Promise<CraftType<${name}, ${name}Config>>`
@@ -77,7 +77,7 @@ export const setCraftformDefinition = async ({
                 {
                     name: "deploy",
                     parameters: [
-                        {name: "contract", type: name},
+                        {name: "contract", type: `"${name}"`},
                         {name: "props", type: `CraftDeployProps<${name}Config, ${name}Args>`}
                     ],
                     returnType: `Promise<void>`
