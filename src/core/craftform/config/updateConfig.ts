@@ -1,9 +1,8 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ConfigUpdateable, UpdateConfigTarget, Versioning } from "../../types";
+import { ConfigUpdateable, SavedConfig, UpdateConfigTarget, Versioning } from "../../types";
 import { BaseConfig } from "../BaseConfig";
-
 
 // @TODO
 // JOB 내에서, Step 끝날 떄마다 config save & load
@@ -13,10 +12,9 @@ export function _updateConfig<Config extends BaseConfig>(
   versioning: Versioning
 ) {
   const filename = getConfigFilename({ chain, contract });
-  type RawConfig = ConfigUpdateable<Config> & BaseConfig
   
-  const configs = getConfigList<RawConfig>({ chain, contract });
-  const searchFunc = (c:RawConfig):boolean =>{
+  const configs = getConfigList<SavedConfig<Config>>({ chain, contract });
+  const searchFunc = (c:SavedConfig<BaseConfig>):boolean =>{
     const entries = Object.entries(target)
     if(entries.length !== 0)
       return false;
@@ -49,7 +47,7 @@ export function _updateConfig<Config extends BaseConfig>(
       ...upgraded,
       version: +version + 1
     }
-    configs.push(clone as RawConfig)
+    configs.push(clone as SavedConfig<Config>)
   }
   
 

@@ -14,7 +14,7 @@ export function _addConfig<Config extends BaseConfig>({
   newConfig,
 }: AddConfigProps<Config>) {
   const filename = getConfigFilename({ chain, contract });
-  const configs = getConfigList<Config>({ chain, contract });
+  const configs = getConfigList<SavedConfig<Config>>({ chain, contract });
 
   if (configs.findIndex(
     (c) => c.alias === newConfig.alias && c.version === newConfig.version
