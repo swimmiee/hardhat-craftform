@@ -23,7 +23,7 @@ export const setConfigFiles = async ({
     )
 
     indexFile.addExportDeclaration({
-        moduleSpecifier: './craftform.d'
+        moduleSpecifier: './craftform.module'
     })
 
     await Promise.all(
@@ -67,7 +67,10 @@ export const setConfigFiles = async ({
             if(deployArgsTypes.proxy){
                 typeAliases.push({
                     name: `${contractName}ProxyProps`,
-                    type: `ProxyProps<"${deployArgsTypes.proxy.execute}", [${deployArgsTypes.proxy.proxyArgs.join(', ')}]>`,
+                    type: `ProxyProps<
+                        "${deployArgsTypes.proxy.methodName}", 
+                        [${deployArgsTypes.proxy.args.join(', ')}]
+                    >`,
                     isExported: true
                 })
                 typeAliases.push({

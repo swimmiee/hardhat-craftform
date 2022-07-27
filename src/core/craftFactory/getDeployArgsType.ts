@@ -1,6 +1,5 @@
-import { artifacts } from "hardhat"
 import { Artifact } from "hardhat/types"
-import { AbiParameter, parseEvmType, RawAbiDefinition } from "typechain"
+import { parseEvmType, RawAbiDefinition } from "typechain"
 import { getInitializer } from "../../utils"
 import { CraftformInitializerFormat } from "../types"
 import { generateTypes } from "./generateTypes"
@@ -9,8 +8,8 @@ import { getArtifactInfo } from "./getArtifactInfo"
 interface DeployArgsTypeStrings {
     args: string[]
     proxy?: {
-        execute: string
-        proxyArgs: string[]
+        methodName: string
+        args: string[]
     }
 }
 
@@ -62,9 +61,9 @@ export const getDeployArgsType = (
         }))
         return {
             args,
-            proxy: {
-                execute: targetInitializerName,
-                proxyArgs: generateTypes(initializerParams)
+            proxy:{
+                methodName: targetInitializerName,
+                args: generateTypes(initializerParams)
             }
         }
     }

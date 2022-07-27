@@ -22,8 +22,10 @@ export type ProxyProps<
   ProxyArgs extends OptionalArray = undefined
 > = |
   ProxyArgs extends undefined ? undefined : {
-    execute: name
-    proxyArgs: ProxyArgs
+    execute: {
+      methodName: name | (string & {})
+      args: ProxyArgs
+    }
   }
 
 export type DeployArgs<
