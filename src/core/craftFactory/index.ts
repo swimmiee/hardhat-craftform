@@ -4,6 +4,7 @@ import { setConfigFiles } from "./configFiles";
 import { SetProjectFileProps } from "./setProject.interface";
 import { setCraftModuleDefinition } from "./craftModuleDefinition";
 import { setDeployArgsFile } from "./deployArgsFile";
+import { setCraftDefinition } from "./craftDefinition";
 
 
 export default async function craftTypeFactory(
@@ -44,6 +45,8 @@ export default async function craftTypeFactory(
     // args proxy setting
     await setDeployArgsFile(coreProps, hre.userConfig.craftform?.initializer)
 
+    // crafts definition
+    await setCraftDefinition(coreProps)
 
     if(resetConfigs){
         // config.ts 파일들을 모두 초기화함!!
@@ -59,7 +62,8 @@ export default async function craftTypeFactory(
     indexFile.addExportDeclarations([
         { moduleSpecifier: './craftform.module' },
         { moduleSpecifier: './deploy.args' },
-        { moduleSpecifier: './configs' }
+        { moduleSpecifier: './configs' },
+        { moduleSpecifier: './crafts' },
     ])
 
     await indexFile.save()

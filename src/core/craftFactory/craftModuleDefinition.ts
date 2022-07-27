@@ -43,7 +43,7 @@ export const setCraftModuleDefinition = async ({
         // crafts import
         {
             namespaceImport: "Crafts",
-            moduleSpecifier: './crafts.args'
+            moduleSpecifier: './crafts'
         },
         
     ])
