@@ -1,7 +1,7 @@
 import { ModuleDeclarationKind } from "ts-morph";
 import { SetProjectFileProps } from "./setProject.interface";
 
-export const setCraftModuleDefinition = async ({
+export const setCraftformHelperDefinition = async ({
     project,
     artifacts,
     craftsRootDir
@@ -10,11 +10,8 @@ export const setCraftModuleDefinition = async ({
     const contractNames = artifacts.map(a => a.contractName)
 
     // create definition file
-    const definitionFile = project.createSourceFile(
-        `${craftsRootDir}/craftform.module.ts`,
-        "",
-        {overwrite: true}
-    )
+    const dest = `${craftsRootDir}/craftform.helper.ts`;
+    const definitionFile = project.createSourceFile(dest, "", {overwrite: true})
 
     /*******************
      * Default Imports
@@ -22,18 +19,8 @@ export const setCraftModuleDefinition = async ({
     definitionFile.addImportDeclarations([
         // main module import
         {
-            namedImports: ['CraftType', 'GetContractProps'],
+            namedImports: ['GetContractProps'],
             moduleSpecifier: 'hardhat-craftform/dist/core',
-        },
-        // typechain import
-        {
-            namespaceImport: "Typechain",
-            moduleSpecifier: '../typechain'
-        },
-        // configs import
-        {
-            namespaceImport: "Configs",
-            moduleSpecifier: './configs'
         },
         // deploy props import
         {
@@ -45,7 +32,6 @@ export const setCraftModuleDefinition = async ({
             namespaceImport: "Crafts",
             moduleSpecifier: './crafts'
         },
-        
     ])
 
 
@@ -85,6 +71,5 @@ export const setCraftModuleDefinition = async ({
     )
     
     await project.save()
-
-    console.log(`set ${craftsRootDir}/craftform.module.ts`)
+    console.log(`set craftformHelper definition file at ${dest}`)
 }
