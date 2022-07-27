@@ -192,11 +192,11 @@ export class Craftform {
     );
   }
 
-  public upsertConfig<C extends BaseConfig>(
+  public async upsertConfig<C extends BaseConfig>(
     contract: string, 
     config: C, 
     versioning: Versioning = "maintain"
-  ){
+  ):Promise<CraftLike> {
 
     const configTarget = {
       contract, 

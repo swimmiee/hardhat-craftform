@@ -19,13 +19,18 @@ export const setCraftformHelperDefinition = async ({
     definitionFile.addImportDeclarations([
         // main module import
         {
-            namedImports: ['GetContractProps'],
+            namedImports: ['GetContractProps', 'Versioning'],
             moduleSpecifier: 'hardhat-craftform/dist/core',
         },
         // deploy props import
         {
             namespaceImport: "Deploy",
             moduleSpecifier: './deploy.args'
+        },
+        // configs import
+        {
+            namespaceImport: "Configs",
+            moduleSpecifier: './configs'
         },
         // crafts import
         {
@@ -63,6 +68,15 @@ export const setCraftformHelperDefinition = async ({
                     parameters: [
                         {name: "contract", type: `"${name}"`},
                         {name: "props", type: `Deploy.${name}DeployProps`}
+                    ],
+                    returnType: `Promise<Crafts.${name}Craft>`
+                },
+                {
+                    name: `upsertConfig<Configs.${name}Config>`,
+                    parameters: [
+                        {name: "contract", type: `"${name}"`},
+                        {name: "config", type: `${name}Config`},
+                        {name: "versioning?", type: "Versioning",}
                     ],
                     returnType: `Promise<Crafts.${name}Craft>`
                 },

@@ -1,6 +1,7 @@
-import { CraftDeployProps, CraftType, GetContractProps } from "./core/types/index"
+import { BaseConfig } from "../core"
+import { CraftDeployProps, CraftType, GetContractProps, Versioning } from "./core/types/index"
 
-// temp interface.
+// temporary interface.
 // It will be overwritten by craftform.helper.ts
 export interface CraftformHelper {
     get(
@@ -8,8 +9,14 @@ export interface CraftformHelper {
         props: GetContractProps
     ):Promise<CraftType<any, any>>
     
-    deploy: (
+    deploy(
         contract: string,
         props:CraftDeployProps<any, any[]>
-    ) => Promise<CraftType<any, any>>
+    ):Promise<CraftType<any, any>>
+
+    upsertConfig<C extends BaseConfig>(
+        contract: string, 
+        config: C, 
+        versioning?: Versioning
+    ):Promise<CraftType<any, C>>
 }
