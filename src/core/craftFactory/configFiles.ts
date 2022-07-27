@@ -1,9 +1,6 @@
 import path from "path";
-import { CraftformInitializerFormat } from "../types"
-import { getDeployArgsType } from "./getDeployArgsType"
 import { getArtifactInfo } from "./getArtifactInfo";
 import { SetProjectFileProps } from "./setProject.interface"
-import { OptionalKind, TypeAliasDeclarationStructure } from "ts-morph";
 
 export const setConfigFiles = async ({
     project,
@@ -11,9 +8,7 @@ export const setConfigFiles = async ({
     craftsRootDir,
     // contractNames,
     // contractToArtifactMap
-}:SetProjectFileProps, initializerFormat?: string | CraftformInitializerFormat) => {
-    if(!initializerFormat)
-        console.log('\x1b[43m','WARN:: craftform.initializer in hardhat.config.ts is not set. \x1b[0m');
+}:SetProjectFileProps) => {
 
     // for clean import
     const indexFile = project.createSourceFile(
@@ -35,7 +30,7 @@ export const setConfigFiles = async ({
             "",
             {overwrite: true}
         );
-        
+
         configClassFile.addImportDeclaration({
             namedImports: ["Contract", "Config", "BaseConfig"],
             moduleSpecifier: "hardhat-craftform/dist/core"

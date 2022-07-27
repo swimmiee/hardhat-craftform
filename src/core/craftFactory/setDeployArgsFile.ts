@@ -1,6 +1,5 @@
 import { OptionalKind, TypeAliasDeclarationStructure } from "ts-morph";
 import { CraftformInitializerFormat } from "../types";
-import { getArtifactInfo } from "./getArtifactInfo";
 import { getDeployArgsType } from "./getDeployArgsType";
 import { SetProjectFileProps } from "./setProject.interface";
 

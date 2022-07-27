@@ -42,12 +42,12 @@ export default async function craftTypeFactory(
     await setCraftformDefinition(coreProps)
 
     // args proxy setting
-    await setDeployArgsFile(coreProps)
+    await setDeployArgsFile(coreProps, hre.userConfig.craftform?.initializer)
 
 
     if(resetConfigs){
         // config.ts 파일들을 모두 초기화함!!
-        await setConfigFiles(coreProps, hre.userConfig.craftform?.initializer)
+        await setConfigFiles(coreProps)
     }
 
     const indexFile = coreProps.project.createSourceFile(
