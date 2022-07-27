@@ -51,7 +51,9 @@ export interface CraftDeployOptionsBase extends TxOptions {
 }
 export type CraftDeployOptions<DeployArgs> = CraftDeployOptionsBase & DeployArgs
 
-export type ExcludedBaseConfig<Config> = Omit<Config, "address" | "alias" | "version" | "deployedAt">
+const BaseConfigProperties = ["address", "alias", "version", "deployedAt", "update"] as const
+type BaseConfigKey = typeof BaseConfigProperties[number]
+export type ExcludedBaseConfig<Config> = Omit<Config, BaseConfigKey>
 export type CraftDeployConfig<Config> = {
   [key in keyof ExcludedBaseConfig<Config>]: 
     ExcludedBaseConfig<Config>[key] extends BaseConfig ? address 

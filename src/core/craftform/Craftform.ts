@@ -9,6 +9,7 @@ import { _addConfig, _getConfig } from "./config";
 import { confirmPrompt } from "../../utils/confirmPrompt";
 import { BaseConfig } from "./BaseConfig";
 import { Config } from "../decorators";
+import { createNull } from "@ts-morph/common/lib/typescript";
 
 const chalk = require('chalk');
 
@@ -75,7 +76,7 @@ export class Craftform {
 
     // load & inject Contract Factory
     try {
-      const fac = await this._ethers.getContractAt("Test1", config.address)
+      const fac = await this._ethers.getContractAt(contract, config.address)
       Object.assign(craft, fac);
     } catch (error) {
       console.log(error)
@@ -94,7 +95,7 @@ export class Craftform {
         if (relationType === "Contract") {
   
           Object.assign(craft.$config, {
-            [propertyKey]: new relatedConfig(
+            [propertyKey]: craft.$config[propertyKey] ? new relatedConfig(
                 _getConfig({
                   contract: extractContractNameFromConfigName(
                     relatedConfig.name
@@ -103,7 +104,7 @@ export class Craftform {
                   chain: craftChain,
                   address: craft.$config[propertyKey],
                 })
-              ),
+              ): null,
           });
         }
       });

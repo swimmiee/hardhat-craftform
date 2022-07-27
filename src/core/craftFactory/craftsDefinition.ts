@@ -1,6 +1,6 @@
 import { SetProjectFileProps } from "./setProject.interface";
 
-export const setCraftDefinition = async ({
+export const setCraftsDefinition = async ({
     project,
     artifacts,
     craftsRootDir,
@@ -40,7 +40,7 @@ export const setCraftDefinition = async ({
     definitionFile.addTypeAliases(
         contractNames.map(name => ({
             name: `${name}Craft`,
-            type: `CraftType<Typechain.${name}, Config.${name}Config>`,
+            type: `CraftType<Typechain.${name}, Configs.${name}Config>`,
             isExported: true
         }))
     );
