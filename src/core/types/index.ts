@@ -1,4 +1,4 @@
-import { DeployOptions } from "hardhat-deploy/dist/types";
+import { DeployOptions, Libraries, TxOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
 import { BaseConfig } from "../craftform/BaseConfig";
 
@@ -42,8 +42,14 @@ export type DeployArgs<
     proxy: ProxyProps
   }
 
-export type CraftDeployOptions<DeployArgs> = |
-  Omit<DeployOptions, 'args' | 'contract' | 'proxy'> & DeployArgs
+export interface CraftDeployOptionsBase extends TxOptions {
+  skipIfAlreadyDeployed?: boolean;
+  linkedData?: any; // JSONable ?
+  libraries?: Libraries;
+  // proxy?: boolean | string | ProxyOptions; // TODO support different type of proxies ?
+  deterministicDeployment?: boolean | string;
+}
+export type CraftDeployOptions<DeployArgs> = CraftDeployOptionsBase & DeployArgs
 
 export type ExcludedBaseConfig<Config> = Omit<Config, "address" | "alias" | "version" | "deployedAt">
 export type CraftDeployConfig<Config> = {

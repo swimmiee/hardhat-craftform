@@ -67,10 +67,7 @@ export const setConfigFiles = async ({
             if(deployArgsTypes.proxy){
                 typeAliases.push({
                     name: `${contractName}ProxyProps`,
-                    type: `ProxyProps<
-                        "${deployArgsTypes.proxy.methodName}", 
-                        [${deployArgsTypes.proxy.args.join(', ')}]
-                    >`,
+                    type: `ProxyProps<"${deployArgsTypes.proxy.methodName}",[${deployArgsTypes.proxy.args.join(', ')}]>`,
                     isExported: true
                 })
                 typeAliases.push({

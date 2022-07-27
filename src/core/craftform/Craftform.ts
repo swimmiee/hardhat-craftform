@@ -132,6 +132,11 @@ export class Craftform {
     }:CraftDeployProps<Config, any[]>
   ): Promise<Config>{
 
+    const configTarget = this.__configs.find(c => c.contractName === contract);
+    if(!configTarget){
+      throw Error("Craftform::deploy, Fatal Error: config not found");
+    }
+
     /**
      * check if duplicated alias exists
      */
@@ -142,17 +147,24 @@ export class Craftform {
     })
 
     if(existing){
-      const cont = await confirmPrompt(
-        `Contract ${contract} with alias "${alias}" already exists.\n` 
-        + `Version: ${existing.version}\n`
-        + `Address: ${existing.address}\n`
-        + `Deployed At: ${new Date(existing.deployedAt * 1000)}\n\n`
-        + 'Continue to deploy new one? (Press Ctrl + C to quit...)'
-      , true)
+      const contractInfo = `Contract ${contract} with alias "${alias}" already exists.\n` 
+      + `Version: ${existing.version}\n`
+      + `Address: ${existing.address}\n`
+      + `Deployed At: ${new Date(existing.deployedAt * 1000)}\n\n`
 
-      if(!cont){
-        console.log('User stopped deploy.')
-        exit(1)
+      if(options.skipIfAlreadyDeployed === false){
+        const cont = await confirmPrompt(
+          contractInfo
+          + 'Continue to deploy new one? (Press Ctrl + C to quit...)'
+        , true)
+
+        if(!cont){
+          console.log('Use existing contract.')
+          return new (configTarget.target as ClassType<Config>)(existing);
+        }
+      }
+      else {
+        return new (configTarget.target as ClassType<Config>)(existing);
       }
     }
 
@@ -184,10 +196,6 @@ export class Craftform {
       config
     )
 
-    const configTarget = this.__configs.find(c => c.contractName === contract);
-    if(!configTarget){
-      throw Error("Craftform::deploy, Fatal Error: config not found");
-    }
     return new (configTarget.target as ClassType<Config>)(config);
   }
 }
