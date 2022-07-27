@@ -1,9 +1,7 @@
-import path from "path";
 import { ModuleDeclarationKind } from "ts-morph";
-import { getArtifactInfo } from "./getArtifactInfo";
 import { SetProjectFileProps } from "./setProject.interface";
 
-export const setCraftformDefinition = async ({
+export const setCraftModuleDefinition = async ({
     project,
     artifacts,
     craftsRootDir
@@ -35,31 +33,21 @@ export const setCraftformDefinition = async ({
         // configs import
         {
             namespaceImport: "Configs",
-            moduleSpecifier: './config'
+            moduleSpecifier: './configs'
         },
         // deploy props import
         {
             namespaceImport: "Deploy",
             moduleSpecifier: './deploy.args'
         },
-        // configs import
-        ...artifacts.map(a => {
-            const {contractName, dirName} = getArtifactInfo(a)
-            return {
-                namedImports: [`${contractName}DeployProps`, `${contractName}Config`],
-                moduleSpecifier: './' + path.join(dirName, contractName+".config")
-            }
-        })
+        // crafts import
+        {
+            namespaceImport: "Crafts",
+            moduleSpecifier: './crafts.args'
+        },
+        
     ])
 
-    // export craftTypes
-    // export type ${name}Craft = CraftType<${name}, ${name}Config>
-    definitionFile.addTypeAliases(
-        contractNames.map(name => ({
-            name: `${name}Craft`,
-            type: `CraftType<Typechain.${name}, ${name}Config>`
-        }))
-    );
 
     // redeclare hardhat/types/runtime
     const runtimeModule = definitionFile.addModule({
@@ -82,15 +70,15 @@ export const setCraftformDefinition = async ({
                         {name: "contract", type: `"${name}"`},
                         {name: "props", type: "GetContractProps"}
                     ],
-                    returnType: `Promise<${name}Craft>`
+                    returnType: `Promise<Crafts.${name}Craft>`
                 },
                 {
                     name: "deploy",
                     parameters: [
                         {name: "contract", type: `"${name}"`},
-                        {name: "props", type: `${name}DeployProps`}
+                        {name: "props", type: `Deploy.${name}DeployProps`}
                     ],
-                    returnType: `Promise<${name}Craft>`
+                    returnType: `Promise<Crafts.${name}Craft>`
                 },
             ]
         })

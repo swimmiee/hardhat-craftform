@@ -2,8 +2,8 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { IndentationText, NewLineKind, Project, QuoteKind } from "ts-morph";
 import { setConfigFiles } from "./configFiles";
 import { SetProjectFileProps } from "./setProject.interface";
-import { setCraftformDefinition } from "./craftformDefinition";
-import { setDeployArgsFile } from "./setDeployArgsFile";
+import { setCraftModuleDefinition } from "./craftModuleDefinition";
+import { setDeployArgsFile } from "./deployArgsFile";
 
 
 export default async function craftTypeFactory(
@@ -39,7 +39,7 @@ export default async function craftTypeFactory(
 
 
     // craftform type definition file (idempotent)
-    await setCraftformDefinition(coreProps)
+    await setCraftModuleDefinition(coreProps)
 
     // args proxy setting
     await setDeployArgsFile(coreProps, hre.userConfig.craftform?.initializer)

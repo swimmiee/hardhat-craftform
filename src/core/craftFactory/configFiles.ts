@@ -6,8 +6,6 @@ export const setConfigFiles = async ({
     project,
     artifacts,
     craftsRootDir,
-    // contractNames,
-    // contractToArtifactMap
 }:SetProjectFileProps) => {
 
     // for clean import
@@ -37,7 +35,7 @@ export const setConfigFiles = async ({
         })
         
         // config class
-        configClassFile.addStatements("// Contract Config class")
+        configClassFile.addStatements("\n// Contract Config class")
         const configClass = configClassFile.addClass({
             name: `${contractName}Config`,
             extends: 'BaseConfig',
@@ -48,7 +46,7 @@ export const setConfigFiles = async ({
             isExported: true
         })
 
-        configClass.addJsDoc("Write down your custom configs...")
+        configClass.addJsDoc("Write down your custom configs...\n You can use @Contract property decorator to connect other contract's config.")
 
         // for clear import config file
         indexFile.addExportDeclaration({
