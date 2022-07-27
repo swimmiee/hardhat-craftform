@@ -31,6 +31,7 @@ export const setDeployArgsFile = async ({
         }
     ])
 
+    deployArgsFile.addStatements("// argsType for constructor or initializer")
     artifacts.map(async artifact => {
         const { contractName } = artifact
         const deployArgsTypes = getDeployArgsType(
@@ -39,7 +40,7 @@ export const setDeployArgsFile = async ({
         )
 
         // deploy args type
-        deployArgsFile.addStatements("// argsType for constructor or initializer")
+        deployArgsFile.addStatements(`// ${contractName}`)
         const typeAliases:OptionalKind<TypeAliasDeclarationStructure>[] = []
         typeAliases.push({
             name: `${contractName}Args`,
@@ -52,12 +53,12 @@ export const setDeployArgsFile = async ({
                 name: `${contractName}ProxyProps`,
                 type: `ProxyProps<"${deployArgsTypes.proxy.methodName}",[${deployArgsTypes.proxy.args.join(', ')}]>`,
                 isExported: true
-            })
+            });
             typeAliases.push({
                 name: `${contractName}DeployArgs`,
                 type: `DeployArgs<${contractName}Args, ${contractName}ProxyProps>`,
                 isExported: true
-            })
+            });
         }
         // proxy 없는 경우
         else {

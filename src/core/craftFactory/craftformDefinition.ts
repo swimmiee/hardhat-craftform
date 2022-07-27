@@ -33,6 +33,16 @@ export const setCraftformDefinition = async ({
             moduleSpecifier: '../typechain'
         },
         // configs import
+        {
+            namespaceImport: "Configs",
+            moduleSpecifier: './config'
+        },
+        // deploy props import
+        {
+            namespaceImport: "Deploy",
+            moduleSpecifier: './deploy.args'
+        },
+        // configs import
         ...artifacts.map(a => {
             const {contractName, dirName} = getArtifactInfo(a)
             return {
