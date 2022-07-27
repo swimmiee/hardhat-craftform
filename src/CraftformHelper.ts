@@ -11,5 +11,5 @@ export interface CraftformHelper {
     deploy: (
         contract: string,
         props:CraftDeployProps<any, any[]>
-    ) => Promise<void>
+    ) => Promise<CraftType<any, any>>
 }
