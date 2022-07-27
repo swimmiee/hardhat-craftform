@@ -1,5 +1,5 @@
 import { CraftMetadata, RelationMetadata } from "../metadata";
-import { ClassType, CraftDeployProps, GetContractProps, Versioning } from "../types";
+import { ClassType, CraftDeployProps, GetContractProps, NewConfigProps, Versioning } from "../types";
 import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
@@ -194,7 +194,7 @@ export class Craftform {
 
   public async upsertConfig<C extends BaseConfig>(
     contract: string, 
-    config: C, 
+    config: NewConfigProps<C>, 
     versioning: Versioning = "maintain"
   ):Promise<CraftLike> {
 
@@ -214,7 +214,11 @@ export class Craftform {
       _addConfig({
         chain: this._network.name,
         contract,
-        newConfig: config
+        newConfig: {
+          ...config,
+          version: 0,
+          deployedAt: 0
+        }
       })
     }
     return this.get(contract, configTarget)

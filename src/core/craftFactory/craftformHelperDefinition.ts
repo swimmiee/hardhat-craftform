@@ -72,11 +72,11 @@ export const setCraftformHelperDefinition = async ({
                     returnType: `Promise<Crafts.${name}Craft>`
                 },
                 {
-                    name: `upsertConfig<Configs.${name}Config>`,
+                    name: `upsertConfig`,
                     parameters: [
                         {name: "contract", type: `"${name}"`},
                         {name: "config", type: `${name}Config`},
-                        {name: "versioning?", type: "Versioning",}
+                        {name: "versioning?", type: "Versioning"}
                     ],
                     returnType: `Promise<Crafts.${name}Craft>`
                 },
