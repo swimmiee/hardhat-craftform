@@ -19,12 +19,16 @@ export const setDeployArgsFile = async ({
 
     deployArgsFile.addImportDeclarations([
         {
-            namedImports: ["DeployArgs", "ProxyProps", "CraftDeployProps"],
+            namedImports: ["DeployArgs", "ProxyProps", "CraftDeployProps", "address"],
             moduleSpecifier: "hardhat-craftform/dist/core"
         },
         {
             namespaceImport: "Configs",
             moduleSpecifier: "./configs"
+        },
+        {
+            namedImports: ["BigNumberish"],
+            moduleSpecifier: "ethers"
         }
     ])
 

@@ -51,7 +51,7 @@ export default async function craftTypeFactory(
     }
 
     const indexFile = coreProps.project.createSourceFile(
-        `${craftsRootDir}/contract/index.ts`,
+        `${craftsRootDir}/index.ts`,
         "",
         { overwrite: true }
     )

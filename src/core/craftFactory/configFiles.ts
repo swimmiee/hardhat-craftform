@@ -35,16 +35,11 @@ export const setConfigFiles = async ({
             "",
             {overwrite: true}
         );
-        configClassFile.addImportDeclarations([
-            {
-                namedImports: ["Contract", "Config", "address", "BaseConfig"],
-                moduleSpecifier: "hardhat-craftform/dist/core"
-            },
-            {
-                namedImports: ["BigNumberish"],
-                moduleSpecifier: "ethers"
-            }
-        ])
+        
+        configClassFile.addImportDeclaration({
+            namedImports: ["Contract", "Config", "BaseConfig"],
+            moduleSpecifier: "hardhat-craftform/dist/core"
+        })
         
         // config class
         configClassFile.addStatements("// Contract Config class")
