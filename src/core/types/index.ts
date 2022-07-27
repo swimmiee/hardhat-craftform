@@ -79,7 +79,7 @@ export interface GetConfigProps extends ConfigTarget {
   version?: ConfigVersion
 }
 
-export interface UpdateConfigTarget extends ConfigTarget{
+export interface UpdateConfigTarget extends ConfigTarget {
   alias?: string
   address?: string
   version?: number

@@ -1,11 +1,11 @@
 import { CraftMetadata, RelationMetadata } from "../metadata";
-import { ClassType, CraftDeployProps, GetContractProps } from "../types";
+import { ClassType, CraftDeployProps, GetContractProps, Versioning } from "../types";
 import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { Network } from "hardhat/types";
 import { BaseContract } from "ethers"
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
-import { _addConfig, _getConfig } from "./config";
+import { _addConfig, _getConfig, _updateConfig } from "./config";
 import { confirmPrompt } from "../../utils/confirmPrompt";
 import { BaseConfig } from "./BaseConfig";
 import { Config } from "../decorators";
@@ -113,15 +113,6 @@ export class Craftform {
     return craft;
   }
 
-
-  private addConfig<C extends BaseConfig>(contract: string, config: C){
-    _addConfig({
-      chain: this._network.name,
-      contract,
-      newConfig: config
-    })
-  }
-
   public async deploy<Config extends BaseConfig>(
     contract: string,
     {
@@ -130,11 +121,6 @@ export class Craftform {
       config: customConfig
     }:CraftDeployProps<Config, any[]>
   ): Promise<CraftLike>{
-
-    const configTarget = this.__configs.find(c => c.contractName === contract);
-    if(!configTarget){
-      throw Error("Craftform::deploy, Fatal Error: config not found");
-    }
 
     /**
      * check if duplicated alias exists
@@ -190,11 +176,11 @@ export class Craftform {
       ...customConfig
     } as unknown as Config
     
-
-    this.addConfig<Config>(
-      contract, 
-      config
-    )
+    _addConfig({
+      chain: this._network.name,
+      contract,
+      newConfig: config
+    })
 
     return this.get(
       contract, 
@@ -204,5 +190,33 @@ export class Craftform {
         version: newVersion
       }
     );
+  }
+
+  public upsertConfig<C extends BaseConfig>(
+    contract: string, 
+    config: C, 
+    versioning: Versioning = "maintain"
+  ){
+
+    const configTarget = {
+      contract, 
+      chain: this._network.name,
+      alias: config.alias
+    }
+    const existing = _getConfig(configTarget)
+    if(existing){
+      _updateConfig({
+        ...configTarget,
+        version: existing.version
+      }, config, versioning)
+    }
+    else {
+      _addConfig({
+        chain: this._network.name,
+        contract,
+        newConfig: config
+      })
+    }
+    return this.get(contract, configTarget)
   }
 }
