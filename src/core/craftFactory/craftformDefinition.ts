@@ -24,7 +24,7 @@ export const setCraftformDefinition = async ({
     definitionFile.addImportDeclarations([
         // main module import
         {
-            namedImports: ['CraftType', 'CraftDeployProps', 'GetContractProps'],
+            namedImports: ['CraftType', 'GetContractProps'],
             moduleSpecifier: 'hardhat-craftform/dist/core',
         },
         // typechain import
@@ -80,7 +80,7 @@ export const setCraftformDefinition = async ({
                         {name: "contract", type: `"${name}"`},
                         {name: "props", type: `${name}DeployProps`}
                     ],
-                    returnType: `Promise<${name}Config>`
+                    returnType: `Promise<${name}Craft>`
                 },
             ]
         })

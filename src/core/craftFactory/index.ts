@@ -3,6 +3,7 @@ import { IndentationText, NewLineKind, Project, QuoteKind } from "ts-morph";
 import { setConfigFiles } from "./configFiles";
 import { SetProjectFileProps } from "./setProject.interface";
 import { setCraftformDefinition } from "./craftformDefinition";
+import { setDeployArgsFile } from "./setDeployArgsFile";
 
 
 export default async function craftTypeFactory(
@@ -40,8 +41,26 @@ export default async function craftTypeFactory(
     // craftform type definition file (idempotent)
     await setCraftformDefinition(coreProps)
 
+    // args proxy setting
+    await setDeployArgsFile(coreProps)
+
+
     if(resetConfigs){
         // config.ts 파일들을 모두 초기화함!!
         await setConfigFiles(coreProps, hre.userConfig.craftform?.initializer)
     }
+
+    const indexFile = coreProps.project.createSourceFile(
+        `${craftsRootDir}/contract/index.ts`,
+        "",
+        { overwrite: true }
+    )
+
+    indexFile.addExportDeclarations([
+        { moduleSpecifier: './craftform.module' },
+        { moduleSpecifier: './deploy.args' },
+        { moduleSpecifier: './configs' }
+    ])
+
+    await indexFile.save()
 }

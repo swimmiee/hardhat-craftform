@@ -7,7 +7,6 @@ import { BaseContract } from "ethers"
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
 import { _addConfig, _getConfig } from "./config";
 import { confirmPrompt } from "../../utils/confirmPrompt";
-import { exit } from "process";
 import { BaseConfig } from "./BaseConfig";
 import { Config } from "../decorators";
 
@@ -44,7 +43,6 @@ export class Craftform {
     this.__configs = [];
     this.__relations = {};
   }
-
 
   public async get<T extends CraftLike>(
     contract: string,
@@ -130,7 +128,7 @@ export class Craftform {
       options,
       config: customConfig
     }:CraftDeployProps<Config, any[]>
-  ): Promise<Config>{
+  ): Promise<CraftLike>{
 
     const configTarget = this.__configs.find(c => c.contractName === contract);
     if(!configTarget){
@@ -160,12 +158,12 @@ export class Craftform {
 
         if(!cont){
           console.log('Use existing contract.')
-          return new (configTarget.target as ClassType<Config>)(existing);
+          return this.get(contract, {chain: this._network.name, alias, version: existing.version});
         }
       }
       else {
         console.log(contractInfo)
-        return new (configTarget.target as ClassType<Config>)(existing);
+        return this.get(contract, {chain: this._network.name, alias, version: existing.version});
       }
     }
 
@@ -197,6 +195,13 @@ export class Craftform {
       config
     )
 
-    return new (configTarget.target as ClassType<Config>)(config);
+    return this.get(
+      contract, 
+      {
+        chain: this._network.name, 
+        alias, 
+        version: newVersion
+      }
+    );
   }
 }

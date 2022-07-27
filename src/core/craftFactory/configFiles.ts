@@ -17,100 +17,56 @@ export const setConfigFiles = async ({
 
     // for clean import
     const indexFile = project.createSourceFile(
-        `${craftsRootDir}/index.ts`,
+        `${craftsRootDir}/configs.ts`,
         "",
         { overwrite: true }
     )
 
-    indexFile.addExportDeclaration({
-        moduleSpecifier: './craftform.module'
-    })
+    artifacts.map(async artifact => {
+        const { dirName, contractName } = getArtifactInfo(artifact)
 
-    await Promise.all(
-        artifacts.map(async artifact => {
-            const { dirName, contractName } = getArtifactInfo(artifact)
 
-            const deployArgsTypes = await getDeployArgsType(
-                artifact,
-                initializerFormat
-            )
-    
-            const configClassFile = project.createSourceFile(
-                path.join(
-                    craftsRootDir,
-                    dirName,
-                    contractName+".config.ts"
-                ),
-                "",
-                {overwrite: true}
-            );
-            configClassFile.addImportDeclarations([
-                {
-                    namedImports: ["Contract", "Config", "address", "BaseConfig", "DeployArgs", "ProxyProps", "CraftDeployProps"],
-                    moduleSpecifier: "hardhat-craftform/dist/core"
-                },
-                {
-                    namedImports: ["BigNumberish"],
-                    moduleSpecifier: "ethers"
-                }
-            ])
-
-            // deploy args type
-            configClassFile.addStatements("// argsType for constructor or initializer")
-            const typeAliases:OptionalKind<TypeAliasDeclarationStructure>[] = []
-            typeAliases.push({
-                name: `${contractName}Args`,
-                type: `[${deployArgsTypes.args.join(', ')}]`,
-                isExported: true
-            })
-            // proxy 있는 경우
-            if(deployArgsTypes.proxy){
-                typeAliases.push({
-                    name: `${contractName}ProxyProps`,
-                    type: `ProxyProps<"${deployArgsTypes.proxy.methodName}",[${deployArgsTypes.proxy.args.join(', ')}]>`,
-                    isExported: true
-                })
-                typeAliases.push({
-                    name: `${contractName}DeployArgs`,
-                    type: `DeployArgs<${contractName}Args, ${contractName}ProxyProps>`,
-                    isExported: true
-                })
+        const configClassFile = project.createSourceFile(
+            path.join(
+                craftsRootDir,
+                dirName,
+                contractName+".config.ts"
+            ),
+            "",
+            {overwrite: true}
+        );
+        configClassFile.addImportDeclarations([
+            {
+                namedImports: ["Contract", "Config", "address", "BaseConfig"],
+                moduleSpecifier: "hardhat-craftform/dist/core"
+            },
+            {
+                namedImports: ["BigNumberish"],
+                moduleSpecifier: "ethers"
             }
-            // proxy 없는 경우
-            else {
-                typeAliases.push({
-                    name: `${contractName}DeployArgs`,
-                    type: `DeployArgs<${contractName}Args>`,
-                    isExported: true
-                })
-            }
-            typeAliases.push({
-                name: `${contractName}DeployProps`,
-                type: `CraftDeployProps<${contractName}Config, ${contractName}DeployArgs>`,
-                isExported: true
-            })
-            configClassFile.addTypeAliases(typeAliases)
-            
-            // config class
-            configClassFile.addStatements("// Contract Config class")
-            const configClass = configClassFile.addClass({
-                name: `${contractName}Config`,
-                extends: 'BaseConfig',
-                decorators: [{
-                    name: "Config",
-                    arguments: []
-                }],
-                isExported: true
-            })
-
-            // for clear import config file
-            indexFile.addExportDeclaration({
-                moduleSpecifier: "./" + path.join(dirName, contractName+".config")
-            })
+        ])
+        
+        // config class
+        configClassFile.addStatements("// Contract Config class")
+        const configClass = configClassFile.addClass({
+            name: `${contractName}Config`,
+            extends: 'BaseConfig',
+            decorators: [{
+                name: "Config",
+                arguments: []
+            }],
+            isExported: true
         })
-    )
+
+        configClass.addJsDoc("Write down your custom configs...")
+
+        // for clear import config file
+        indexFile.addExportDeclaration({
+            moduleSpecifier: "./" + path.join(dirName, contractName+".config")
+        })
+    })
+    
     console.log(`Config files created at: ${craftsRootDir}`)
 
     await project.save()
 }
-// write down your custom configs...
