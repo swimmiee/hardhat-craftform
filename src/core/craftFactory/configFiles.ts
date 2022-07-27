@@ -1,8 +1,9 @@
-import { existsSync } from "fs";
 import path from "path";
+import { existsSync } from "fs-extra";
 import { getArtifactInfo } from "./getArtifactInfo";
 import { SetProjectFileProps } from "./setProject.interface"
 
+// @TODO Contract 명 중복 문제
 export const setConfigFiles = async ({
     project,
     artifacts,
@@ -16,6 +17,7 @@ export const setConfigFiles = async ({
         { overwrite: true }
     )
 
+    let fileCreateCount = 0;
     artifacts.map(async artifact => {
         const { dirName, contractName } = getArtifactInfo(artifact)
         const dest = path.join(
@@ -46,6 +48,7 @@ export const setConfigFiles = async ({
             })
     
             configClass.addJsDoc("Write down your custom configs...\n You can use @Contract property decorator to connect other contract's config.")
+            fileCreateCount++;
         }
 
 
@@ -55,7 +58,8 @@ export const setConfigFiles = async ({
         })
     })
     
-    console.log(`Config files created at: ${craftsRootDir}`)
+    if(fileCreateCount)
+        console.log(`${fileCreateCount} Config files created at: ${craftsRootDir}`)
 
     await project.save()
 }

@@ -70,7 +70,7 @@ export const setDeployArgsFile = async ({
         }
         typeAliases.push({
             name: `${contractName}DeployProps`,
-            type: `CraftDeployProps<Configs.${contractName}Config, ${contractName}DeployArgs>`,
+            type: `CraftDeployProps<Configs.${contractName}Config, ${contractName}Args, ${contractName}ProxyProps>`,
             isExported: true
         })
         deployArgsFile.addTypeAliases(typeAliases)

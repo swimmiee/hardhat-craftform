@@ -1,4 +1,4 @@
-import { DeployOptions, Libraries, TxOptions } from "hardhat-deploy/dist/types";
+import { Libraries, TxOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
 import { BaseConfig } from "../craftform/BaseConfig";
 
@@ -31,15 +31,15 @@ export type ProxyProps<
 
 export type DeployArgs<
   ArgsType extends Array<any>, 
-  ProxyProps = undefined
-> = ProxyProps extends undefined ? 
+  Proxy extends ProxyProps<string, OptionalArray> = undefined
+> = Proxy extends undefined ? 
   {
     args: ArgsType
   } 
   :
   {
     args: ArgsType,
-    proxy: ProxyProps
+    proxy: Proxy
   }
 
 export interface CraftDeployOptionsBase extends TxOptions {
@@ -49,22 +49,28 @@ export interface CraftDeployOptionsBase extends TxOptions {
   // proxy?: boolean | string | ProxyOptions; // TODO support different type of proxies ?
   deterministicDeployment?: boolean | string;
 }
-export type CraftDeployOptions<DeployArgs> = CraftDeployOptionsBase & DeployArgs
+export type CraftDeployOptions<
+  ArgsType extends Array<any>, 
+  Proxy extends ProxyProps<string, OptionalArray> = undefined
+> = CraftDeployOptionsBase & DeployArgs<ArgsType, Proxy>
 
 const BaseConfigProperties = ["address", "alias", "version", "deployedAt", "update"] as const
 type BaseConfigKey = typeof BaseConfigProperties[number]
-export type ExcludedBaseConfig<Config> = Omit<Config, BaseConfigKey>
-export type NewConfigProps<Config> = ExcludedBaseConfig<Config> & {alias: string, address: address}
-export type CraftDeployConfig<Config> = {
+export type ExcludedBaseConfig<Config extends BaseConfig> = Omit<Config, BaseConfigKey>
+export type NewConfigProps<Config extends BaseConfig> = ExcludedBaseConfig<Config> & {alias: string, address: address}
+export type CraftDeployConfig<Config extends BaseConfig> = {
   [key in keyof ExcludedBaseConfig<Config>]: 
     ExcludedBaseConfig<Config>[key] extends BaseConfig ? address 
       : ExcludedBaseConfig<Config>[key]
 }
 
-export type CraftDeployProps<C extends BaseConfig, DeployArgs> = {
+export type CraftDeployProps<
+  C extends BaseConfig, 
+  ArgsType extends Array<any>, 
+  Proxy extends ProxyProps<string, OptionalArray> = undefined
+> = {
   alias: string
-  options: CraftDeployOptions<DeployArgs>,
-  // config: Omit<C, keyof BaseConfig>
+  options: CraftDeployOptions<ArgsType, Proxy>,
   config?: CraftDeployConfig<C>
 }
 
@@ -73,8 +79,7 @@ export interface ConfigTarget {
   chain: string;
   contract: string;
 }
-export type SavedConfig<Config> = Omit<Config, "update">
-
+export type SavedConfig<Config extends BaseConfig> = Omit<Config, "update">
 export interface GetConfigProps extends ConfigTarget {
   alias?: string;
   address?: string;
@@ -88,7 +93,7 @@ export interface UpdateConfigTarget extends ConfigTarget {
 }
 
 export type Versioning = "upgrade" | "maintain"
-export type ConfigUpdateable<Config> = CraftDeployConfig<Config>
+export type ConfigUpdateable<Config extends BaseConfig> = CraftDeployConfig<Config>
 export interface UpdateConfigOption {
   chain?: string
   versioning: Versioning
