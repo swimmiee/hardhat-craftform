@@ -4,7 +4,6 @@ import { BaseConfig } from "../craftform/BaseConfig";
 
 export type ClassType<T = any> = new (props?:any) => T
 
-
 export type CraftType<Contract extends BaseContract, Config extends BaseConfig> = Contract & {
   $config: Config
 } 
@@ -23,8 +22,10 @@ export type ProxyProps<
 > = |
   ProxyArgs extends undefined ? undefined : {
     execute: {
-      methodName: name | (string & {})
-      args: ProxyArgs
+      init: {
+        methodName: name | (string & {})
+        args: ProxyArgs
+      }
     }
   }
 
