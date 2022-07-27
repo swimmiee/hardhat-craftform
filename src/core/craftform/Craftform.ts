@@ -164,6 +164,7 @@ export class Craftform {
         }
       }
       else {
+        console.log(contractInfo)
         return new (configTarget.target as ClassType<Config>)(existing);
       }
     }
