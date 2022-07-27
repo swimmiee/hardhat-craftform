@@ -16,7 +16,7 @@ export function _updateConfig<Config extends BaseConfig>(
   const configs = getConfigList<SavedConfig<Config>>({ chain, contract });
   const searchFunc = (c:SavedConfig<BaseConfig>):boolean =>{
     const entries = Object.entries(target)
-    if(entries.length !== 0)
+    if(entries.length === 0)
       return false;
     return entries.every(([key, value]) => {
         if(value === undefined)

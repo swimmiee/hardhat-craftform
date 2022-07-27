@@ -19,7 +19,7 @@ export const setCraftformHelperDefinition = async ({
     definitionFile.addImportDeclarations([
         // main module import
         {
-            namedImports: ['GetContractProps', 'Versioning'],
+            namedImports: ['GetContractProps', 'NewConfigProps', 'Versioning'],
             moduleSpecifier: 'hardhat-craftform/dist/core',
         },
         // deploy props import
@@ -75,7 +75,7 @@ export const setCraftformHelperDefinition = async ({
                     name: `upsertConfig`,
                     parameters: [
                         {name: "contract", type: `"${name}"`},
-                        {name: "config", type: `${name}Config`},
+                        {name: "config", type: `NewConfigProps<Configs.${name}Config>`},
                         {name: "versioning?", type: "Versioning"}
                     ],
                     returnType: `Promise<Crafts.${name}Craft>`
