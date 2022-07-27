@@ -48,10 +48,9 @@ export default async function craftTypeFactory(
     // crafts definition
     await setCraftsDefinition(coreProps)
 
-    if(resetConfigs){
-        // config.ts 파일들을 모두 초기화함!!
-        await setConfigFiles(coreProps)
-    }
+    // resetConfigs=true이면 config.ts 파일들을 모두 초기화함!!
+    await setConfigFiles(coreProps, resetConfigs)
+
 
     const indexFile = coreProps.project.createSourceFile(
         `${craftsRootDir}/index.ts`,

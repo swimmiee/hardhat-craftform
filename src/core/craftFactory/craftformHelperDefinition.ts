@@ -53,35 +53,33 @@ export const setCraftformHelperDefinition = async ({
 
     // add craftform methods
     overwrittenCraftformHelper.addMethods(
-        contractNames.flatMap(name => {
-            return [
-                {
-                    name: "get",
-                    parameters: [
-                        {name: "contract", type: `"${name}"`},
-                        {name: "props", type: "GetContractProps"}
-                    ],
-                    returnType: `Promise<Crafts.${name}Craft>`
-                },
-                {
-                    name: "deploy",
-                    parameters: [
-                        {name: "contract", type: `"${name}"`},
-                        {name: "props", type: `Deploy.${name}DeployProps`}
-                    ],
-                    returnType: `Promise<Crafts.${name}Craft>`
-                },
-                {
-                    name: `upsertConfig`,
-                    parameters: [
-                        {name: "contract", type: `"${name}"`},
-                        {name: "config", type: `NewConfigProps<Configs.${name}Config>`},
-                        {name: "versioning?", type: "Versioning"}
-                    ],
-                    returnType: `Promise<Crafts.${name}Craft>`
-                },
-            ]
-        })
+        contractNames.flatMap(name => [
+            {
+                name: "get",
+                parameters: [
+                    {name: "contract", type: `"${name}"`},
+                    {name: "props", type: "GetContractProps"}
+                ],
+                returnType: `Promise<Crafts.${name}Craft>`
+            },
+            {
+                name: "deploy",
+                parameters: [
+                    {name: "contract", type: `"${name}"`},
+                    {name: "props", type: `Deploy.${name}DeployProps`}
+                ],
+                returnType: `Promise<Crafts.${name}Craft>`
+            },
+            {
+                name: `upsertConfig`,
+                parameters: [
+                    {name: "contract", type: `"${name}"`},
+                    {name: "config", type: `NewConfigProps<Configs.${name}Config>`},
+                    {name: "versioning?", type: "Versioning"}
+                ],
+                returnType: `Promise<Crafts.${name}Craft>`
+            },
+        ])
     )
     
     await project.save()

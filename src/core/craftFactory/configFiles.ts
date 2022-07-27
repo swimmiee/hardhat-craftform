@@ -1,3 +1,4 @@
+import { existsSync } from "fs";
 import path from "path";
 import { getArtifactInfo } from "./getArtifactInfo";
 import { SetProjectFileProps } from "./setProject.interface"
@@ -6,7 +7,7 @@ export const setConfigFiles = async ({
     project,
     artifacts,
     craftsRootDir,
-}:SetProjectFileProps) => {
+}:SetProjectFileProps, reset: boolean) => {
 
     // for clean import
     const indexFile = project.createSourceFile(
@@ -17,36 +18,36 @@ export const setConfigFiles = async ({
 
     artifacts.map(async artifact => {
         const { dirName, contractName } = getArtifactInfo(artifact)
-
-
-        const configClassFile = project.createSourceFile(
-            path.join(
-                craftsRootDir,
-                dirName,
-                contractName+".config.ts"
-            ),
-            "",
-            {overwrite: true}
+        const dest = path.join(
+            craftsRootDir,
+            dirName,
+            contractName+".config.ts"
         );
+        const fileExists = existsSync(dest)
 
-        configClassFile.addImportDeclaration({
-            namedImports: ["Contract", "Config", "BaseConfig"],
-            moduleSpecifier: "hardhat-craftform/dist/core"
-        })
-        
-        // config class
-        configClassFile.addStatements("\n// Contract Config class")
-        const configClass = configClassFile.addClass({
-            name: `${contractName}Config`,
-            extends: 'BaseConfig',
-            decorators: [{
-                name: "Config",
-                arguments: []
-            }],
-            isExported: true
-        })
+        if(!fileExists || reset){
+            const configClassFile = project.createSourceFile(dest, "", {overwrite: true});
+    
+            configClassFile.addImportDeclaration({
+                namedImports: ["Contract", "Config", "BaseConfig"],
+                moduleSpecifier: "hardhat-craftform/dist/core"
+            })
+            
+            // config class
+            configClassFile.addStatements("\n// Contract Config class")
+            const configClass = configClassFile.addClass({
+                name: `${contractName}Config`,
+                extends: 'BaseConfig',
+                decorators: [{
+                    name: "Config",
+                    arguments: []
+                }],
+                isExported: true
+            })
+    
+            configClass.addJsDoc("Write down your custom configs...\n You can use @Contract property decorator to connect other contract's config.")
+        }
 
-        configClass.addJsDoc("Write down your custom configs...\n You can use @Contract property decorator to connect other contract's config.")
 
         // for clear import config file
         indexFile.addExportDeclaration({
