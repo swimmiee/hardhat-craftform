@@ -11,7 +11,7 @@ export interface CraftformHelper {
     
     deploy(
         contract: string,
-        props:CraftDeployProps<any, any[]>
+        props:CraftDeployProps<any, any[], any>
     ):Promise<CraftType<any, any>>
 
     upsertConfig<C extends BaseConfig>(
