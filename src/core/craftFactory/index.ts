@@ -18,7 +18,7 @@ export default async function craftTypeFactory(
 
     const artifacts = artifactNames
         .map(name => hreArtifacts.readArtifactSync(name))
-        .filter( a => a.abi.length > 0 && a.bytecode !== '0x')
+        .filter( a => a.abi.length > 0)
 
     /**
      *  SetProjectFileProps setting
