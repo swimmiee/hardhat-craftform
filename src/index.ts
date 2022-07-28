@@ -1,4 +1,4 @@
-import '@nomiclabs/hardhat-ethers'
+import "@nomicfoundation/hardhat-toolbox";
 import 'hardhat-deploy'
 import "./type-extensions";
 import { extendConfig, extendEnvironment, task, types } from "hardhat/config";

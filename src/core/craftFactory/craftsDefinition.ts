@@ -4,7 +4,7 @@ export const setCraftsDefinition = async ({
     project,
     artifacts,
     craftsRootDir,
-}:SetProjectFileProps) => {
+}:SetProjectFileProps, typechainOutDir: string) => {
     const contractNames = artifacts.map(a => a.contractName)
 
     // create definition file
@@ -21,7 +21,7 @@ export const setCraftsDefinition = async ({
          // typechain import
         {
             namespaceImport: "Typechain",
-            moduleSpecifier: '../typechain'
+            moduleSpecifier: `../${typechainOutDir}`
         },
         // configs import
         {

@@ -46,7 +46,7 @@ export default async function craftTypeFactory(
     await setDeployArgsFile(coreProps, hre.userConfig.craftform?.initializer)
 
     // crafts definition
-    await setCraftsDefinition(coreProps)
+    await setCraftsDefinition(coreProps, hre.config.typechain.outDir)
 
     // resetConfigs=true이면 config.ts 파일들을 모두 초기화함!!
     await setConfigFiles(coreProps, resetConfigs)
