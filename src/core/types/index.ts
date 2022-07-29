@@ -51,7 +51,7 @@ export type DeployArgs<
     proxy: Proxy
   }
 
-export type DeployArgsBase = DeployArgs<Array<any> | undefined, ProxyProps<string, OptionalArray>>
+export type DeployArgsBase = DeployArgs<(Array<any> | undefined), ProxyProps<string, OptionalArray>>
 
 export interface CraftDeployOptionsBase extends TxOptions {
   skipIfAlreadyDeployed?: boolean;
@@ -62,10 +62,7 @@ export interface CraftDeployOptionsBase extends TxOptions {
 }
 
 export type CraftDeployOptions<
-  DeployProps extends DeployArgs<
-    Array<any>, 
-    ProxyProps<string, OptionalArray>
-  >
+  DeployProps extends DeployArgsBase
 > = CraftDeployOptionsBase & DeployProps
 
 const BaseConfigProperties = ["address", "alias", "version", "deployedAt", "update"] as const
