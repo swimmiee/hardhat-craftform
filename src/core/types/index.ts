@@ -1,4 +1,4 @@
-import { Libraries, TxOptions } from "hardhat-deploy/dist/types";
+import { Libraries, ProxyOptions, TxOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
 import { BaseConfig } from "../craftform/BaseConfig";
 
@@ -16,11 +16,25 @@ export type GetContractProps = {
 }
 
 type OptionalArray = Array<any> | undefined
+
+type ProxyOptionBase = {
+  owner?: address;
+  upgradeIndex?: number;
+  proxyContract?: string; // default to EIP173Proxy
+  proxyArgs?: any[]; // default to ["{implementation}", "{admin}", "{data}"]
+  viaAdminContract?:
+    | string
+    | {
+        name: string;
+        artifact?: string;
+      };
+  implementationName?: string;
+};
 export type ProxyProps<
   name extends string, 
   ProxyArgs extends OptionalArray = undefined
 > = |
-  ProxyArgs extends undefined ? undefined : {
+  ProxyArgs extends undefined ? undefined : ProxyOptionBase & {
     execute: {
       init: {
         methodName: name | (string & {})

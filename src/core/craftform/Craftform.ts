@@ -159,6 +159,7 @@ export class Craftform {
     const { deploy } = this._deployments;
 
     console.log(`Start deploy contract [${contract}]::${alias}`)
+
     const deployment = await deploy(
       alias, 
       { contract, ...options }
