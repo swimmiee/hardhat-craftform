@@ -4,11 +4,10 @@ import "./type-extensions";
 import { extendConfig, extendEnvironment, task, types } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
-import { Craftform } from "./core/craftform/Craftform";
-import craftTypeFactory from './core/craftFactory';
-import { isCraftInitiated } from './core/craftFactory/isCraftInitiated';
+import craftCodeGen from './core/craftCodeGen';
+import { isCraftInitiated } from './core/craftCodeGen/isCraftInitiated';
 import { normalizePath } from "./utils/normalizePath";
-import { CraftformHelper } from './CraftformHelper';
+import { CraftHelper } from "./core/craftform/CraftfromHelper";
 
 export const TASK_CRAFTFORM = "craftform"
 
@@ -31,16 +30,15 @@ extendConfig(
 );
 
 extendEnvironment((hre) => {
-  const { 
-    config, hardhatArguments, tasks, run, network, artifacts, 
-    ethers, deployments 
-  } = hre;
+  const { ethers, deployments, network } = hre;
 
-  hre.craftform = lazyObject(() => new Craftform(
-    network,
-    ethers, 
-    deployments,
-  )) as CraftformHelper;
+  hre.craftform = lazyObject(() => {
+    return new CraftHelper(
+      ethers,
+      deployments,
+      network
+    )
+  }) 
 });
 
 
@@ -48,6 +46,6 @@ task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
   .addOptionalParam("reset", "resets all config files", false, types.boolean)
   .setAction(async ({reset}, hre, runSuper) => {
     const shouldReset = Boolean(reset) || !isCraftInitiated()
-    await craftTypeFactory(hre, shouldReset)
+    await craftCodeGen(hre, shouldReset)
     return;
   })

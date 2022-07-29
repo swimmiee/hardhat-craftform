@@ -1,4 +1,4 @@
-import { Libraries, ProxyOptions, TxOptions } from "hardhat-deploy/dist/types";
+import { Libraries, TxOptions } from "hardhat-deploy/dist/types";
 import { BaseContract } from "ethers"
 import { BaseConfig } from "../craftform/BaseConfig";
 
@@ -15,7 +15,7 @@ export type GetContractProps = {
   version?: ConfigVersion
 }
 
-type OptionalArray = Array<any> | undefined
+export type OptionalArray = Array<any> | undefined
 
 type ProxyOptionBase = {
   owner?: address;
@@ -56,6 +56,8 @@ export type DeployArgs<
     proxy: Proxy
   }
 
+export type DeployArgsBase = DeployArgs<Array<any>, ProxyProps<string, OptionalArray>>
+
 export interface CraftDeployOptionsBase extends TxOptions {
   skipIfAlreadyDeployed?: boolean;
   linkedData?: any; // JSONable ?
@@ -63,10 +65,13 @@ export interface CraftDeployOptionsBase extends TxOptions {
   // proxy?: boolean | string | ProxyOptions; // TODO support different type of proxies ?
   deterministicDeployment?: boolean | string;
 }
+
 export type CraftDeployOptions<
-  ArgsType extends Array<any>, 
-  Proxy extends ProxyProps<string, OptionalArray> = undefined
-> = CraftDeployOptionsBase & DeployArgs<ArgsType, Proxy>
+  DeployProps extends DeployArgs<
+    Array<any>, 
+    ProxyProps<string, OptionalArray>
+  >
+> = CraftDeployOptionsBase & DeployProps
 
 const BaseConfigProperties = ["address", "alias", "version", "deployedAt", "update"] as const
 type BaseConfigKey = typeof BaseConfigProperties[number]
@@ -78,15 +83,6 @@ export type CraftDeployConfig<Config extends BaseConfig> = {
       : ExcludedBaseConfig<Config>[key]
 }
 
-export type CraftDeployProps<
-  C extends BaseConfig, 
-  ArgsType extends Array<any>, 
-  Proxy extends ProxyProps<string, OptionalArray> = undefined
-> = {
-  alias: string
-  options: CraftDeployOptions<ArgsType, Proxy>,
-  config?: CraftDeployConfig<C>
-}
 
 export interface ConfigTarget {
   // network name

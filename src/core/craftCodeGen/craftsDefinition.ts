@@ -18,7 +18,12 @@ export const setCraftsDefinition = async ({
      * Default Imports
      ********************/
      definitionFile.addImportDeclarations([
-         // typechain import
+        // craft type import
+        {
+            namedImports: ["CraftType"],
+            moduleSpecifier: 'hardhat-craftform/dist/core',
+        },
+        // typechain import
         {
             namespaceImport: "Typechain",
             moduleSpecifier: `../${typechainOutDir}`
@@ -27,11 +32,6 @@ export const setCraftsDefinition = async ({
         {
             namespaceImport: "Configs",
             moduleSpecifier: './configs'
-        },
-        // craft type import
-        {
-            namedImports: ["CraftType"],
-            moduleSpecifier: 'hardhat-craftform/dist/core',
         },
     ])
 

@@ -3,11 +3,11 @@ import { IndentationText, NewLineKind, Project, QuoteKind } from "ts-morph";
 import { setConfigFiles } from "./configFiles";
 import { SetProjectFileProps } from "./setProject.interface";
 import { setCraftformHelperDefinition } from "./craftformHelperDefinition";
-import { setDeployArgsFile } from "./deployArgsFile";
+import { setDeployArgsFile } from "./deployArgs";
 import { setCraftsDefinition } from "./craftsDefinition";
 
 
-export default async function craftTypeFactory(
+export default async function craftCodeGen(
     hre: HardhatRuntimeEnvironment,
     resetConfigs: boolean
 ){
@@ -38,15 +38,16 @@ export default async function craftTypeFactory(
     }
     coreProps.project.addSourceFilesAtPaths(`${craftsRootDir}/**/*.ts`);
 
+    const typechainOutDir = hre.config.typechain.outDir;
 
     // craftform type definition file (idempotent)
-    await setCraftformHelperDefinition(coreProps)
+    await setCraftformHelperDefinition(coreProps, typechainOutDir)
 
-    // args proxy setting
+    // deploy args & proxy setting
     await setDeployArgsFile(coreProps, hre.userConfig.craftform?.initializer)
 
     // crafts definition
-    await setCraftsDefinition(coreProps, hre.config.typechain.outDir)
+    await setCraftsDefinition(coreProps, typechainOutDir)
 
     // resetConfigs=true이면 config.ts 파일들을 모두 초기화함!!
     await setConfigFiles(coreProps, resetConfigs)

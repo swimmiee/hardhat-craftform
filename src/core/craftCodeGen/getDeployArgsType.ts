@@ -18,8 +18,8 @@ interface DeployArgsTypeStrings {
  * @param artifact 해당 컨트랙트의 artifact
  * @param initializerFormat craftform에 설정하는 initializerFormat. @TODO 기본을 __init_으로 할지?
  * 
- * case 1. initializer이 없는 함수 (constructor은 있을 수도 있고 없을 수도 있음)
- * case 2. initializer이 있는 함수
+ * case 1. initializer가 없는 함수 (constructor은 있을 수도 있고 없을 수도 있음)
+ * case 2. initializer가 있는 함수
  */
 export const getDeployArgsType = (
     artifact:Artifact, 

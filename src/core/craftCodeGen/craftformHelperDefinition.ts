@@ -5,7 +5,7 @@ export const setCraftformHelperDefinition = async ({
     project,
     artifacts,
     craftsRootDir
-}:SetProjectFileProps) => {
+}:SetProjectFileProps, typechainOutDir: string) => {
     // craftform type definition file (idempotent)
     const contractNames = artifacts.map(a => a.contractName)
 
@@ -21,6 +21,11 @@ export const setCraftformHelperDefinition = async ({
         {
             namedImports: ['GetContractProps', 'NewConfigProps', 'Versioning'],
             moduleSpecifier: 'hardhat-craftform/dist/core',
+        },
+        // typechain import
+        {
+            namespaceImport: "Typechain",
+            moduleSpecifier: `../${typechainOutDir}`
         },
         // deploy props import
         {
@@ -48,38 +53,22 @@ export const setCraftformHelperDefinition = async ({
     })
 
     const overwrittenCraftformHelper = runtimeModule.addInterface({
-        name: "CraftformHelper"
+        name: "ICraftformHelper"
     })
 
-    // add craftform methods
     overwrittenCraftformHelper.addMethods(
-        contractNames.flatMap(name => [
-            {
-                name: "get",
-                parameters: [
-                    {name: "contract", type: `"${name}"`},
-                    {name: "props", type: "GetContractProps"}
-                ],
-                returnType: `Promise<Crafts.${name}Craft>`
-            },
-            {
-                name: "deploy",
-                parameters: [
-                    {name: "contract", type: `"${name}"`},
-                    {name: "props", type: `Deploy.${name}DeployProps`}
-                ],
-                returnType: `Promise<Crafts.${name}Craft>`
-            },
-            {
-                name: `upsertConfig`,
-                parameters: [
-                    {name: "contract", type: `"${name}"`},
-                    {name: "config", type: `NewConfigProps<Configs.${name}Config>`},
-                    {name: "versioning?", type: "Versioning"}
-                ],
-                returnType: `Promise<Crafts.${name}Craft>`
-            },
-        ])
+        contractNames.map(name => ({
+            name: "attach",
+            typeParameters:[
+                `Typechain.${name}`,
+                `Config.${name}Config`,
+                `Deploy.${name}DeployArgs`
+            ],
+            parameters: [
+                {name: "contract", type: `"${name}"`},
+            ],
+            returnType: `Promise<Crafts.${name}Craft>`
+        }))
     )
     
     await project.save()

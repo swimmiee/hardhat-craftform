@@ -59,30 +59,17 @@ export const setDeployArgsFile = async ({
                     name: `${contractName}DeployArgs`,
                     type: `DeployArgs<${contractName}Args, ${contractName}ProxyProps>`,
                     isExported: true
-                },
-                {
-                    name: `${contractName}DeployProps`,
-                    type: `CraftDeployProps<Configs.${contractName}Config, ${contractName}Args, ${contractName}ProxyProps>`,
-                    isExported: true
                 }
             ])
         }
         // proxy 없는 경우
         else {
-            typeAliases = typeAliases.concat([
-                {
-                    name: `${contractName}DeployArgs`,
-                    type: `DeployArgs<${contractName}Args>`,
-                    isExported: true
-                },
-                {
-                    name: `${contractName}DeployProps`,
-                    type: `CraftDeployProps<Configs.${contractName}Config, ${contractName}Args>`,
-                    isExported: true
-                }]
-            )
+            typeAliases.push({
+                name: `${contractName}DeployArgs`,
+                type: `DeployArgs<${contractName}Args>`,
+                isExported: true
+            })
         }
-        
         deployArgsFile.addTypeAliases(typeAliases)
     })
     console.log(`Deploy Arguments file was created at: ${dest}`)
