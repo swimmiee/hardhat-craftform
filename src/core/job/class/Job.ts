@@ -4,31 +4,23 @@ import { Step } from "./Step";
 import { defaultOption, JobOptions } from "./JobOptions";
 import { dateFormatter, timeFormatter, confirmPrompt, clone, sleep } from "../../../utils";
 import path from "path";
-import { Craftform } from "../../craftform";
 import { craftform } from "hardhat"
 
 export class Job<T> {
     title: string
     steps: Step<T>[]
-    snapshots: Craftform[]
 
     constructor(
         title: string,
     ){
         this.title = title;
         this.steps = []
-        this.snapshots = []
     }
 
     addSteps(steps:Step<T>[]){
         this.steps = this.steps.concat(steps);
     }
 
-    private takeSnapshot(){
-        // Craftform Snapshot
-        const snapshot = clone(craftform)
-        // this.snapshots.push(snapshot);
-    }
 
     async execute(params:T, options?:JobOptions){
 
