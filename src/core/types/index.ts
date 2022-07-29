@@ -39,7 +39,7 @@ export type ProxyProps<
   }
 
 export type DeployArgs<
-  ArgsType extends Array<any>, 
+  ArgsType extends (Array<any> | undefined), 
   Proxy extends ProxyProps<string, OptionalArray> = undefined
 > = Proxy extends undefined ? 
   {
@@ -51,7 +51,7 @@ export type DeployArgs<
     proxy: Proxy
   }
 
-export type DeployArgsBase = DeployArgs<Array<any>, ProxyProps<string, OptionalArray>>
+export type DeployArgsBase = DeployArgs<Array<any> | undefined, ProxyProps<string, OptionalArray>>
 
 export interface CraftDeployOptionsBase extends TxOptions {
   skipIfAlreadyDeployed?: boolean;

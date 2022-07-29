@@ -4,7 +4,8 @@ import { setConfigFiles } from "./configs";
 import { SetProjectFileProps } from "./setProject.interface";
 import { setCraftformHelperDefinition } from "./craftformHelperDefinition";
 import { setDeployArgsFile } from "./deployArgs";
-import { setCraftsDefinition } from "./craftDefinitions";
+import { setCraftDefinitions } from "./craftDefinitions";
+import { setCraftFactoryTypeFile } from "./craftFactoryType";
 
 
 export default async function craftCodeGen(
@@ -41,13 +42,16 @@ export default async function craftCodeGen(
     const typechainOutDir = hre.config.typechain.outDir;
 
     // craftform type definition file (idempotent)
-    await setCraftformHelperDefinition(coreProps, typechainOutDir)
+    await setCraftformHelperDefinition(coreProps)
 
     // deploy args & proxy setting
     await setDeployArgsFile(coreProps, hre.userConfig.craftform?.initializer)
 
     // crafts definition
-    await setCraftsDefinition(coreProps, typechainOutDir)
+    await setCraftDefinitions(coreProps, typechainOutDir)
+
+    // crafts factory definition
+    await setCraftFactoryTypeFile(coreProps, typechainOutDir)
 
     // resetConfigs=true이면 config.ts 파일들을 모두 초기화함!!
     await setConfigFiles(coreProps, resetConfigs)

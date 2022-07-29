@@ -17,11 +17,6 @@ export const setCraftformHelperDefinition = async ({
      * Default Imports
      ********************/
     definitionFile.addImportDeclarations([
-        // main module import
-        {
-            namedImports: ['Factory'],
-            moduleSpecifier: 'hardhat-craftform/dist/core',
-        },
         // craft factories import
         {
             namespaceImport: "CraftFactory",

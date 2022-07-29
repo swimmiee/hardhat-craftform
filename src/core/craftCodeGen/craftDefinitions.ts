@@ -1,6 +1,6 @@
 import { SetProjectFileProps } from "./setProject.interface";
 
-export const setCraftsDefinition = async ({
+export const setCraftDefinitions = async ({
     project,
     artifacts,
     craftsRootDir,

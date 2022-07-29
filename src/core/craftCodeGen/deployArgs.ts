@@ -22,10 +22,6 @@ export const setDeployArgsFile = async ({
             moduleSpecifier: "hardhat-craftform/dist/core"
         },
         {
-            namespaceImport: "Configs",
-            moduleSpecifier: "./configs"
-        },
-        {
             namedImports: ["BigNumberish"],
             moduleSpecifier: "ethers"
         }
