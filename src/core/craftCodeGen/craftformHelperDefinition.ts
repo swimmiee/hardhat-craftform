@@ -19,7 +19,7 @@ export const setCraftformHelperDefinition = async ({
     definitionFile.addImportDeclarations([
         // main module import
         {
-            namedImports: ['GetContractProps', 'NewConfigProps', 'Versioning'],
+            namedImports: ['CraftFactory', 'NewConfigProps', 'Versioning'],
             moduleSpecifier: 'hardhat-craftform/dist/core',
         },
         // typechain import
@@ -58,16 +58,11 @@ export const setCraftformHelperDefinition = async ({
 
     overwrittenCraftformHelper.addMethods(
         contractNames.map(name => ({
-            name: "attach",
-            typeParameters:[
-                `Typechain.${name}`,
-                `Config.${name}Config`,
-                `Deploy.${name}DeployArgs`
-            ],
+            name: "contract",
             parameters: [
                 {name: "contract", type: `"${name}"`},
             ],
-            returnType: `Promise<Crafts.${name}Craft>`
+            returnType: `Promise<CraftFactory<Typechain.${name}, Config.${name}Config, Deploy.${name}DeployArgs>`
         }))
     )
     

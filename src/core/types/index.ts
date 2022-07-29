@@ -9,11 +9,6 @@ export type CraftType<Contract extends BaseContract, Config extends BaseConfig> 
 } 
 
 export type ConfigVersion = number | 'latest'
-export type GetContractProps = {
-  chain?: string;
-  alias: string;
-  version?: ConfigVersion
-}
 
 export type OptionalArray = Array<any> | undefined
 
