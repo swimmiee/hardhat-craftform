@@ -50,7 +50,7 @@ export const setCraftFactoryTypeFile = async ({
     definitionFile.addTypeAliases(
         contractNames.map(name => ({
             name: `${name}CraftFactory`,
-            type: `CraftFactory<Typechain.${name}, Configs.${name}Config, Crafts.${name}Craft, Deploy.${name}Args>`,
+            type: `CraftFactory<Typechain.${name}, Configs.${name}Config, Crafts.${name}Craft, Deploy.${name}DeployArgs>`,
             isExported: true
         }))
     );
