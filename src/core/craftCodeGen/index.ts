@@ -1,10 +1,10 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { IndentationText, NewLineKind, Project, QuoteKind } from "ts-morph";
-import { setConfigFiles } from "./configFiles";
+import { setConfigFiles } from "./configs";
 import { SetProjectFileProps } from "./setProject.interface";
 import { setCraftformHelperDefinition } from "./craftformHelperDefinition";
 import { setDeployArgsFile } from "./deployArgs";
-import { setCraftsDefinition } from "./craftsDefinition";
+import { setCraftsDefinition } from "./craftDefinitions";
 
 
 export default async function craftCodeGen(

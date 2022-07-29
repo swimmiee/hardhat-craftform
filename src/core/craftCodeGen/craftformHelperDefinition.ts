@@ -5,7 +5,7 @@ export const setCraftformHelperDefinition = async ({
     project,
     artifacts,
     craftsRootDir
-}:SetProjectFileProps, typechainOutDir: string) => {
+}:SetProjectFileProps) => {
     // craftform type definition file (idempotent)
     const contractNames = artifacts.map(a => a.contractName)
 
@@ -19,28 +19,13 @@ export const setCraftformHelperDefinition = async ({
     definitionFile.addImportDeclarations([
         // main module import
         {
-            namedImports: ['CraftFactory', 'NewConfigProps', 'Versioning'],
+            namedImports: ['Factory'],
             moduleSpecifier: 'hardhat-craftform/dist/core',
         },
-        // typechain import
+        // craft factories import
         {
-            namespaceImport: "Typechain",
-            moduleSpecifier: `../${typechainOutDir}`
-        },
-        // deploy props import
-        {
-            namespaceImport: "Deploy",
-            moduleSpecifier: './deploy.args'
-        },
-        // configs import
-        {
-            namespaceImport: "Configs",
-            moduleSpecifier: './configs'
-        },
-        // crafts import
-        {
-            namespaceImport: "Crafts",
-            moduleSpecifier: './crafts'
+            namespaceImport: "CraftFactory",
+            moduleSpecifier: './crafts.factory'
         },
     ])
 
@@ -62,7 +47,7 @@ export const setCraftformHelperDefinition = async ({
             parameters: [
                 {name: "contract", type: `"${name}"`},
             ],
-            returnType: `Promise<CraftFactory<Typechain.${name}, Config.${name}Config, Deploy.${name}DeployArgs>`
+            returnType: `Promise<CraftFactory.${name}CraftFactory>`
         }))
     )
     

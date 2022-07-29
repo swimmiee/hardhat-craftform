@@ -13,6 +13,7 @@ import { extractContractNameFromConfigName } from "../decorators/extractContract
 export class CraftFactory<
     Contract extends BaseContract, 
     Config extends BaseConfig,
+    Craft extends CraftType<Contract, Config>,
     DeployArgs extends DeployArgsBase
 > {
     private global: CraftHelper
@@ -41,7 +42,7 @@ export class CraftFactory<
     async attach(
         alias: string, 
         version?: number
-    ):Promise<CraftType<Contract, Config>>{
+    ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
 
@@ -82,24 +83,24 @@ export class CraftFactory<
             }
         })
 
-        const config = new this.config.target(savedConfig) as Config;
+        const config = new this.config.target(savedConfig);
         const contractEntity = await this.global.ethers.getContractAt(
             this.config.contract,
             savedConfig.address
-        ) as Contract
+        )
 
         // relation config
         return {
             ...contractEntity,
             $config: config,
-        }
+        } as Craft
     }
 
     async deploy(
         alias: string,
         options: CraftDeployOptions<DeployArgs>,
-        customConfig: CraftDeployConfig<Config>
-    ):Promise<CraftType<Contract, Config>>{
+        customConfig?: CraftDeployConfig<Config>
+    ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
 
@@ -160,7 +161,7 @@ export class CraftFactory<
             address: deployment.address,
             version: newVersion,
             deployedAt: Math.floor(new Date().getTime() / 1000),
-            ...customConfig
+            ...(customConfig || {})
         } as unknown as Config
         
         _addConfig({

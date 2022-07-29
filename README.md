@@ -6,6 +6,7 @@ tsconfig.json
 ```json
 "compilerOptions": {
     ...
+    "experimentalDecorators": true,
     "strictPropertyInitialization": false
 }
 ```

@@ -44,15 +44,21 @@ export const setDeployArgsFile = async ({
         let typeAliases:OptionalKind<TypeAliasDeclarationStructure>[] = []
         typeAliases.push({
             name: `${contractName}Args`,
-            type: `[${deployArgsTypes.args.join(', ')}]`,
+            type: deployArgsTypes.args.length > 0 ?
+                `[${deployArgsTypes.args.join(', ')}]` : `[] | undefined`,
             isExported: true
-        })
+        });
+        
         // proxy 있는 경우
         if(deployArgsTypes.proxy){
+            const {methodName, args} = deployArgsTypes.proxy;
+            const proxyArgsType = args.length > 0 ? 
+                `[${args.join(', ')}]` : `[] | undefined`;
+
             typeAliases = typeAliases.concat([
                 {
                     name: `${contractName}ProxyProps`,
-                    type: `ProxyProps<"${deployArgsTypes.proxy.methodName}",[${deployArgsTypes.proxy.args.join(', ')}]>`,
+                    type: `ProxyProps<"${methodName}", ${proxyArgsType}>`,
                     isExported: true
                 },
                 {
@@ -60,7 +66,7 @@ export const setDeployArgsFile = async ({
                     type: `DeployArgs<${contractName}Args, ${contractName}ProxyProps>`,
                     isExported: true
                 }
-            ])
+            ]);
         }
         // proxy 없는 경우
         else {
