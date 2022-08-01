@@ -41,6 +41,7 @@ export class Job<T> {
 
             await sleep(waitSeconds)
 
+            console.log("***" + this.title + "***")
             console.log(`[STEP #${index}]`)
             console.log(chalk.blueBright(`*** ${step.title} ***`))
 
@@ -100,5 +101,6 @@ export class Job<T> {
             append: true
         })
         interceptor.clear()
+        console.log()
     }
 }
