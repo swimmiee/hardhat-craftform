@@ -8,6 +8,7 @@ export type CraftType<Contract extends BaseContract, Config extends BaseConfig> 
   $config: Config
 } 
 
+
 export type ConfigVersion = number | 'latest'
 export type OptionalArray = Array<any> | undefined
 

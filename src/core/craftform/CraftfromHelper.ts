@@ -2,10 +2,10 @@ import { ethers } from "hardhat";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { BaseConfig } from "./BaseConfig";
 import { CraftFactory } from "./CraftFactory";
-import { BaseContract } from "ethers"
 import { CraftformGlobal, ICraftformHelper } from "../../CraftformHelper";
 import { Network } from "hardhat/types";
-import { CraftType, DeployArgsBase} from "../types";
+import { DeployArgsBase } from "../types";
+import { BaseCraft } from "./BaseCraft";
 
 export class CraftHelper implements ICraftformHelper {
     public network: Network
@@ -33,11 +33,10 @@ export class CraftHelper implements ICraftformHelper {
     }
     
     public contract<
-        Contract extends BaseContract,
         Config extends BaseConfig,
-        Craft extends CraftType<Contract, Config>,
+        Craft extends BaseCraft<Config>,
         DeployArgs extends DeployArgsBase
-    >(contract: string): CraftFactory<Contract, Config, Craft, DeployArgs> {
+    >(contract: string): CraftFactory<Config, Craft, DeployArgs> {
         const config = this._global.configs.find(c => c.contract === contract)
         if(!config)
             throw Error(`CraftformHelper:: config ${contract} not found.`)

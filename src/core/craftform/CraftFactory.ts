@@ -1,19 +1,18 @@
 import { ConfigMetadata, RelationMetadata } from "../metadata";
 import { BaseConfig } from "./BaseConfig";
 import { CraftHelper } from "./CraftfromHelper";
-import { BaseContract } from "ethers"
 import { _addConfig, _getConfig, _updateConfig } from "./config";
-import { CraftDeployOptions, CraftType, CraftDeployConfig, 
-    NewConfigProps, Versioning, DeployArgsBase } from "../types";
+import { CraftDeployOptions, CraftDeployConfig, NewConfigProps, Versioning, DeployArgsBase } from "../types";
 import { confirmPrompt } from "../../utils";
-import chalk from "chalk";
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
+import { BaseCraft } from "./BaseCraft";
+import chalk from "chalk";
 
 
 export class CraftFactory<
-    Contract extends BaseContract, 
     Config extends BaseConfig,
-    Craft extends CraftType<Contract, Config>,
+    Craft extends BaseCraft<Config>,
+    // Craft extends CraftType<Contract, Config>,
     DeployArgs extends DeployArgsBase
 > {
     private global: CraftHelper
@@ -84,16 +83,13 @@ export class CraftFactory<
         })
 
         const config = new this.config.target(savedConfig);
-        const contractEntity = await this.global.ethers.getContractAt(
-            this.config.contract,
-            savedConfig.address
-        )
+        const contractFactory = await this.global.ethers.getContractFactory(contract)
 
-        // relation config
-        return {
-            ...contractEntity,
-            $config: config,
-        } as Craft
+        return new BaseCraft(
+            contract,
+            contractFactory.interface,
+            config
+        ) as Craft;
     }
 
     async deploy(
@@ -176,7 +172,7 @@ export class CraftFactory<
     async upsertConfig(
         config: NewConfigProps<Config>, 
         versioning: Versioning = "maintain"
-    ):Promise<CraftType<Contract, Config>>{
+    ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
         const configTarget = {

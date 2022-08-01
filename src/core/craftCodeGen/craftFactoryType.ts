@@ -23,11 +23,6 @@ export const setCraftFactoryTypeFile = async ({
             namedImports: ["CraftFactory"],
             moduleSpecifier: 'hardhat-craftform/dist/core',
         },
-        // typechain import
-        {
-            namespaceImport: "Typechain",
-            moduleSpecifier: `../${typechainOutDir}`
-        },
         // configs import
         {
             namespaceImport: "Configs",
@@ -50,7 +45,7 @@ export const setCraftFactoryTypeFile = async ({
     definitionFile.addTypeAliases(
         contractNames.map(name => ({
             name: `${name}CraftFactory`,
-            type: `CraftFactory<Typechain.${name}, Configs.${name}Config, Crafts.${name}Craft, Deploy.${name}DeployArgs>`,
+            type: `CraftFactory<Configs.${name}Config, Crafts.${name}Craft, Deploy.${name}DeployArgs>`,
             isExported: true
         }))
     );
