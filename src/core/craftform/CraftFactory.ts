@@ -82,11 +82,11 @@ export class CraftFactory<
             }
         })
 
-        const config = new this.config.target(savedConfig);
+        const config = new this.config.target(savedConfig) as Config;
         const contractFactory = await this.global.ethers.getContractFactory(contract)
 
         return new BaseCraft(
-            contract,
+            config.address,
             contractFactory.interface,
             config
         ) as Craft;
