@@ -7,7 +7,7 @@ import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import craftCodeGen from './core/craftCodeGen';
 import { isCraftInitiated } from './core/craftCodeGen/isCraftInitiated';
 import { normalizePath } from "./utils/normalizePath";
-import { CraftHelper } from "./core/craftform/CraftfromHelper";
+import { CraftformHelper } from "./core/craftform/CraftfromHelper";
 
 export const TASK_CRAFTFORM = "craftform"
 
@@ -30,13 +30,14 @@ extendConfig(
 );
 
 extendEnvironment((hre) => {
-  const { ethers, deployments, network } = hre;
+  const { artifacts, ethers, deployments, network } = hre;
 
   hre.craftform = lazyObject(() => {
-    return new CraftHelper(
+    return new CraftformHelper(
+      artifacts,
+      network,
       ethers,
       deployments,
-      network
     )
   }) 
 });

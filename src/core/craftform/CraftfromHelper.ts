@@ -3,11 +3,12 @@ import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { BaseConfig } from "./BaseConfig";
 import { CraftFactory } from "./CraftFactory";
 import { CraftformGlobal, ICraftformHelper } from "../../CraftformHelper";
-import { Network } from "hardhat/types";
+import { Artifacts, Network } from "hardhat/types";
 import { DeployArgsBase } from "../types";
 import { BaseCraft } from "./BaseCraft";
 
-export class CraftHelper implements ICraftformHelper {
+export class CraftformHelper implements ICraftformHelper {
+    public artifacts: Artifacts
     public network: Network
     // from @nomiclabs/hardhat-ethers
     public ethers: typeof ethers
@@ -23,13 +24,15 @@ export class CraftHelper implements ICraftformHelper {
     };
 
     constructor(
+        _artifacts: Artifacts,
+        _network: Network,
         _ethers: typeof ethers,
         _deployments: DeploymentsExtension,
-        _network: Network
     ) { 
+        this.artifacts = _artifacts;
+        this.network = _network;
         this.ethers = _ethers;
         this.deployments = _deployments;
-        this.network = _network;
     }
     
     public contract<

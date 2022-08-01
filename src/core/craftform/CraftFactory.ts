@@ -1,6 +1,6 @@
 import { ConfigMetadata, RelationMetadata } from "../metadata";
 import { BaseConfig } from "./BaseConfig";
-import { CraftHelper } from "./CraftfromHelper";
+import { CraftformHelper } from "./CraftfromHelper";
 import { _addConfig, _getConfig, _updateConfig } from "./config";
 import { CraftDeployOptions, CraftDeployConfig, NewConfigProps, Versioning, DeployArgsBase, ConfigVersion } from "../types";
 import { confirmPrompt } from "../../utils";
@@ -9,6 +9,7 @@ import { BaseCraft } from "./BaseCraft";
 import { ethers } from "ethers";
 import chalk from "chalk";
 import { FactoryOptions } from "hardhat/types";
+import { artifacts } from "hardhat";
 
 
 export class CraftFactory<
@@ -17,12 +18,12 @@ export class CraftFactory<
     // Craft extends CraftType<Contract, Config>,
     DeployArgs extends DeployArgsBase
 > {
-    private global: CraftHelper
+    private global: CraftformHelper
     private config: ConfigMetadata
     private relations: RelationMetadata[]
 
     constructor(
-        _global: CraftHelper,
+        _global: CraftformHelper,
         _config: ConfigMetadata,
         _relations: RelationMetadata[],
     ){
@@ -86,11 +87,11 @@ export class CraftFactory<
         })
 
         const config = new this.config.target(savedConfig) as Config;
-        const contractFactory = await this.global.ethers.getContractFactory(contract, signerOrOptions)
+        const artifact = this.global.artifacts.readArtifactSync(contract)
 
         return new BaseCraft(
             config.address,
-            contractFactory.interface,
+            artifact.abi,
             config
         ) as Craft;
     }
