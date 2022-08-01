@@ -4,7 +4,7 @@ import { ConfigMetadata, RelationMetadata } from "./core/metadata"
 // ICraftformHelper will be replaced with new CraftformHelper 
 // at {projectroot}/crafts/craftform.helper.ts
 export interface ICraftformHelper {
-    contract(contract: string): Promise<CraftFactory<any, any, any, any>>;
+    contract(contract: string): CraftFactory<any, any, any, any>;
     /**
      * @deprecated
      */

@@ -32,12 +32,12 @@ export class CraftHelper implements ICraftformHelper {
         this.network = _network;
     }
     
-    public async contract<
+    public contract<
         Contract extends BaseContract,
         Config extends BaseConfig,
         Craft extends CraftType<Contract, Config>,
         DeployArgs extends DeployArgsBase
-    >(contract: string): Promise<CraftFactory<Contract, Config, Craft, DeployArgs>> {
+    >(contract: string): CraftFactory<Contract, Config, Craft, DeployArgs> {
         const config = this._global.configs.find(c => c.contract === contract)
         if(!config)
             throw Error(`CraftformHelper:: config ${contract} not found.`)
