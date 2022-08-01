@@ -2,7 +2,7 @@ import { ConfigMetadata, RelationMetadata } from "../metadata";
 import { BaseConfig } from "./BaseConfig";
 import { CraftHelper } from "./CraftfromHelper";
 import { _addConfig, _getConfig, _updateConfig } from "./config";
-import { CraftDeployOptions, CraftDeployConfig, NewConfigProps, Versioning, DeployArgsBase } from "../types";
+import { CraftDeployOptions, CraftDeployConfig, NewConfigProps, Versioning, DeployArgsBase, ConfigVersion } from "../types";
 import { confirmPrompt } from "../../utils";
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
 import { BaseCraft } from "./BaseCraft";
@@ -42,8 +42,8 @@ export class CraftFactory<
 
     async attach(
         alias: string, 
+        version: ConfigVersion = "latest",
         signerOrOptions?: ethers.Signer | FactoryOptions,
-        version?: number
     ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
