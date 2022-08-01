@@ -6,10 +6,7 @@ import { CraftDeployOptions, CraftDeployConfig, NewConfigProps, Versioning, Depl
 import { confirmPrompt } from "../../utils";
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
 import { BaseCraft } from "./BaseCraft";
-import { ethers } from "ethers";
 import chalk from "chalk";
-import { FactoryOptions } from "hardhat/types";
-import { artifacts } from "hardhat";
 
 
 export class CraftFactory<
@@ -44,7 +41,6 @@ export class CraftFactory<
     async attach(
         alias: string, 
         version: ConfigVersion = "latest",
-        signerOrOptions?: ethers.Signer | FactoryOptions,
     ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
@@ -88,10 +84,12 @@ export class CraftFactory<
 
         const config = new this.config.target(savedConfig) as Config;
         const artifact = this.global.artifacts.readArtifactSync(contract)
+        const signer = await this.global.ethers.getSigners();
 
         return new BaseCraft(
             config.address,
             artifact.abi,
+            signer,
             config
         ) as Craft;
     }
