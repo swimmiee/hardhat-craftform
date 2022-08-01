@@ -42,7 +42,7 @@ export const setCraftformHelperDefinition = async ({
             parameters: [
                 {name: "contract", type: `"${name}"`},
             ],
-            returnType: `Promise<CraftFactory.${name}CraftFactory>`
+            returnType: `CraftFactory.${name}CraftFactory`
         }))
     )
     
