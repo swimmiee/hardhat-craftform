@@ -39,12 +39,15 @@ export class CraftFactory<
 
 
     async attach(
-        alias: string, 
+        alias?: string, 
         version: ConfigVersion = "latest",
     ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
 
+        // default alias: contract name
+        alias = alias || contract;
+        
         const savedConfig = _getConfig({
             chain,
             alias,
@@ -84,23 +87,28 @@ export class CraftFactory<
 
         const config = new this.config.target(savedConfig) as Config;
         const artifact = this.global.artifacts.readArtifactSync(contract)
-        const signer = await this.global.ethers.getSigners();
+        const signer = await this.global.ethers.getSigners()
+
 
         return new BaseCraft(
             config.address,
             artifact.abi,
-            signer,
+            signer[0],
             config
         ) as Craft;
     }
+    
 
     async deploy(
-        alias: string,
+        alias: string | null,
         options: CraftDeployOptions<DeployArgs>,
         customConfig?: CraftDeployConfig<Config>
     ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
+
+        // default alias: contract name
+        alias = alias || contract;
 
         /**
          * check if duplicated alias exists

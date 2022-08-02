@@ -13,7 +13,7 @@ export class Step<T> {
         }
     }
 
-    constructor(title: string, action: StepAction<T>, message: string){
+    constructor(title: string, action: StepAction<T>){
         this.title = title;
         this.action = action;
     }
