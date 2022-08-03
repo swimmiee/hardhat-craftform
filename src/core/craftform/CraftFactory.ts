@@ -97,7 +97,7 @@ export class CraftFactory<
             config
         ) as Craft;
     }
-    
+
 
     async deploy(
         alias: string | null,
@@ -185,6 +185,10 @@ export class CraftFactory<
     ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
+        
+        // default alias: contract name
+        config.alias = config.alias || contract;
+
         const configTarget = {
             chain,
             contract, 

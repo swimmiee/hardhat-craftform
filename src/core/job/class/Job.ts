@@ -1,10 +1,9 @@
+import path from "path";
 import chalk from "chalk";
 import interceptor from "console-log-interceptor";
 import { Step } from "./Step";
 import { defaultOption, JobOptions } from "./JobOptions";
-import { dateFormatter, timeFormatter, confirmPrompt, clone, sleep } from "../../../utils";
-import path from "path";
-import { craftform } from "hardhat"
+import { dateFormatter, timeFormatter, confirmPrompt, sleep } from "../../../utils";
 
 export class Job<T> {
     title: string
@@ -38,10 +37,8 @@ export class Job<T> {
         let index = 1;
         for await (const step of this.steps) {
 
-
             await sleep(waitSeconds)
 
-            console.log("***" + this.title + "***")
             console.log(`[STEP #${index}]`)
             console.log(chalk.blueBright(`*** ${step.title} ***`))
 
