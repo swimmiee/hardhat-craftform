@@ -42,18 +42,21 @@ export class Job<T> {
             console.log(`[STEP #${index}]`)
             console.log(chalk.blueBright(`*** ${step.title} ***`))
 
-            const result = await step.execute(params)
-            
-            if(result){
-                console.log(chalk.green(`✅ Succeed`))
-            }
-            else {
+            try {
+                const result = await step.execute(params)
+                if(result){
+                    console.log(chalk.green(`✅ Succeed`))
+                }
+                else throw Error(`Step [${step.title}] Failed`)
+            } catch (error: any) {
                 console.log(chalk.red(`❌ Failed`))
                 if(!options?.continueOnFailed){
+                    console.log(error.message)
                     console.log(chalk.red('exit'))
                     break;
                 }
             }
+        
 
             // ask for continue
             if(options?.stepByStep){

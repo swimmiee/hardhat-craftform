@@ -180,19 +180,19 @@ export class CraftFactory<
     }
 
     async upsertConfig(
-        config: NewConfigProps<Config>, 
+        {alias, ...config}: NewConfigProps<Config>, 
         versioning: Versioning = "maintain"
     ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
         
         // default alias: contract name
-        config.alias = config.alias || contract;
+        alias = alias || contract;
 
         const configTarget = {
             chain,
             contract, 
-            alias: config.alias,
+            alias
         }
 
         const existing = _getConfig(configTarget)
@@ -213,6 +213,7 @@ export class CraftFactory<
                 contract,
                 newConfig: {
                     ...config,
+                    alias,
                     version: 0,
                     deployedAt: 0
                 }
@@ -220,6 +221,6 @@ export class CraftFactory<
             newVersion = 0;
         }
 
-        return this.attach(config.alias, newVersion);
+        return this.attach(alias, newVersion);
     }
 }

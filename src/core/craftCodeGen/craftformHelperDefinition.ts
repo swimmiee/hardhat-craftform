@@ -19,9 +19,13 @@ export const setCraftformHelperDefinition = async ({
     definitionFile.addImportDeclarations([
         // craft factories import
         {
-            namespaceImport: "CraftFactory",
+            namespaceImport: "CraftFactories",
             moduleSpecifier: './crafts.factory'
         },
+        {
+            namedImports: ["CraftFactory"],
+            moduleSpecifier: "hardhat-craftform/dist/core"
+        }
     ])
 
 
@@ -36,14 +40,22 @@ export const setCraftformHelperDefinition = async ({
         name: "ICraftformHelper"
     })
 
-    overwrittenCraftformHelper.addMethods(
-        contractNames.map(name => ({
+    overwrittenCraftformHelper.addMethods([
+        ...contractNames.map(name => ({
             name: "contract",
             parameters: [
                 {name: "contract", type: `"${name}"`},
             ],
-            returnType: `CraftFactory.${name}CraftFactory`
-        }))
+            returnType: `CraftFactories.${name}CraftFactory`
+        })),
+        {
+            name: "contract",
+            parameters: [
+                {name: "contract", type: "string"},
+            ],
+            returnType: "CraftFactory<BaseConfig, BaseCraft<BaseConfig>, DeployArgsBase>"
+        }
+    ]
     )
     
     await project.save()
