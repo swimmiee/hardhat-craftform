@@ -1,3 +1,4 @@
+import { userConfig } from "hardhat";
 import { CraftformInitializerFormat } from "../core/types";
 
 export const getInitializer = (
@@ -5,7 +6,13 @@ export const getInitializer = (
     initializerFormat?: string | CraftformInitializerFormat
 ) => {
     if(!initializerFormat){
-        return null
+        try {
+            initializerFormat = userConfig.craftform?.initializer
+            if(!initializerFormat)
+                return null
+        } catch (error) {
+            return null
+        }
     }
     const targetFormat = typeof initializerFormat === "string" ? 
         initializerFormat : 

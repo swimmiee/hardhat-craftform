@@ -21,7 +21,8 @@ export class Job<T> {
     }
 
 
-    async execute(params:T, options?:JobOptions){
+    async execute(params:T, options?:JobOptions):Promise<boolean>{
+        let succeed = true;
 
         // save log default: true
         const saveLog = options?.saveLog === false ? false : true
@@ -51,6 +52,7 @@ export class Job<T> {
             } catch (error: any) {
                 console.log(chalk.red(`❌ Failed`))
                 if(!options?.continueOnFailed){
+                    succeed = false;
                     console.log(error.message)
                     console.log(chalk.red('exit'))
                     break;
@@ -73,7 +75,7 @@ export class Job<T> {
         }
 
         if(!saveLog)
-            return;
+            return succeed;
         // LOG Handling
 
         
@@ -102,5 +104,7 @@ export class Job<T> {
         })
         interceptor.clear()
         console.log()
+
+        return succeed;
     }
 }
