@@ -39,23 +39,31 @@ export class CraftFactory<
 
 
     async attach(
-        alias?: string | null, 
+        aliasOrAddress?: string | null, 
         version: ConfigVersion = "latest",
     ):Promise<Craft>{
         const contract = this.contractName()
         const chain = this.chain()
 
         // default alias: contract name
-        alias = alias || contract;
+        // alias = alias || contract;
+
+        const findProps = !aliasOrAddress ? {alias: contract} :
+        this.global.ethers.utils.isAddress(aliasOrAddress) ? 
+            {address: aliasOrAddress} : {alias: aliasOrAddress}
         
         const savedConfig = _getConfig({
             chain,
-            alias,
+            ...findProps,
             contract,
             version
         })
+
         if(!savedConfig){
-            throw Error("Config not found.")
+            if(findProps.address)
+                throw Error(`${contract} Config for ${findProps.address} not found.\nPlease execute upsertConfig() first.`)
+            else
+                throw Error(`${contract} Config for ${findProps.address} not found.`)
         }
 
         // load relations
@@ -88,7 +96,6 @@ export class CraftFactory<
         const config = new this.config.target(savedConfig) as Config;
         const artifact = this.global.artifacts.readArtifactSync(contract)
         const signer = await this.global.ethers.getSigners()
-
 
         return new BaseCraft(
             config.address,
@@ -124,46 +131,31 @@ export class CraftFactory<
             alias
         })
     
-        if(existing){
-            const contractInfo = `Contract ${contract} with alias "${alias}" already exists.\n` 
-            + `Version: ${existing.version}\n`
-            + `Address: ${existing.address}\n`
-            + `Deployed At: ${new Date(existing.deployedAt * 1000)}\n\n`
-    
-            if(options.skipIfAlreadyDeployed === false){
-                const cont = await confirmPrompt(
-                    contractInfo
-                    + 'Continue to deploy new one? (Press Ctrl + C to quit...)'
-                , true)
-    
-                if(!cont){
-                    console.log('Use existing contract.')
-                    return this.attach(
-                        alias,
-                        existing.version
-                    )
-                }
-            }
-            else {
-                log(contractInfo);
-                return this.attach(
-                    alias,
-                    existing.version
-                )
-            }
-        }
-    
-        const newVersion = existing ? +existing.version + 1 : 0
+        let beforeDeployAddress = existing ? existing.address : "";
     
         const { deploy } = this.global.deployments;
-
         log(`Start deploy contract [${contract}]::${alias}`);
     
         const deployment = await deploy(
             alias, 
             { contract, ...options }
         );
-    
+
+        if(beforeDeployAddress === deployment.address && existing){
+            const contractInfo = `Contract ${contract} with alias "${existing.alias}" already exists.\n` 
+            + `Version: ${existing.version}\n`
+            + `Address: ${existing.address}\n`
+            + `Deployed At: ${new Date(existing.deployedAt * 1000)}\n\n`
+            console.log(contractInfo);
+
+            // not deployed in real
+            return this.attach(
+                alias,
+                existing.version   // existing should be exists.
+            )
+        }
+
+        const newVersion = existing ? +existing.version + 1 : 0;
         log(chalk.green(`** Contract [${contract}]::${alias} deployed! **\naddress: ${deployment.address}\nversion: ${newVersion}`))
     
         const config = {
