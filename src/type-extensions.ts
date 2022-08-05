@@ -10,7 +10,7 @@ declare module "hardhat/types/config" {
 
   export interface HardhatUserConfig {
     craftform?: {
-      dontOverrideCrafts: boolean
+      dontOverrideCrafts?: boolean
       initializer: string | "__$_init" | CraftformInitializerFormat
     }
   }
