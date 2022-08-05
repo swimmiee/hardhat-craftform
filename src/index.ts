@@ -1,7 +1,7 @@
 import "@nomicfoundation/hardhat-toolbox";
 import 'hardhat-deploy'
 import "./type-extensions";
-import { extendConfig, extendEnvironment, task, types } from "hardhat/config";
+import { extendConfig, extendEnvironment, task } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
 import craftCodeGen from './core/craftCodeGen';
@@ -9,8 +9,18 @@ import { isCraftInitiated } from './core/craftCodeGen/isCraftInitiated';
 import { normalizePath } from "./utils/normalizePath";
 import { CraftformHelper } from "./core/craftform/CraftfromHelper";
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
+import path from "path";
 
 export const TASK_CRAFTFORM = "craftform"
+export const useCraftform = async () => {
+  const hre = await import("hardhat");
+  await import(
+    path.join(
+      process.cwd(), 
+      hre.config.paths.crafts
+    )
+  )
+}
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
