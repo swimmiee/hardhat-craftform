@@ -14,12 +14,7 @@ import path from "path";
 export const TASK_CRAFTFORM = "craftform"
 export const useCraftform = async () => {
   const hre = await import("hardhat");
-  await import(
-    path.join(
-      process.cwd(), 
-      hre.config.paths.crafts
-    )
-  )
+  await import(hre.config.paths.crafts)
 }
 
 extendConfig(
