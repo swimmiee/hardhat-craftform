@@ -23,7 +23,7 @@ export const setCraftformHelperDefinition = async ({
             moduleSpecifier: './crafts.factory'
         },
         {
-            namedImports: ["CraftFactory"],
+            namedImports: ["BaseCraft", "BaseConfig", "CraftFactory", "DeployArgsBase"],
             moduleSpecifier: "hardhat-craftform/dist/core"
         }
     ])
