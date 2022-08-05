@@ -8,6 +8,7 @@ import craftCodeGen from './core/craftCodeGen';
 import { isCraftInitiated } from './core/craftCodeGen/isCraftInitiated';
 import { normalizePath } from "./utils/normalizePath";
 import { CraftformHelper } from "./core/craftform/CraftfromHelper";
+import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
 
 export const TASK_CRAFTFORM = "craftform"
 
@@ -44,9 +45,23 @@ extendEnvironment((hre) => {
 
 
 task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
-  .addOptionalParam("reset", "resets all config files", false, types.boolean)
+  .addFlag("reset", "resets all config files")
   .setAction(async ({reset}, hre, runSuper) => {
     const shouldReset = Boolean(reset) || !isCraftInitiated()
     await craftCodeGen(hre, shouldReset)
     return;
+  })
+
+task(TASK_COMPILE)
+  .addFlag('noCraft', 'Skip Craftform works compilation')
+  .addFlag("resetConfig", "resets all craft config files")
+  .setAction(async (
+    { noCraft, resetConfig }: { noCraft: boolean, resetConfig: boolean }, 
+    { userConfig, run },
+    runSuper
+  ) => {
+    await runSuper();
+    if(noCraft || userConfig.craftform?.dontOverrideCrafts)
+      return;
+    await run(TASK_CRAFTFORM, {reset: resetConfig});
   })
