@@ -39,7 +39,7 @@ export class CraftFactory<
 
 
     async attach(
-        alias?: string, 
+        alias?: string | null, 
         version: ConfigVersion = "latest",
     ):Promise<Craft>{
         const contract = this.contractName()
@@ -107,6 +107,11 @@ export class CraftFactory<
         const contract = this.contractName()
         const chain = this.chain()
 
+        const log = (...msg: any) => {
+            if(options.consoleLog !== false)
+                console.log(...msg)
+        }
+
         // default alias: contract name
         alias = alias || contract;
 
@@ -140,7 +145,7 @@ export class CraftFactory<
                 }
             }
             else {
-                console.log(contractInfo)
+                log(contractInfo);
                 return this.attach(
                     alias,
                     existing.version
@@ -151,16 +156,15 @@ export class CraftFactory<
         const newVersion = existing ? +existing.version + 1 : 0
     
         const { deploy } = this.global.deployments;
-        console.log(`Start deploy contract [${contract}]::${alias}`)
+
+        log(`Start deploy contract [${contract}]::${alias}`);
     
         const deployment = await deploy(
             alias, 
             { contract, ...options }
         );
     
-        console.log(
-            chalk.green(`** Contract [${contract}]::${alias} deployed! **\naddress: ${deployment.address}\nversion: ${newVersion}`)
-        )
+        log(chalk.green(`** Contract [${contract}]::${alias} deployed! **\naddress: ${deployment.address}\nversion: ${newVersion}`))
     
         const config = {
             alias,

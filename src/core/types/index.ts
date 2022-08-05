@@ -61,6 +61,7 @@ export interface CraftDeployOptionsBase extends TxOptions {
   libraries?: Libraries;
   // proxy?: boolean | string | ProxyOptions; // TODO support different type of proxies ?
   deterministicDeployment?: boolean | string;
+  consoleLog?: boolean
 }
 
 export type CraftDeployOptions<
