@@ -3,12 +3,14 @@ import "hardhat/types/runtime";
 import type { ethers } from "ethers";
 import { DeploymentsExtension } from "hardhat-deploy/dist/types";
 import { CraftformInitializerFormat } from "./core/types";
+import { ICraftformHelper } from "./CraftformHelper";
 
 
 declare module "hardhat/types/config" {
 
   export interface HardhatUserConfig {
     craftform?: {
+      dontOverrideCrafts?: boolean
       initializer: string | "__$_init" | CraftformInitializerFormat
     }
   }
@@ -30,6 +32,7 @@ declare module "hardhat/types/runtime" {
     ethers: typeof ethers & HardhatEthersHelpers
     // from hardhat-deploy
     deployments: DeploymentsExtension
-    craftform: CraftformHelper
+    // craftform: CraftformHelper
+    craftform: ICraftformHelper
   }
 }

@@ -1,10 +1,10 @@
 import fs from "fs-extra";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget } from "../../types";
+import { ConfigTarget, SavedConfig } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
 
-export function getConfigList<Config extends BaseConfig>(target: ConfigTarget) {
+export function getConfigList<Config>(target: ConfigTarget) {
   const filename = getConfigFilename(target);
   try {
     return JSON.parse(

@@ -12,36 +12,6 @@ const TestDeployer:DeployFunction = async (hre) => {
 
     const { deployer } = await getNamedAccounts()
 
-    const test1 = await craftform.get(
-        "Test1",
-        {
-            chain: "hardhat",
-            alias: "my test1"
-        }
-    )
-    console.log(test1.$config)
-
-    // test1.$config.test2.update({
-    //     fire:"asdasd"
-    // }, {
-    //     versioning: 'upgrade'
-    // })
-    // @ts-ignore
-//    console.log(craftform.__configs)
-
-    // const test2Addr = test1.config.test2.address
-
-    // await craftform.deploy('Test1', {
-    //     alias: "iboUSDT",
-    //     config: {
-    //         test2: test2Addr
-    //     },
-    //     options: {
-    //         from: deployer,
-    //         args: [1121023, deployer, "Hello, World!!"],
-    //     }
-    // })
-
 
     // interface TestProps {
     //     x: number

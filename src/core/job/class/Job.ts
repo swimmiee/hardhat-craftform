@@ -1,36 +1,28 @@
+import path from "path";
 import chalk from "chalk";
 import interceptor from "console-log-interceptor";
 import { Step } from "./Step";
 import { defaultOption, JobOptions } from "./JobOptions";
-import { dateFormatter, timeFormatter, confirmPrompt, clone, sleep } from "../../../utils";
-import path from "path";
-import { Craftform } from "../../craftform";
-import { craftform } from "hardhat"
+import { dateFormatter, timeFormatter, confirmPrompt, sleep } from "../../../utils";
 
 export class Job<T> {
     title: string
     steps: Step<T>[]
-    snapshots: Craftform[]
 
     constructor(
         title: string,
     ){
         this.title = title;
         this.steps = []
-        this.snapshots = []
     }
 
     addSteps(steps:Step<T>[]){
         this.steps = this.steps.concat(steps);
     }
 
-    private takeSnapshot(){
-        // Craftform Snapshot
-        const snapshot = clone(craftform)
-        // this.snapshots.push(snapshot);
-    }
 
-    async execute(params:T, options?:JobOptions){
+    async execute(params:T, options?:JobOptions):Promise<boolean>{
+        let succeed = true;
 
         // save log default: true
         const saveLog = options?.saveLog === false ? false : true
@@ -46,24 +38,27 @@ export class Job<T> {
         let index = 1;
         for await (const step of this.steps) {
 
-
             await sleep(waitSeconds)
 
             console.log(`[STEP #${index}]`)
             console.log(chalk.blueBright(`*** ${step.title} ***`))
 
-            const result = await step.execute(params)
-            
-            if(result){
-                console.log(chalk.green(`✅ Succeed`))
-            }
-            else {
+            try {
+                const result = await step.execute(params)
+                if(result){
+                    console.log(chalk.green(`✅ Succeed`))
+                }
+                else throw Error(`Step [${step.title}] Failed`)
+            } catch (error: any) {
                 console.log(chalk.red(`❌ Failed`))
                 if(!options?.continueOnFailed){
+                    succeed = false;
+                    console.log(error.message)
                     console.log(chalk.red('exit'))
                     break;
                 }
             }
+        
 
             // ask for continue
             if(options?.stepByStep){
@@ -80,7 +75,7 @@ export class Job<T> {
         }
 
         if(!saveLog)
-            return;
+            return succeed;
         // LOG Handling
 
         
@@ -108,5 +103,8 @@ export class Job<T> {
             append: true
         })
         interceptor.clear()
+        console.log()
+
+        return succeed;
     }
 }
