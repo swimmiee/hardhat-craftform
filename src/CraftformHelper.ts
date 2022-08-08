@@ -1,15 +1,22 @@
-import { CraftDeployProps, CraftType, GetContractProps } from "./core/types/index"
+import { CraftFactory } from "./core/craftform/CraftFactory";
+import { ConfigMetadata, RelationMetadata } from "./core/metadata"
 
-// temp interface.
-// It will be overwritten by craftform.module.ts
-export interface CraftformHelper {
-    get(
-        contractName: string,
-        props: GetContractProps
-    ):Promise<CraftType<any, any>>
-    
-    deploy: (
-        contract: string,
-        props:CraftDeployProps<any, any[]>
-    ) => Promise<CraftType<any, any>>
+// ICraftformHelper will be replaced with new CraftformHelper 
+// at {projectroot}/crafts/craftform.helper.ts
+export interface ICraftformHelper {
+    contract(contract: string): CraftFactory<any, any, any>;
+    /**
+     * @deprecated
+     */
+    _global?: CraftformGlobal;
+}
+
+/**
+ * @deprecated
+ */
+export interface CraftformGlobal {
+    configs: ConfigMetadata[];
+    relations: {
+      [contractName: string]: RelationMetadata[];
+    };
 }

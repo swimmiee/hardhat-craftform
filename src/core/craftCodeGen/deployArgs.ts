@@ -18,12 +18,8 @@ export const setDeployArgsFile = async ({
 
     deployArgsFile.addImportDeclarations([
         {
-            namedImports: ["DeployArgs", "ProxyProps", "CraftDeployProps", "address"],
+            namedImports: ["DeployArgs", "ProxyProps", "address"],
             moduleSpecifier: "hardhat-craftform/dist/core"
-        },
-        {
-            namespaceImport: "Configs",
-            moduleSpecifier: "./configs"
         },
         {
             namedImports: ["BigNumberish"],
@@ -41,24 +37,32 @@ export const setDeployArgsFile = async ({
 
         // deploy args type
         deployArgsFile.addStatements(`// ${contractName}`)
-        const typeAliases:OptionalKind<TypeAliasDeclarationStructure>[] = []
+        let typeAliases:OptionalKind<TypeAliasDeclarationStructure>[] = []
         typeAliases.push({
             name: `${contractName}Args`,
-            type: `[${deployArgsTypes.args.join(', ')}]`,
+            type: deployArgsTypes.args.length > 0 ?
+                `[${deployArgsTypes.args.join(', ')}]` : `[] | undefined`,
             isExported: true
-        })
+        });
+        
         // proxy 있는 경우
         if(deployArgsTypes.proxy){
-            typeAliases.push({
-                name: `${contractName}ProxyProps`,
-                type: `ProxyProps<"${deployArgsTypes.proxy.methodName}",[${deployArgsTypes.proxy.args.join(', ')}]>`,
-                isExported: true
-            });
-            typeAliases.push({
-                name: `${contractName}DeployArgs`,
-                type: `DeployArgs<${contractName}Args, ${contractName}ProxyProps>`,
-                isExported: true
-            });
+            const {methodName, args} = deployArgsTypes.proxy;
+            const proxyArgsType = args.length > 0 ? 
+                `[${args.join(', ')}]` : `[] | undefined`;
+
+            typeAliases = typeAliases.concat([
+                {
+                    name: `${contractName}ProxyProps`,
+                    type: `ProxyProps<"${methodName}", ${proxyArgsType}>`,
+                    isExported: true
+                },
+                {
+                    name: `${contractName}DeployArgs`,
+                    type: `DeployArgs<${contractName}Args, ${contractName}ProxyProps>`,
+                    isExported: true
+                }
+            ]);
         }
         // proxy 없는 경우
         else {
@@ -68,11 +72,6 @@ export const setDeployArgsFile = async ({
                 isExported: true
             })
         }
-        typeAliases.push({
-            name: `${contractName}DeployProps`,
-            type: `CraftDeployProps<Configs.${contractName}Config, ${contractName}DeployArgs>`,
-            isExported: true
-        })
         deployArgsFile.addTypeAliases(typeAliases)
     })
     console.log(`Deploy Arguments file was created at: ${dest}`)

@@ -1,11 +1,11 @@
 import fs from "fs-extra";
 import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget } from "../../types";
+import { ConfigTarget, SavedConfig } from "../../types";
 import { BaseConfig } from "../BaseConfig";
 
 interface AddConfigProps<Config extends BaseConfig> extends ConfigTarget {
-  newConfig: Config;
+  newConfig: SavedConfig<Config>;
 }
 
 export function _addConfig<Config extends BaseConfig>({
@@ -14,7 +14,7 @@ export function _addConfig<Config extends BaseConfig>({
   newConfig,
 }: AddConfigProps<Config>) {
   const filename = getConfigFilename({ chain, contract });
-  const configs = getConfigList<Config>({ chain, contract });
+  const configs = getConfigList<SavedConfig<Config>>({ chain, contract });
 
   if (configs.findIndex(
     (c) => c.alias === newConfig.alias && c.version === newConfig.version

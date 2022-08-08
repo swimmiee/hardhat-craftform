@@ -1,16 +1,21 @@
-import '@nomiclabs/hardhat-ethers'
+import "@nomicfoundation/hardhat-toolbox";
 import 'hardhat-deploy'
 import "./type-extensions";
-import { extendConfig, extendEnvironment, task, types } from "hardhat/config";
+import { extendConfig, extendEnvironment, task } from "hardhat/config";
 import { lazyObject } from "hardhat/plugins";
 import { HardhatConfig, HardhatUserConfig } from "hardhat/types";
-import { Craftform } from "./core/craftform/Craftform";
-import craftTypeFactory from './core/craftFactory';
-import { isCraftInitiated } from './core/craftFactory/isCraftInitiated';
+import craftCodeGen from './core/craftCodeGen';
+import { isCraftInitiated } from './core/craftCodeGen/isCraftInitiated';
 import { normalizePath } from "./utils/normalizePath";
-import { CraftformHelper } from './CraftformHelper';
+import { CraftformHelper } from "./core/craftform/CraftfromHelper";
+import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
+import path from "path";
 
 export const TASK_CRAFTFORM = "craftform"
+export const useCraftform = async () => {
+  const hre = await import("hardhat");
+  await import(hre.config.paths.crafts)
+}
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {
@@ -31,23 +36,37 @@ extendConfig(
 );
 
 extendEnvironment((hre) => {
-  const { 
-    config, hardhatArguments, tasks, run, network, artifacts, 
-    ethers, deployments 
-  } = hre;
+  const { artifacts, ethers, deployments, network } = hre;
 
-  hre.craftform = lazyObject(() => new Craftform(
-    network,
-    ethers, 
-    deployments,
-  )) as CraftformHelper;
+  hre.craftform = lazyObject(() => {
+    return new CraftformHelper(
+      artifacts,
+      network,
+      ethers,
+      deployments,
+    )
+  }) 
 });
 
 
 task(TASK_CRAFTFORM, "Generate Craftform configs & type definitions")
-  .addOptionalParam("reset", "resets all config files", false, types.boolean)
+  .addFlag("reset", "resets all config files")
   .setAction(async ({reset}, hre, runSuper) => {
     const shouldReset = Boolean(reset) || !isCraftInitiated()
-    await craftTypeFactory(hre, shouldReset)
+    await craftCodeGen(hre, shouldReset)
     return;
+  })
+
+task(TASK_COMPILE)
+  .addFlag('noCraft', 'Skip Craftform works compilation')
+  .addFlag("resetConfig", "resets all craft config files")
+  .setAction(async (
+    { noCraft, resetConfig }: { noCraft: boolean, resetConfig: boolean }, 
+    { userConfig, run },
+    runSuper
+  ) => {
+    await runSuper();
+    if(noCraft || userConfig.craftform?.dontOverrideCrafts)
+      return;
+    await run(TASK_CRAFTFORM, {reset: resetConfig});
   })
