@@ -89,5 +89,5 @@ const myCraft1 = await craftform..contract("MyContract").attach();
 const myCraft2 = await craftform..contract("MyContract").attach("MyContractAlias");
 
 // address attach
-const myCraft3 = await craftform..contract("MyContract").attach("0x1234asd");
+const myCraft3 = await craftform..contract("MyContract").attach("0x0123456789abcdef...");
 ```
