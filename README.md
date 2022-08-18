@@ -12,7 +12,7 @@ npm install hardhat-craftform
 tsconfig.json
 ```json
 "compilerOptions": {
-    ...
+    // ...
     "experimentalDecorators": true,
     "strictPropertyInitialization": false
 }
