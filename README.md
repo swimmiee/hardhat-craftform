@@ -47,7 +47,7 @@ async function deployMyContract(){
     const myCraft = await craftform
         .contract("MyContract")
         .deploy(
-            "MyContractAlias",   // if set null, alias will be set as contract name.(MyContract)
+            "MyContractAlias",   // if set null, alias will be set as contract name.(in this case, "MyContract")
             // deploy options, typescript fully supported.
             {
                 from: owner.address,
