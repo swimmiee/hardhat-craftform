@@ -71,11 +71,14 @@ export type CraftDeployOptions<
 const BaseConfigProperties = ["address", "alias", "version", "deployedAt", "update"] as const
 type BaseConfigKey = typeof BaseConfigProperties[number]
 export type ExcludedBaseConfig<Config extends BaseConfig> = Omit<Config, BaseConfigKey>
-export type CraftDeployConfig<Config extends BaseConfig> = {
+export declare type CraftDeployConfig<Config extends BaseConfig> = {
   [key in keyof ExcludedBaseConfig<Config>]: 
-    ExcludedBaseConfig<Config>[key] extends BaseConfig ? address 
-      : ExcludedBaseConfig<Config>[key]
-}
+      ExcludedBaseConfig<Config>[key] extends BaseConfig ?
+          address : 
+      ExcludedBaseConfig<Config>[key] extends (BaseConfig | undefined) ?
+          address | undefined :
+      ExcludedBaseConfig<Config>[key];
+};
 export type NewConfigProps<Config extends BaseConfig> = CraftDeployConfig<Config> & {alias?: string, address: address}
 
 
