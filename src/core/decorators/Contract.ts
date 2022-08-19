@@ -15,7 +15,6 @@ export function Contract(
       relationType: "Contract",
     };
 
-    // @TODO type A
     if(!craftform._global){
       throw Error("@Contract Decorator:;Hardhat env not configured.")
     }

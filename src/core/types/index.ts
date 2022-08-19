@@ -12,10 +12,11 @@ export type CraftType<Contract extends BaseContract, Config extends BaseConfig> 
 export type ConfigVersion = number | 'latest'
 export type OptionalArray = Array<any> | undefined
 
+type ProxyContract = "OpenZeppelinTransparentProxy" | "EIP173Proxy" | "UUPSProxy" | (string & {})
 type ProxyOptionBase = {
   owner?: address;
   upgradeIndex?: number;
-  proxyContract?: string; // default to EIP173Proxy
+  proxyContract?:ProxyContract; // default to EIP173Proxy
   proxyArgs?: any[]; // default to ["{implementation}", "{admin}", "{data}"]
   viaAdminContract?:
     | string

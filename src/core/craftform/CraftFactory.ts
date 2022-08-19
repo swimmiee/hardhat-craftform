@@ -3,10 +3,10 @@ import { BaseConfig } from "./BaseConfig";
 import { CraftformHelper } from "./CraftfromHelper";
 import { _addConfig, _getConfig, _updateConfig } from "./config";
 import { CraftDeployOptions, CraftDeployConfig, NewConfigProps, Versioning, DeployArgsBase, ConfigVersion } from "../types";
-import { confirmPrompt } from "../../utils";
 import { extractContractNameFromConfigName } from "../decorators/extractContractFromConfig";
 import { BaseCraft } from "./BaseCraft";
 import chalk from "chalk";
+import { _removeConfig } from "./config/removeConfig";
 
 
 export class CraftFactory<
@@ -46,8 +46,6 @@ export class CraftFactory<
         const chain = this.chain()
 
         // default alias: contract name
-        // alias = alias || contract;
-
         const findProps = !aliasOrAddress ? {alias: contract} :
         this.global.ethers.utils.isAddress(aliasOrAddress) ? 
             {address: aliasOrAddress} : {alias: aliasOrAddress}
@@ -218,5 +216,26 @@ export class CraftFactory<
         }
 
         return this.attach(alias, newVersion);
+    }
+
+    async removeConfig(
+        aliasOrAddress: string,
+        version:ConfigVersion = 'latest'
+    ):Promise<void> {
+        const contract = this.contractName()
+        const chain = this.chain()
+
+        const findProps = !aliasOrAddress ? {alias: contract} :
+            this.global.ethers.utils.isAddress(aliasOrAddress) ? 
+                {address: aliasOrAddress} : {alias: aliasOrAddress};
+
+        const configTarget = { chain, contract, version, ...findProps};
+        const existing = _getConfig(configTarget)
+        if(existing){
+            _removeConfig({chain, contract, ...findProps, version: existing?.version})
+        }
+        else {
+            throw Error(`removeConfig: No existing ${contract} config`);
+        }
     }
 }

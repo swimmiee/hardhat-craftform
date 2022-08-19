@@ -3,6 +3,7 @@ import { getConfigList } from "./getConfigList";
 import { getConfigFilename } from "./getPath";
 import { ConfigUpdateable, SavedConfig, UpdateConfigTarget, Versioning } from "../../types";
 import { BaseConfig } from "../BaseConfig";
+import { searchTargetConfig } from "./searchTargetConfig";
 
 // @TODO
 // JOB 내에서, Step 끝날 떄마다 config save & load
@@ -14,17 +15,7 @@ export function _updateConfig<Config extends BaseConfig>(
   const filename = getConfigFilename({ chain, contract });
   
   const configs = getConfigList<SavedConfig<Config>>({ chain, contract });
-  const searchFunc = (c:SavedConfig<BaseConfig>):boolean =>{
-    const entries = Object.entries(target)
-    if(entries.length === 0)
-      return false;
-    return entries.every(([key, value]) => {
-        if(value === undefined)
-          return true;
-        return c[key as keyof typeof target] === value
-      })
-  }
-
+  const searchFunc = searchTargetConfig(target);
   const targets = configs.filter(searchFunc)
 
   if(targets.length > 1){
