@@ -9,13 +9,8 @@ import { isCraftInitiated } from './core/craftCodeGen/isCraftInitiated';
 import { normalizePath } from "./utils/normalizePath";
 import { CraftformHelper } from "./core/craftform/CraftfromHelper";
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
-import path from "path";
 
 export const TASK_CRAFTFORM = "craftform"
-export const useCraftform = async () => {
-  const hre = await import("hardhat");
-  await import(hre.config.paths.crafts)
-}
 
 extendConfig(
   (config: HardhatConfig, userConfig: Readonly<HardhatUserConfig>) => {

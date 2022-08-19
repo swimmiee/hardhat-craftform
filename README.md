@@ -21,16 +21,15 @@ tsconfig.json
 ```typescript
 import "hardhat-craftform"
 ```
-3. then, use `useCraftform()` function at the top of your scripts. (not in `hardhat.config.ts`)
+3. then, import `craft` directory at the top of your scripts. (not in `hardhat.config.ts`)
 ```typescript
-import { useCraftform } from "hardhat-craftform" 
-useCraftform()
+import "../crafts"
 ```
 4. if you compile your solidity files, Contract Crafts will be auto-generated.
 ```
 npx hardhat compile
 ```
-4-1. Or you can manually generate crafts with:
+ 4-1. Or you can manually generate crafts with:
 ```
 npx hardhat craftform
 ```
@@ -38,11 +37,9 @@ npx hardhat craftform
 ## Deploy Contract
 ```typescript
 import { craftform, ethers } from "hardhat"
-import { useCraftform } from "hardhat-craftform" 
+import "../crafts"  // Here: you should import "crafts" directory
 
 async function deployMyContract(){
-    await useCraftform();
-
     const [ owner ] = await ethers.getSigners();
     const myCraft = await craftform
         .contract("MyContract")
@@ -67,14 +64,12 @@ async function deployMyContract(){
 ## Reuse deployed contract with saved configs
 ```typescript
 import { craftform, ethers } from "hardhat"
-import { useCraftform } from "hardhat-craftform" 
+import "../crafts"  // Here: you should import "crafts" directory
 
 async function deployMyContract(){
-    await useCraftform();
-
     const [ owner ] = await ethers.getSigners();
     const myCraft = await craftform..contract("MyContract").attach("MyContractAlias");
-    console.log(myCraft.$config.message)    // Hello, World!
+    console.log(myCraft.$config.message)        // Hello, World!
     console.log(myCraft.$config.magicNumber)    // 41
 }
 ```

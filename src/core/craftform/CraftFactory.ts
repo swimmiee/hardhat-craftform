@@ -219,7 +219,7 @@ export class CraftFactory<
     }
 
     async removeConfig(
-        aliasOrAddress: string,
+        aliasOrAddress?: string,
         version:ConfigVersion = 'latest'
     ):Promise<void> {
         const contract = this.contractName()
