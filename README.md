@@ -12,7 +12,6 @@ npm install hardhat-craftform
 tsconfig.json
 ```json
 "compilerOptions": {
-    // ...
     "experimentalDecorators": true,
     "strictPropertyInitialization": false
 }
@@ -78,11 +77,11 @@ async function deployMyContract(){
 There are 3 ways to attach deployed contracts.
 ```typescript
 // default attach : alias will be set as contract name
-const myCraft1 = await craftform..contract("MyContract").attach();
+const myCraft1 = await craftform.contract("MyContract").attach();
 
 // aliased attach
-const myCraft2 = await craftform..contract("MyContract").attach("MyContractAlias");
+const myCraft2 = await craftform.contract("MyContract").attach("MyContractAlias");
 
 // address attach
-const myCraft3 = await craftform..contract("MyContract").attach("0x0123456789abcdef...");
+const myCraft3 = await craftform.contract("MyContract").attach("0x0123456789abcdef...");
 ```
