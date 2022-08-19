@@ -1,7 +1,6 @@
 import fs from "fs-extra";
 import { getConfigFilename } from "./getPath";
-import { ConfigTarget, SavedConfig } from "../../types";
-import { BaseConfig } from "../BaseConfig";
+import { ConfigTarget } from "../../types";
 
 
 export function getConfigList<Config>(target: ConfigTarget) {
