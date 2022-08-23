@@ -42,7 +42,7 @@ export class CraftformHelper implements ICraftformHelper {
     >(contract: string): CraftFactory<Config, Craft, DeployArgs> {
         const config = this._global.configs.find(c => c.contract === contract)
         if(!config)
-            throw Error(`CraftformHelper:: config ${contract} not found.`)
+            throw Error(`CraftformHelper:: config ${contract} not found.\n'\033[31m'[36m Please check again if you imported the crafts folder.'\033[0m'`)
         const relations = this._global.relations[contract]
         return new CraftFactory(this, config, relations || [])
     }
