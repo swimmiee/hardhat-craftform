@@ -20,6 +20,11 @@ export default async function craftCodeGen(
     const artifacts = artifactNames
         .map(name => hreArtifacts.readArtifactSync(name))
         .filter( a => a.abi.length > 0)
+        .filter(
+            (artifact, index, array) => array.findIndex(
+                (a) => a.contractName === artifact.contractName
+            ) === index
+        )
 
     /**
      *  SetProjectFileProps setting
