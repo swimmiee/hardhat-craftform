@@ -170,7 +170,9 @@ export class CraftFactory<
             newConfig: config
         })
 
-        return this.attach(alias, newVersion);
+        const craft = await this.attach(alias, newVersion);
+        await craft.deployed();
+        return craft;
     }
 
     async upsertConfig(
