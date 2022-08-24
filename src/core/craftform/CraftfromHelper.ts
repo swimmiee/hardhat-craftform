@@ -6,6 +6,7 @@ import { CraftformGlobal, ICraftformHelper } from "../../CraftformHelper";
 import { Artifacts, Network } from "hardhat/types";
 import { DeployArgsBase } from "../types";
 import { BaseCraft } from "./BaseCraft";
+import chalk from "chalk";
 
 export class CraftformHelper implements ICraftformHelper {
     public artifacts: Artifacts
@@ -41,8 +42,12 @@ export class CraftformHelper implements ICraftformHelper {
         DeployArgs extends DeployArgsBase
     >(contract: string): CraftFactory<Config, Craft, DeployArgs> {
         const config = this._global.configs.find(c => c.contract === contract)
-        if(!config)
-            throw Error(`CraftformHelper:: config ${contract} not found.\n'\033[31m'[36m Please check again if you imported the crafts folder.'\033[0m'`)
+        if(!config){
+            console.log(
+                chalk.red(`Please check again if you imported the crafts folder.`)
+            );
+            throw Error(`CraftformHelper:: config ${contract} not found.`)
+        }
         const relations = this._global.relations[contract]
         return new CraftFactory(this, config, relations || [])
     }
